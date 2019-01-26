@@ -1,0 +1,29 @@
+apply plugin: 'java'
+
+ext.compileWithStub = true
+
+dependencies {
+  def libsDir = files('libs').getSingleFile()
+  def libsToCheck = ['layoutlib.jar', 'layoutlib-loader.jar', 'openapi.jar', 'platform-api.jar', 'util.jar']
+  boolean allBinariesExists = true
+
+  if (libsDir.exists()) {
+    libsToCheck.each { lib ->
+      allBinariesExists = allBinariesExists && new File(libsDir, lib).exists()
+    }
+  }
+
+  if (compileWithStub) {
+    compileOnly project(':preview_support_stub')
+  } else if(allBinariesExists) {
+    compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
+    compileOnly 'com.android.tools.layoutlib:layoutlib-api:24.2.3'
+    compileOnly 'com.android.tools:sdklib:24.2.3'
+  } else {
+    throw new GradleException("dependencies not found")
+  }
+}
+
+jar {
+  archiveName('android_folivora_preview.jar')
+}

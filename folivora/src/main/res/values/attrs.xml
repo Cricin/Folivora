@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  * Copyright (C) 2019 Cricin
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *         http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+-->
+
+<resources>
+
+  <!--shape-->
+  <declare-styleable name="Folivora_Shape">
+    <attr name="shapeType" format="enum">
+      <enum name="rectangle" value="0"/>
+      <enum name="oval" value="1"/>
+      <enum name="line" value="2"/>
+      <enum name="ring" value="3"/>
+    </attr>
+
+    <attr name="shapeSolidSize" format="dimension"/>
+    <attr name="shapeSolidWidth" format="dimension"/>
+    <attr name="shapeSolidHeight" format="dimension"/>
+    <attr name="shapeSolidColor" format="color"/>
+
+    <attr name="shapeStrokeWidth" format="dimension"/>
+    <attr name="shapeStrokeColor" format="color"/>
+    <attr name="shapeStokeDashWidth" format="dimension"/>
+    <attr name="shapeStokeDashGap" format="dimension"/>
+
+    <attr name="shapeCornerRadius" format="dimension"/>
+    <attr name="shapeCornerRadiusTopLeft" format="dimension"/>
+    <attr name="shapeCornerRadiusTopRight" format="dimension"/>
+    <attr name="shapeCornerRadiusBottomLeft" format="dimension"/>
+    <attr name="shapeCornerRadiusBottomRight" format="dimension"/>
+
+    <attr name="shapeGradientType" format="enum">
+      <enum name="linear" value="0"/>
+      <enum name="radial" value="1"/>
+      <enum name="sweep" value="2"/>
+    </attr>
+    <attr name="shapeGradientAngle" format="enum">
+      <enum name="tb" value="0"/>
+      <enum name="tr_bl" value="1"/>
+      <enum name="rl" value="2"/>
+      <enum name="br_tl" value="3"/>
+      <enum name="bt" value="4"/>
+      <enum name="bl_tr" value="5"/>
+      <enum name="lr" value="6"/>
+      <enum name="tl_br" value="7"/>
+
+    </attr>
+    <attr name="shapeGradientStartColor" format="color"/>
+    <attr name="shapeGradientCenterColor" format="color"/>
+    <attr name="shapeGradientEndColor" format="color"/>
+    <attr name="shapeGradientRadius" format="dimension"/>
+    <attr name="shapeGradientCenterX" format="dimension"/>
+    <attr name="shapeGradientCenterY" format="dimension"/>
+
+  </declare-styleable>
+  <!--shape结束-->
+
+  <!--selector-->
+  <declare-styleable name="Folivora_Selector">
+    <attr name="selectorStateFirst" format="reference"/>
+    <attr name="selectorStateMiddle" format="reference"/>
+    <attr name="selectorStateLast" format="reference"/>
+    <attr name="selectorStateActive" format="reference"/>
+    <attr name="selectorStateActivated" format="reference"/>
+    <attr name="selectorStateAccelerate" format="reference"/>
+    <attr name="selectorStateChecked" format="reference"/>
+    <attr name="selectorStateCheckable" format="reference"/>
+    <attr name="selectorStateEnabled" format="reference"/>
+    <attr name="selectorStateFocused" format="reference"/>
+    <attr name="selectorStatePressed" format="reference"/>
+    <attr name="selectorStateNormal" format="reference"/>
+    <!--selector结束-->
+  </declare-styleable>
+
+  <!--layer-list-->
+  <declare-styleable name="Folivora_Layer">
+    <attr name="layerItem0Insets" format="dimension"/>
+    <attr name="layerItem0Left" format="dimension"/>
+    <attr name="layerItem0Top" format="dimension"/>
+    <attr name="layerItem0Right" format="dimension"/>
+    <attr name="layerItem0Bottom" format="dimension"/>
+    <attr name="layerItem0Drawable" format="reference"/>
+
+    <attr name="layerItem1Insets" format="dimension"/>
+    <attr name="layerItem1Left" format="dimension"/>
+    <attr name="layerItem1Top" format="dimension"/>
+    <attr name="layerItem1Right" format="dimension"/>
+    <attr name="layerItem1Bottom" format="dimension"/>
+    <attr name="layerItem1Drawable" format="reference"/>
+
+    <attr name="layerItem2Insets" format="dimension"/>
+    <attr name="layerItem2Left" format="dimension"/>
+    <attr name="layerItem2Top" format="dimension"/>
+    <attr name="layerItem2Right" format="dimension"/>
+    <attr name="layerItem2Bottom" format="dimension"/>
+    <attr name="layerItem2Drawable" format="reference"/>
+
+    <attr name="layerItem3Insets" format="dimension"/>
+    <attr name="layerItem3Left" format="dimension"/>
+    <attr name="layerItem3Top" format="dimension"/>
+    <attr name="layerItem3Right" format="dimension"/>
+    <attr name="layerItem3Bottom" format="dimension"/>
+    <attr name="layerItem3Drawable" format="reference"/>
+
+    <attr name="layerItem4Insets" format="dimension"/>
+    <attr name="layerItem4Left" format="dimension"/>
+    <attr name="layerItem4Top" format="dimension"/>
+    <attr name="layerItem4Right" format="dimension"/>
+    <attr name="layerItem4Bottom" format="dimension"/>
+    <attr name="layerItem4Drawable" format="reference"/>
+  </declare-styleable>
+  <!--layer-list结束-->
+
+  <!--ripple only worked on Lollipop or higher-->
+  <declare-styleable name="Folivora_Ripple">
+    <attr name="rippleColor" format="color"/>
+    <attr name="rippleMask" format="reference"/>
+    <attr name="rippleContent" format="reference"/>
+  </declare-styleable>
+  <!--ripple结束-->
+
+  <declare-styleable name="Folivora">
+    <attr name="setAs" format="enum">
+      <enum name="background" value="0"/>
+      <enum name="src" value="1"/>
+    </attr>
+
+    <attr name="drawableType" format="enum">
+      <enum name="shape" value="0"/>
+      <enum name="selector" value="1"/>
+      <enum name="layer_list" value="2"/>
+      <enum name="ripple" value="3"/>
+    </attr>
+  </declare-styleable>
+
+</resources>
