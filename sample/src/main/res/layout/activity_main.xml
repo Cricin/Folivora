@@ -21,29 +21,17 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:gravity="center_horizontal"
   android:orientation="vertical"
   tools:context=".MainActivity"
   tools:ignore="MissingPrefix">
 
   <TextView
-    android:layout_marginTop="10dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:focusable="true"
-    android:padding="10dp"
-    android:text="selector"
-    app:drawableType="selector"
-    app:setAs="background"
-    app:selectorStateNormal="@color/colorAccent"
-    app:selectorStatePressed="@color/colorPrimary"/>
-
-  <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:padding="10dp"
-    android:text="shape"
+    android:padding="5dp"
+    android:text="roundrect shape"
     app:drawableType="shape"
     app:setAs="background"
     app:shapeCornerRadius="10dp"
@@ -53,26 +41,50 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:padding="20dp"
-    android:text="layer-list"
-    app:layerItem0Drawable="@color/colorPrimary"
-    app:layerItem1Drawable="@color/colorAccent"
-    app:layerItem1Insets="6dp"
+    android:gravity="center"
+    android:text="circle shape"
+    app:drawableType="shape"
     app:setAs="background"
-    app:drawableType="layer_list"/>
+    app:shapeCornerRadius="40dp"
+    app:shapeSolidColor="@color/colorAccent"
+    app:shapeSolidSize="80dp"
+    app:shapeType="rectangle"/>
 
   <TextView
-    android:clickable="true"
-    android:focusable="true"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:padding="4dp"
-    android:text="ripple"
-    app:rippleColor="@color/colorAccent"
-    app:rippleContent="@color/colorPrimary"
-    app:drawableType="ripple"
+    android:padding="8dp"
+    android:text="layerlist"
+    app:drawableType="layer_list"
+    app:layerItem0Drawable="@color/colorAccent"
+    app:layerItem1Drawable="@color/colorPrimary"
+    app:layerItem1Insets="3dp"
     app:setAs="background"/>
 
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="8dp"
+    android:text="selector"
+    app:drawableType="selector"
+    app:selectorStateNormal="@color/colorPrimary"
+    app:selectorStatePressed="@color/colorPrimaryDark"
+    app:setAs="background"/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:clickable="true"
+    android:padding="8dp"
+    android:text="ripple"
+    app:drawableType="ripple"
+    app:rippleColor="@android:color/white"
+    app:rippleContent="@color/colorPrimary"
+    app:setAs="background"/>
 
 </LinearLayout>

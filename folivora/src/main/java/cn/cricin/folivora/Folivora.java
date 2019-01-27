@@ -239,7 +239,7 @@ public final class Folivora {
     } else if (sRippleFallback != null) {
       return sRippleFallback.onFallback(color, content, mask, ctx);
     } else {
-      Log.e(TAG, "RippleDrawable is not available in this platform: ");
+      Log.e(TAG, "RippleDrawable is not available in current platform");
       return null;
     }
   }
@@ -278,11 +278,11 @@ public final class Folivora {
         sOut
           .append("Folivora: ")
           .append(view.getClass().getSimpleName())
-          .append(" {drawableType: ")
+          .append(" { drawableType: ")
           .append(drawableTypeToString(drawableType))
           .append(" setAs: ")
           .append(setAsToString(setAs))
-          .append("}\n");
+          .append(" }\n");
       } catch (IOException e) {
         //never happen
       }
