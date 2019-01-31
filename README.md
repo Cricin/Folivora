@@ -146,27 +146,28 @@ app:drawableType|shape &#124; layer_list &#124; selector &#124; ripple|drawable�
 
 属性 | 取值| 描述
  ---|--- | --- |
-app:shapeType|rectangle(default)&#124;oval&#124;line&#124;ring|shape形状
-app:shapeSolidSize|dimension|shape宽高
-app:shapeSolidWidth|dimension|shape宽
-app:shapeSolidHeight|dimension|shape高
+app:shapeType|rectangle(default)&#124;oval&#124;line&#124;ring|形状
+app:shapeSolidSize|dimension|宽高
+app:shapeSolidWidth|dimension|宽
+app:shapeSolidHeight|dimension|高
 app:shapeSolidColor|color|shape填充色
-app:shapeSolidStokeWidth|dimension|shape边框宽
-app:shapeSolidColor|color|shape边框填充色
-app:shapeStokeDashWidth|dimension|shape宽
-app:shapeStokeDashGap|dimension|shape宽
-app:shapeCornerRadius|dimension|shape角半径
-app:shapeCornerRadiusTopLeft|dimension|shape左上角半径
-app:shapeCornerRadiusTopRight|dimension|shape右上角半径
-app:shapeCornerRadiusBottomLeft|dimension|shape坐下角半径
-app:shapeCornerRadiusBottomRight|dimension|shape右下角半径
-app:shapeGradientType|linear &#124; radial &#124; sweep|shape渐变类型
-app:shapeGradientAngle|tb &#124; tr_bl &#124; rl &#124; br_tl &#124; bt &#124; bl_tr &#124; lr &#124; tl_br|shape渐变角度
-app:shapeGradientStartColor|color|shape渐变起始颜色
-app:shapeGradientCenterColor|dimension|shape渐变中间颜色
-app:shapeGradientEndColor|dimension|shape渐变结束颜色
-app:shapeGradientRadius|dimension|shape渐变半径
-app:shapeGradientCenterX|dimension|shape宽渐变x半径
+app:shapeSolidStokeWidth|dimension|边框宽
+app:shapeSolidColor|color|边框填充色
+app:shapeStokeDashWidth|dimension|边框线宽
+app:shapeStokeDashGap|dimension|边框线间距
+app:shapeCornerRadius|dimension|角半径
+app:shapeCornerRadiusTopLeft|dimension|左上角半径
+app:shapeCornerRadiusTopRight|dimension|右上角半径
+app:shapeCornerRadiusBottomLeft|dimension|坐下角半径
+app:shapeCornerRadiusBottomRight|dimension|右下角半径
+app:shapeGradientType|linear &#124; radial &#124; sweep|渐变类型
+app:shapeGradientAngle|tb &#124; tr_bl &#124; rl &#124; br_tl &#124; bt &#124; bl_tr &#124; lr &#124; tl_br|渐变角度
+app:shapeGradientStartColor|color|渐变起始颜色
+app:shapeGradientCenterColor|dimension|渐变中间颜色
+app:shapeGradientEndColor|dimension|渐变结束颜色
+app:shapeGradientRadius|dimension|渐变半径
+app:shapeGradientCenterX|dimension|渐变中点x轴位置
+app:shapeGradientCenterY|dimension|渐变中点y轴位置
 
 ##### selector属性
 
