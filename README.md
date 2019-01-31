@@ -57,6 +57,7 @@
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_layerlist.png"></img>
 
+```xml
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -70,11 +71,13 @@
     app:layerItem2Drawable="@color/colorAccent"
     app:layerItem2Insets="8dp"
     app:setAs="background"/>
+```
 
 > selector
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_selector.png"></img>
 
+```xml
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -85,11 +88,13 @@
     app:selectorStateNormal="@color/colorAccent"
     app:selectorStatePressed="@color/colorPrimary"
     app:setAs="background"/>
+```
 
 > ripple
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_ripple.png"></img>
 
+```xml
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -100,6 +105,7 @@
     app:rippleColor="@android:color/white"
     app:rippleContent="@color/colorAccent"
     app:setAs="background"/>
+```
 
 注: 许多 IDE (Android Studio, IntelliJ) 会把这些属性标注为错误，但是实际上是正确的。可以在这个View或者根ViewGroup上加上`tools:ignore="MissingPrefix"`来避免报错。为了使用 `ignore`属性，可以加上`xmlns:tools=" http://schemas.android.com/tools"`。关于这个问题，可以查看： https://code.google.com/p/android/issues/detail?id=65176.
 
@@ -139,7 +145,9 @@ public class MainActivity extends AppCompatActivity {
 
 > 预览效果
 
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.png" width="50%"></img>
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.png" width="70%"></img>
+
+## License
 
 Copyright 2019 Cricin
 
