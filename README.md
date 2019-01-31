@@ -5,7 +5,7 @@
 
 现在可以使用Folivora，在layout文件中直接定义drawable。
 
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview.gif"></img>
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview.gif" width="40%"></img>
 
 ### 使用方法
  - **STEP1** :
@@ -20,6 +20,7 @@
 在layout.xml中加入自定义的属性, 告诉Folivora如何创建drawable
 
 > 圆角的shape
+
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_shape.png"></img>
 
 ```xml
@@ -34,7 +35,9 @@
 ```
 
 > 圆形的shape
+
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_shape_circle.png"></img>
+
 ```xml
 <TextView
     android:layout_width="wrap_content"
@@ -51,7 +54,9 @@
 ```
 
 > layerlist
+
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_layerlist.png"></img>
+
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -67,7 +72,9 @@
     app:setAs="background"/>
 
 > selector
+
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_selector.png"></img>
+
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -80,7 +87,9 @@
     app:setAs="background"/>
 
 > ripple
+
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_ripple.png"></img>
+
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -129,7 +138,8 @@ public class MainActivity extends AppCompatActivity {
 注: 支持工具依赖java的classloader加载类的顺序(替换LayoutLibraryLoader)，所以下载的jar包请不要重命名，直接拷贝即可
 
 > 预览效果
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.png" width="30%"></img>
+
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.png" width="50%"></img>
 
 Copyright 2019 Cricin
 
