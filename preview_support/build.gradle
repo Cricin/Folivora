@@ -22,5 +22,5 @@ dependencies {
 }
 
 jar {
-  archiveName('android_folivora_preview.jar')
+  archiveName('folivora_preview_support.jar')
 }

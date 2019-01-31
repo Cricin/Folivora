@@ -16,6 +16,8 @@
 
 package cn.cricin.folivora.uipreview;
 
+import android.view.LayoutInflater;
+
 import com.android.ide.common.rendering.api.Bridge;
 import com.android.ide.common.rendering.api.Capability;
 import com.android.ide.common.rendering.api.DrawableParams;
@@ -25,6 +27,7 @@ import com.android.ide.common.rendering.api.Result;
 import com.android.ide.common.rendering.api.SessionParams;
 import com.android.layoutlib.bridge.RenderSessionAccess;
 import com.android.layoutlib.bridge.android.RenderParamsFlags;
+import com.android.layoutlib.bridge.impl.RenderSessionImpl;
 
 import java.io.File;
 import java.util.EnumSet;
@@ -103,9 +106,9 @@ public final class DelegateBridge extends Bridge {
 
   @Override
   public RenderSession createSession(SessionParams params) {
-    cn.cricin.folivora.uipreview.FolivoraAccess.initIfNeeded(params);
+    FolivoraAccess.initIfNeeded(params);
     try {
-      cn.cricin.folivora.uipreview.MyRenderSessionImpl scene = new cn.cricin.folivora.uipreview.MyRenderSessionImpl(params);
+      MyRenderSessionImpl scene = new MyRenderSessionImpl(params);
       Result lastResult;
       try {
         prepareThread();
@@ -127,4 +130,23 @@ public final class DelegateBridge extends Bridge {
       return mBridge.createSession(params);
     }
   }
+
+  static class MyRenderSessionImpl extends RenderSessionImpl {
+    MyRenderSessionImpl(SessionParams params) {
+      super(params);
+    }
+
+    @Override
+    public Result init(long timeout) {
+      Result result = super.init(timeout);
+      LayoutInflater i = (LayoutInflater.from(getContext()));
+      if (i.getFactory2() == null) {
+        i.setFactory2(new ViewFactory(i, getParams().getLayoutlibCallback()));
+      } else {
+        DebugLog.info("DelegateBridge: A Factory2 has already been set to LayoutInflater");
+      }
+      return result;
+    }
+  }
+
 }
