@@ -24,13 +24,13 @@
   android:gravity="center_horizontal"
   android:orientation="vertical"
   tools:context=".MainActivity"
-  tools:ignore="MissingPrefix">
+  tools:ignore="MissingPrefix,HardCodedText">
 
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:padding="5dp"
+    android:padding="12dp"
     android:text="roundrect shape"
     app:drawableType="shape"
     app:setAs="background"
@@ -54,12 +54,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:padding="8dp"
+    android:padding="12dp"
     android:text="layerlist"
     app:drawableType="layer_list"
-    app:layerItem0Drawable="@color/colorAccent"
+    app:layerItem0Drawable="#ff00ddff"
     app:layerItem1Drawable="@color/colorPrimary"
-    app:layerItem1Insets="3dp"
+    app:layerItem1Insets="4dp"
+    app:layerItem2Drawable="@color/colorAccent"
+    app:layerItem2Insets="8dp"
     app:setAs="background"/>
 
   <TextView
@@ -68,11 +70,11 @@
     android:layout_marginTop="10dp"
     android:clickable="true"
     android:focusable="true"
-    android:padding="8dp"
+    android:padding="12dp"
     android:text="selector"
     app:drawableType="selector"
-    app:selectorStateNormal="@color/colorPrimary"
-    app:selectorStatePressed="@color/colorPrimaryDark"
+    app:selectorStateNormal="@color/colorAccent"
+    app:selectorStatePressed="@color/colorPrimary"
     app:setAs="background"/>
 
   <TextView
@@ -80,11 +82,11 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:clickable="true"
-    android:padding="8dp"
+    android:padding="20dp"
     android:text="ripple"
     app:drawableType="ripple"
     app:rippleColor="@android:color/white"
-    app:rippleContent="@color/colorPrimary"
+    app:rippleContent="@color/colorAccent"
     app:setAs="background"/>
 
 </LinearLayout>

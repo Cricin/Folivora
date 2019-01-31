@@ -70,18 +70,18 @@
 
   <!--selector-->
   <declare-styleable name="Folivora_Selector">
-    <attr name="selectorStateFirst" format="reference"/>
-    <attr name="selectorStateMiddle" format="reference"/>
-    <attr name="selectorStateLast" format="reference"/>
-    <attr name="selectorStateActive" format="reference"/>
-    <attr name="selectorStateActivated" format="reference"/>
-    <attr name="selectorStateAccelerate" format="reference"/>
-    <attr name="selectorStateChecked" format="reference"/>
-    <attr name="selectorStateCheckable" format="reference"/>
-    <attr name="selectorStateEnabled" format="reference"/>
-    <attr name="selectorStateFocused" format="reference"/>
-    <attr name="selectorStatePressed" format="reference"/>
-    <attr name="selectorStateNormal" format="reference"/>
+    <attr name="selectorStateFirst" format="reference|color"/>
+    <attr name="selectorStateMiddle" format="reference|color"/>
+    <attr name="selectorStateLast" format="reference|color"/>
+    <attr name="selectorStateActive" format="reference|color"/>
+    <attr name="selectorStateActivated" format="reference|color"/>
+    <attr name="selectorStateAccelerate" format="reference|color"/>
+    <attr name="selectorStateChecked" format="reference|color"/>
+    <attr name="selectorStateCheckable" format="reference|color"/>
+    <attr name="selectorStateEnabled" format="reference|color"/>
+    <attr name="selectorStateFocused" format="reference|color"/>
+    <attr name="selectorStatePressed" format="reference|color"/>
+    <attr name="selectorStateNormal" format="reference|color"/>
     <!--selector结束-->
   </declare-styleable>
 
@@ -92,43 +92,43 @@
     <attr name="layerItem0Top" format="dimension"/>
     <attr name="layerItem0Right" format="dimension"/>
     <attr name="layerItem0Bottom" format="dimension"/>
-    <attr name="layerItem0Drawable" format="reference"/>
+    <attr name="layerItem0Drawable" format="reference|color"/>
 
     <attr name="layerItem1Insets" format="dimension"/>
     <attr name="layerItem1Left" format="dimension"/>
     <attr name="layerItem1Top" format="dimension"/>
     <attr name="layerItem1Right" format="dimension"/>
     <attr name="layerItem1Bottom" format="dimension"/>
-    <attr name="layerItem1Drawable" format="reference"/>
+    <attr name="layerItem1Drawable" format="reference|color"/>
 
     <attr name="layerItem2Insets" format="dimension"/>
     <attr name="layerItem2Left" format="dimension"/>
     <attr name="layerItem2Top" format="dimension"/>
     <attr name="layerItem2Right" format="dimension"/>
     <attr name="layerItem2Bottom" format="dimension"/>
-    <attr name="layerItem2Drawable" format="reference"/>
+    <attr name="layerItem2Drawable" format="reference|color"/>
 
     <attr name="layerItem3Insets" format="dimension"/>
     <attr name="layerItem3Left" format="dimension"/>
     <attr name="layerItem3Top" format="dimension"/>
     <attr name="layerItem3Right" format="dimension"/>
     <attr name="layerItem3Bottom" format="dimension"/>
-    <attr name="layerItem3Drawable" format="reference"/>
+    <attr name="layerItem3Drawable" format="reference|color"/>
 
     <attr name="layerItem4Insets" format="dimension"/>
     <attr name="layerItem4Left" format="dimension"/>
     <attr name="layerItem4Top" format="dimension"/>
     <attr name="layerItem4Right" format="dimension"/>
     <attr name="layerItem4Bottom" format="dimension"/>
-    <attr name="layerItem4Drawable" format="reference"/>
+    <attr name="layerItem4Drawable" format="reference|color"/>
   </declare-styleable>
   <!--layer-list结束-->
 
   <!--ripple only worked on Lollipop or higher-->
   <declare-styleable name="Folivora_Ripple">
     <attr name="rippleColor" format="color"/>
-    <attr name="rippleMask" format="reference"/>
-    <attr name="rippleContent" format="reference"/>
+    <attr name="rippleMask" format="reference|color"/>
+    <attr name="rippleContent" format="reference|color"/>
   </declare-styleable>
   <!--ripple结束-->
 

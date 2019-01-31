@@ -179,7 +179,7 @@ public final class Folivora {
     temp = a.getDrawable(R.styleable.Folivora_Layer_layerItem2Drawable);
     if (temp != null) {
       childDrawables.add(temp);
-      int insets = a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem1Insets, 0);
+      int insets = a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem2Insets, 0);
       childInsets.add(new Rect(
         a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem2Left, insets),
         a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem2Top, insets),
@@ -190,7 +190,7 @@ public final class Folivora {
     temp = a.getDrawable(R.styleable.Folivora_Layer_layerItem3Drawable);
     if (temp != null) {
       childDrawables.add(temp);
-      int insets = a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem1Insets, 0);
+      int insets = a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem3Insets, 0);
       childInsets.add(new Rect(
         a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem3Left, insets),
         a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem3Top, insets),
@@ -201,7 +201,7 @@ public final class Folivora {
     temp = a.getDrawable(R.styleable.Folivora_Layer_layerItem4Drawable);
     if (temp != null) {
       childDrawables.add(temp);
-      int insets = a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem1Insets, 0);
+      int insets = a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem4Insets, 0);
       childInsets.add(new Rect(
         a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem4Left, insets),
         a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem4Top, insets),
