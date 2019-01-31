@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package cn.cricin.uipreview;
+package cn.cricin.folivora.uipreview;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.android.ide.common.rendering.api.IProjectCallback;
+import com.android.ide.common.rendering.api.LayoutlibCallback;
 import com.android.layoutlib.bridge.android.BridgeContext;
 
 import java.util.Arrays;
@@ -45,11 +45,11 @@ public final class ViewFactory implements LayoutInflater.Factory2 {
 
   private LayoutInflater mDelegate;
   private boolean mLoadAppCompatViews;
-  private IProjectCallback mProjectCallback;
+  private LayoutlibCallback mLayoutLibCallback;
 
-  ViewFactory(LayoutInflater inflater, IProjectCallback projectCallback) {
+  ViewFactory(LayoutInflater inflater, LayoutlibCallback layoutlibCallback) {
     this.mDelegate = inflater;
-    this.mProjectCallback = projectCallback;
+    this.mLayoutLibCallback = layoutlibCallback;
     this.mLoadAppCompatViews = getContext().isAppCompatTheme();
   }
 
@@ -87,16 +87,16 @@ public final class ViewFactory implements LayoutInflater.Factory2 {
     }
 
     if (result == null) {
-      DebugLog.logLine("ViewFactory: failed to create view: " + name);
+      DebugLog.warn("ViewFactory: failed to create view: " + name);
     } else {
-      onViewCreated(result, attrs);
+      FolivoraAccess.applyDrawableToView(result, attrs);
     }
 
     return result;
   }
 
   private View loadCustomView(String name, AttributeSet attrs) {
-    if (this.mProjectCallback == null) return null;
+    if (mLayoutLibCallback == null) return null;
     if (name.equals("view")) {
       name = attrs.getAttributeValue(null, "class");
       if (name == null) {
@@ -108,7 +108,7 @@ public final class ViewFactory implements LayoutInflater.Factory2 {
     Object customView = null;
 
     try {
-      customView = this.mProjectCallback.loadView(name, sConstructorSignature, sConstructorArgs);
+      customView = mLayoutLibCallback.loadView(name, sConstructorSignature, sConstructorArgs);
     } catch (Exception e) {
       //empty
     } finally {
@@ -126,7 +126,4 @@ public final class ViewFactory implements LayoutInflater.Factory2 {
     return onCreateView(null, name, context, attrs);
   }
 
-  private void onViewCreated(View view/*Nonnull*/, AttributeSet attrs/*Nonnull*/) {
-    FolivoraAccess.applyDrawableToView(view, attrs);
-  }
 }

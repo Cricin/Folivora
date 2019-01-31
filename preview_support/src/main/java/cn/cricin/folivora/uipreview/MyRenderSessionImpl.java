@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.cricin.uipreview;
+package cn.cricin.folivora.uipreview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -40,12 +40,12 @@ public final class MyRenderSessionImpl extends RenderSessionImpl {
   }
 
   private void injectLayoutInflaterFactory(Context context) {
-    DebugLog.logLine("MyRenderSessionImpl: set ViewFactory");
+    DebugLog.info("MyRenderSessionImpl: set ViewFactory");
 
     LayoutInflater i = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     if (i != null) {
       if (i.getFactory2() == null) {
-        i.setFactory2(new ViewFactory(i, getParams().getProjectCallback()));
+        i.setFactory2(new ViewFactory(i, getParams().getLayoutlibCallback()));
       }
     }
   }

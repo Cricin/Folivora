@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.cricin.uipreview;
+package cn.cricin.folivora.uipreview;
 
 import com.android.ide.common.rendering.api.Bridge;
 import com.android.ide.common.rendering.api.Capability;
@@ -103,9 +103,9 @@ public final class DelegateBridge extends Bridge {
 
   @Override
   public RenderSession createSession(SessionParams params) {
-    FolivoraAccess.initIfNeeded(params);
+    cn.cricin.folivora.uipreview.FolivoraAccess.initIfNeeded(params);
     try {
-      MyRenderSessionImpl scene = new MyRenderSessionImpl(params);
+      cn.cricin.folivora.uipreview.MyRenderSessionImpl scene = new cn.cricin.folivora.uipreview.MyRenderSessionImpl(params);
       Result lastResult;
       try {
         prepareThread();
@@ -123,8 +123,7 @@ public final class DelegateBridge extends Bridge {
       }
       return RenderSessionAccess.newRenderSession(scene, lastResult);
     } catch (Throwable ex) {
-      DebugLog.logLine("DelegateBridge: error occurred, delegate to system bridge");
-      DebugLog.logLine(ex);
+      DebugLog.error("DelegateBridge: error occurred, delegate to system bridge", ex);
       return mBridge.createSession(params);
     }
   }

@@ -2,7 +2,7 @@ apply plugin: 'java'
 
 ext.compileWithStub = false
 
-def ideInstallationDir = new File('/Applications/Android Studio 3.1 Preview.app/Contents/')
+def ideInstallationDir = new File('/Applications/Android Studio.app/Contents/')
 
 dependencies {
   compileOnly 'com.android.tools.layoutlib:layoutlib-api:26.3.0'

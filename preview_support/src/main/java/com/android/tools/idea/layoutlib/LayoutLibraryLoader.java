@@ -16,8 +16,8 @@
 
 package com.android.tools.idea.layoutlib;
 
-import cn.cricin.uipreview.DelegateBridge;
-import cn.cricin.uipreview.DebugLog;
+import cn.cricin.folivora.uipreview.DelegateBridge;
+import cn.cricin.folivora.uipreview.DebugLog;
 import com.android.ide.common.rendering.api.LayoutLog;
 import com.android.io.FileWrapper;
 import com.android.layoutlib.bridge.Bridge;
@@ -43,7 +43,7 @@ public class LayoutLibraryLoader {
   @SuppressWarnings("UnresolvedPropertyKey")
   public static LayoutLibrary load(IAndroidTarget target, Map<String, Map<String, Integer>>
     enumMap) throws RenderingException, IOException {
-    DebugLog.logLine("LayoutLibLoader: loading layoutlib");
+    DebugLog.info("LayoutLibLoader: loading layoutlib");
 
     String fontFolderPath = FileUtil.toSystemIndependentName(target.getPath(IAndroidTarget.FONTS));
     VirtualFile fontFolder = LocalFileSystem.getInstance().findFileByPath(fontFolderPath);
@@ -74,10 +74,10 @@ public class LayoutLibraryLoader {
             (buildProp), logger);
           LayoutLog layoutLog = new LayoutLogWrapper(LOG);
           if(library.init(buildPropMap, new File(fontFolder.getPath()), enumMap, layoutLog)){
-            DebugLog.logLine("LayoutLibLoader: layoutlib loaded");
+            DebugLog.info("LayoutLibLoader: layoutlib loaded");
             return library;
           }else{
-            DebugLog.logLine("LayoutLibLoader: layoutLib load failed");
+            DebugLog.warn("LayoutLibLoader: layoutLib load failed");
             return null;
           }
         }

@@ -21,8 +21,9 @@ import com.android.layoutlib.bridge.impl.RenderSessionImpl;
 
 public final class RenderSessionAccess {
 
-  public static BridgeRenderSession newRenderSession(RenderSessionImpl scene, Result lastResult){
+  public static BridgeRenderSession newRenderSession(RenderSessionImpl scene, Result lastResult) {
     return new BridgeRenderSession(scene, lastResult);
   }
 
+  private RenderSessionAccess() {}
 }
