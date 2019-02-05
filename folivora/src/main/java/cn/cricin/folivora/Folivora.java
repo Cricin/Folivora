@@ -22,14 +22,20 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.LevelListDrawable;
 import android.graphics.drawable.RippleDrawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,6 +51,11 @@ public final class Folivora {
   private static final int DRAWABLE_TYPE_SELECTOR = 1;
   private static final int DRAWABLE_TYPE_LAYER = 2;
   private static final int DRAWABLE_TYPE_RIPPLE = 3;
+  private static final int DRAWABLE_TYPE_LEVEL = 4;
+  private static final int DRAWABLE_TYPE_CLIP = 5;
+  private static final int DRAWABLE_TYPE_INSET = 6;
+  private static final int DRAWABLE_TYPE_SCALE = 7;
+  private static final int DRAWABLE_TYPE_ANIMATION = 8;
 
   private static final int SET_AS_BACKGROUND = 0;
   private static final int SET_AS_SRC = 1;
@@ -244,6 +255,149 @@ public final class Folivora {
     }
   }
 
+  private static LevelListDrawable newLevel(Context ctx, AttributeSet attrs) {
+    LevelListDrawable lld = new LevelListDrawable();
+    TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Level);
+    if (a.hasValue(R.styleable.Folivora_Level_levelItem0Drawable)) {
+      lld.addLevel(
+        a.getInt(R.styleable.Folivora_Level_levelItem0MinLevel, 0),
+        a.getInt(R.styleable.Folivora_Level_levelItem0MaxLevel, 0),
+        a.getDrawable(R.styleable.Folivora_Level_levelItem0Drawable)
+      );
+    }
+    if (a.hasValue(R.styleable.Folivora_Level_levelItem1Drawable)) {
+      lld.addLevel(
+        a.getInt(R.styleable.Folivora_Level_levelItem1MinLevel, 0),
+        a.getInt(R.styleable.Folivora_Level_levelItem1MaxLevel, 0),
+        a.getDrawable(R.styleable.Folivora_Level_levelItem1Drawable)
+      );
+    }
+    if (a.hasValue(R.styleable.Folivora_Level_levelItem2Drawable)) {
+      lld.addLevel(
+        a.getInt(R.styleable.Folivora_Level_levelItem2MinLevel, 0),
+        a.getInt(R.styleable.Folivora_Level_levelItem2MaxLevel, 0),
+        a.getDrawable(R.styleable.Folivora_Level_levelItem2Drawable)
+      );
+    }
+    if (a.hasValue(R.styleable.Folivora_Level_levelItem3Drawable)) {
+      lld.addLevel(
+        a.getInt(R.styleable.Folivora_Level_levelItem3MinLevel, 0),
+        a.getInt(R.styleable.Folivora_Level_levelItem3MaxLevel, 0),
+        a.getDrawable(R.styleable.Folivora_Level_levelItem3Drawable)
+      );
+    }
+    if (a.hasValue(R.styleable.Folivora_Level_levelItem4Drawable)) {
+      lld.addLevel(
+        a.getInt(R.styleable.Folivora_Level_levelItem4MinLevel, 0),
+        a.getInt(R.styleable.Folivora_Level_levelItem4MaxLevel, 0),
+        a.getDrawable(R.styleable.Folivora_Level_levelItem4Drawable)
+      );
+    }
+    a.recycle();
+    return lld;
+  }
+
+
+  private static ClipDrawable newClip(Context ctx, AttributeSet attrs) {
+    TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Clip);
+    final Drawable child = a.getDrawable(R.styleable.Folivora_Clip_clipDrawable);
+    final int clipGravity = a.getInt(R.styleable.Folivora_Clip_clipGravity, Gravity.LEFT);
+    final int clipOrientation = a.getInt(R.styleable.Folivora_Clip_clipOrientation, ClipDrawable.HORIZONTAL);
+
+    ClipDrawable cd = new ClipDrawable(child, clipGravity, clipOrientation);
+    cd.setLevel(a.getInt(R.styleable.Folivora_Clip_clipLevel, 10000/*no clip*/));
+    a.recycle();
+    return cd;
+  }
+
+  private static InsetDrawable newInset(Context ctx, AttributeSet attrs) {
+    TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Inset);
+    int insetAll = a.getDimensionPixelSize(R.styleable.Folivora_Inset_insetAll, 0);
+    int[] ints = {
+      R.styleable.Folivora_Inset_insetLeft,
+      R.styleable.Folivora_Inset_insetTop,
+      R.styleable.Folivora_Inset_insetRight,
+      R.styleable.Folivora_Inset_insetBottom
+    };
+    for (int i = 0; i < ints.length; i++) {
+      ints[i] = a.getDimensionPixelSize(ints[i], insetAll);
+    }
+    final Drawable child = a.getDrawable(R.styleable.Folivora_Inset_insetDrawable);
+    a.recycle();
+    return new InsetDrawable(child, ints[0], ints[1], ints[2], ints[3]);
+  }
+
+  private static ScaleDrawable newScale(Context ctx, AttributeSet attrs) {
+    TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Scale);
+    try {
+      return new ScaleDrawable(a.getDrawable(R.styleable.Folivora_Scale_scaleDrawable),
+        a.getInt(R.styleable.Folivora_Scale_scaleGravity, Gravity.LEFT),
+        a.getFloat(R.styleable.Folivora_Scale_scaleWidth, 1.0F),
+        a.getFloat(R.styleable.Folivora_Scale_scaleHeight, 1.0F)
+      );
+    } finally {
+      a.recycle();
+    }
+  }
+
+  @SuppressWarnings("ConstantConditions")
+  private static AnimationDrawable newAnimation(Context ctx, AttributeSet attrs) {
+    AnimationDrawable ad = new AnimationDrawable();
+    TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Animation);
+    final boolean autoPlay = a.getBoolean(R.styleable.Folivora_Animation_animAutoPlay, false);
+    final int frameDuration = a.getInt(R.styleable.Folivora_Animation_animDuration, -1);
+    ad.setOneShot(a.getBoolean(R.styleable.Folivora_Animation_animOneShot, false));
+
+    if (a.hasValue(R.styleable.Folivora_Animation_animFrame0)) {
+      ad.addFrame(a.getDrawable(R.styleable.Folivora_Animation_animFrame0),
+        a.getInt(R.styleable.Folivora_Animation_animDuration0, frameDuration));
+    }
+    if (a.hasValue(R.styleable.Folivora_Animation_animFrame1)) {
+      ad.addFrame(a.getDrawable(R.styleable.Folivora_Animation_animFrame1),
+        a.getInt(R.styleable.Folivora_Animation_animDuration1, frameDuration));
+    }
+    if (a.hasValue(R.styleable.Folivora_Animation_animFrame2)) {
+      ad.addFrame(a.getDrawable(R.styleable.Folivora_Animation_animFrame2),
+        a.getInt(R.styleable.Folivora_Animation_animDuration2, frameDuration));
+    }
+    if (a.hasValue(R.styleable.Folivora_Animation_animFrame3)) {
+      ad.addFrame(a.getDrawable(R.styleable.Folivora_Animation_animFrame3),
+        a.getInt(R.styleable.Folivora_Animation_animDuration3, frameDuration));
+    }
+    if (a.hasValue(R.styleable.Folivora_Animation_animFrame4)) {
+      ad.addFrame(a.getDrawable(R.styleable.Folivora_Animation_animFrame4),
+        a.getInt(R.styleable.Folivora_Animation_animDuration4, frameDuration));
+    }
+    if (a.hasValue(R.styleable.Folivora_Animation_animFrame5)) {
+      ad.addFrame(a.getDrawable(R.styleable.Folivora_Animation_animFrame5),
+        a.getInt(R.styleable.Folivora_Animation_animDuration5, frameDuration));
+    }
+    if (a.hasValue(R.styleable.Folivora_Animation_animFrame6)) {
+      ad.addFrame(a.getDrawable(R.styleable.Folivora_Animation_animFrame6),
+        a.getInt(R.styleable.Folivora_Animation_animDuration6, frameDuration));
+    }
+    if (a.hasValue(R.styleable.Folivora_Animation_animFrame7)) {
+      ad.addFrame(a.getDrawable(R.styleable.Folivora_Animation_animFrame7),
+        a.getInt(R.styleable.Folivora_Animation_animDuration7, frameDuration));
+    }
+    if (a.hasValue(R.styleable.Folivora_Animation_animFrame8)) {
+      ad.addFrame(a.getDrawable(R.styleable.Folivora_Animation_animFrame8),
+        a.getInt(R.styleable.Folivora_Animation_animDuration8, frameDuration));
+    }
+    if (a.hasValue(R.styleable.Folivora_Animation_animFrame9)) {
+      ad.addFrame(a.getDrawable(R.styleable.Folivora_Animation_animFrame9),
+        a.getInt(R.styleable.Folivora_Animation_animDuration9, frameDuration));
+    }
+    a.recycle();
+    if (autoPlay) {
+      if (ad.isOneShot()) {
+        Log.i("Folivora", "Auto play mode turned on in oneshot");
+      }
+      ad.start();
+    }
+    return ad;
+  }
+
   private static Drawable newDrawable(int drawableType, Context ctx, AttributeSet attrs) {
     Drawable result = null;
     switch (drawableType) {
@@ -258,6 +412,21 @@ public final class Folivora {
         break;
       case DRAWABLE_TYPE_RIPPLE:
         result = newRipple(ctx, attrs);
+        break;
+      case DRAWABLE_TYPE_LEVEL:
+        result = newLevel(ctx, attrs);
+        break;
+      case DRAWABLE_TYPE_CLIP:
+        result = newClip(ctx, attrs);
+        break;
+      case DRAWABLE_TYPE_INSET:
+        result = newInset(ctx, attrs);
+        break;
+      case DRAWABLE_TYPE_SCALE:
+        result = newScale(ctx, attrs);
+        break;
+      case DRAWABLE_TYPE_ANIMATION:
+        result = newAnimation(ctx, attrs);
         break;
       default:
         Log.w(TAG, "Unexpected drawableType: " + drawableType);
@@ -311,6 +480,21 @@ public final class Folivora {
         break;
       case DRAWABLE_TYPE_RIPPLE:
         result = "ripple";
+        break;
+      case DRAWABLE_TYPE_LEVEL:
+        result = "level-list";
+        break;
+      case DRAWABLE_TYPE_CLIP:
+        result = "clip";
+        break;
+      case DRAWABLE_TYPE_INSET:
+        result = "inset";
+        break;
+      case DRAWABLE_TYPE_SCALE:
+        result = "scale";
+        break;
+      case DRAWABLE_TYPE_ANIMATION:
+        result = "animation";
         break;
       default:
         result = "unknown";

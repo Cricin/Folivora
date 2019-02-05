@@ -41,7 +41,7 @@ final class FolivoraViewFactory implements LayoutInflater.Factory2 {
     if (mFactory2 != null) {
       result = mFactory2.onCreateView(parent, name, context, attrs);
     }
-    if (mFactory != null) {
+    if (mFactory != null && result == null) {
       result = mFactory.onCreateView(name, context, attrs);
     }
     if(name.endsWith("ViewStub")) return null;

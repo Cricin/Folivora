@@ -143,7 +143,167 @@
       <enum name="selector" value="1"/>
       <enum name="layer_list" value="2"/>
       <enum name="ripple" value="3"/>
+      <enum name="level_list" value="4"/>
+      <enum name="clip" value="5"/>
+      <enum name="inset" value="6"/>
+      <enum name="scale" value="7"/>
+      <enum name="animation" value="8"/>
     </attr>
   </declare-styleable>
+
+  <!--clip-->
+  <declare-styleable name="Folivora_Clip">
+    <attr name="clipOrientation" format="enum">
+      <enum name="horizontal" value="1"/>
+      <enum name="vertical" value="2"/>
+    </attr>
+    <attr name="clipDrawable" format="reference|color"/>
+    <attr name="clipLevel" format="integer"/>
+    <attr name="clipGravity" format="enum">
+      <!-- Push object to the top of its container, not changing its size. -->
+      <flag name="top" value="0x30" />
+      <!-- Push object to the bottom of its container, not changing its size. -->
+      <flag name="bottom" value="0x50" />
+      <!-- Push object to the left of its container, not changing its size. -->
+      <flag name="left" value="0x03" />
+      <!-- Push object to the right of its container, not changing its size. -->
+      <flag name="right" value="0x05" />
+      <!-- Place object in the vertical center of its container, not changing its size. -->
+      <flag name="center_vertical" value="0x10" />
+      <!-- Grow the vertical size of the object if needed so it completely fills its container. -->
+      <flag name="fill_vertical" value="0x70" />
+      <!-- Place object in the horizontal center of its container, not changing its size. -->
+      <flag name="center_horizontal" value="0x01" />
+      <!-- Grow the horizontal size of the object if needed so it completely fills its container. -->
+      <flag name="fill_horizontal" value="0x07" />
+      <!-- Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. -->
+      <flag name="center" value="0x11" />
+      <!-- Grow the horizontal and vertical size of the object if needed so it completely fills its container. -->
+      <flag name="fill" value="0x77" />
+      <!-- Additional option that can be set to have the top and/or bottom edges of
+           the child clipped to its container's bounds.
+           The clip will be based on the vertical gravity: a top gravity will clip the bottom
+           edge, a bottom gravity will clip the top edge, and neither will clip both edges. -->
+      <flag name="clip_vertical" value="0x80" />
+      <!-- Additional option that can be set to have the left and/or right edges of
+           the child clipped to its container's bounds.
+           The clip will be based on the horizontal gravity: a left gravity will clip the right
+           edge, a right gravity will clip the left edge, and neither will clip both edges. -->
+      <flag name="clip_horizontal" value="0x08" />
+      <!-- Push object to the beginning of its container, not changing its size. -->
+      <flag name="start" value="0x00800003" />
+      <!-- Push object to the end of its container, not changing its size. -->
+      <flag name="end" value="0x00800005" />
+    </attr>
+  </declare-styleable>
+  <!--clip结束-->
+
+  <!--inset-->
+  <declare-styleable name="Folivora_Inset">
+    <attr name="insetDrawable" format="reference|color"/>
+    <attr name="insetAll" format="dimension|fraction"/>
+    <attr name="insetLeft" format="dimension|fraction"/>
+    <attr name="insetTop" format="dimension|fraction"/>
+    <attr name="insetRight" format="dimension|fraction"/>
+    <attr name="insetBottom" format="dimension|fraction"/>
+  </declare-styleable>
+  <!--inset结束-->
+
+  <!--scale-->
+  <declare-styleable name="Folivora_Scale">
+    <attr name="scaleDrawable" format="reference|color"/>
+    <attr name="scaleGravity" format="flags">
+
+      <!-- Push object to the top of its container, not changing its size. -->
+      <flag name="top" value="0x30" />
+      <!-- Push object to the bottom of its container, not changing its size. -->
+      <flag name="bottom" value="0x50" />
+      <!-- Push object to the left of its container, not changing its size. -->
+      <flag name="left" value="0x03" />
+      <!-- Push object to the right of its container, not changing its size. -->
+      <flag name="right" value="0x05" />
+      <!-- Place object in the vertical center of its container, not changing its size. -->
+      <flag name="center_vertical" value="0x10" />
+      <!-- Grow the vertical size of the object if needed so it completely fills its container. -->
+      <flag name="fill_vertical" value="0x70" />
+      <!-- Place object in the horizontal center of its container, not changing its size. -->
+      <flag name="center_horizontal" value="0x01" />
+      <!-- Grow the horizontal size of the object if needed so it completely fills its container. -->
+      <flag name="fill_horizontal" value="0x07" />
+      <!-- Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. -->
+      <flag name="center" value="0x11" />
+      <!-- Grow the horizontal and vertical size of the object if needed so it completely fills its container. -->
+      <flag name="fill" value="0x77" />
+      <!-- Additional option that can be set to have the top and/or bottom edges of
+           the child clipped to its container's bounds.
+           The clip will be based on the vertical gravity: a top gravity will clip the bottom
+           edge, a bottom gravity will clip the top edge, and neither will clip both edges. -->
+      <flag name="clip_vertical" value="0x80" />
+      <!-- Additional option that can be set to have the left and/or right edges of
+           the child clipped to its container's bounds.
+           The clip will be based on the horizontal gravity: a left gravity will clip the right
+           edge, a right gravity will clip the left edge, and neither will clip both edges. -->
+      <flag name="clip_horizontal" value="0x08" />
+      <!-- Push object to the beginning of its container, not changing its size. -->
+      <flag name="start" value="0x00800003" />
+      <!-- Push object to the end of its container, not changing its size. -->
+      <flag name="end" value="0x00800005" />
+
+    </attr>
+    <attr name="scaleWidth" format="float"/>
+    <attr name="scaleHeight" format="float"/>
+  </declare-styleable>
+  <!--scale结束-->
+
+  <!--animation-->
+  <declare-styleable name="Folivora_Animation">
+    <attr name="animAutoPlay" format="boolean"/>
+    <attr name="animOneShot" format="boolean"/>
+    <attr name="animVairablePadding" format="dimension"/>
+    <attr name="animFrame0" format="reference|color"/>
+    <attr name="animFrame1" format="reference|color"/>
+    <attr name="animFrame2" format="reference|color"/>
+    <attr name="animFrame3" format="reference|color"/>
+    <attr name="animFrame4" format="reference|color"/>
+    <attr name="animFrame5" format="reference|color"/>
+    <attr name="animFrame6" format="reference|color"/>
+    <attr name="animFrame7" format="reference|color"/>
+    <attr name="animFrame8" format="reference|color"/>
+    <attr name="animFrame9" format="reference|color"/>
+
+    <attr name="animDuration" format="integer"/>
+    <attr name="animDuration0" format="integer"/>
+    <attr name="animDuration1" format="integer"/>
+    <attr name="animDuration2" format="integer"/>
+    <attr name="animDuration3" format="integer"/>
+    <attr name="animDuration4" format="integer"/>
+    <attr name="animDuration5" format="integer"/>
+    <attr name="animDuration6" format="integer"/>
+    <attr name="animDuration7" format="integer"/>
+    <attr name="animDuration8" format="integer"/>
+    <attr name="animDuration9" format="integer"/>
+
+  </declare-styleable>
+
+  <!--level-->
+  <declare-styleable name="Folivora_Level">
+    <attr name="levelItem0Drawable" format="reference|color"/>
+    <attr name="levelItem0MinLevel" format="integer"/>
+    <attr name="levelItem0MaxLevel" format="integer"/>
+    <attr name="levelItem1Drawable" format="reference|color"/>
+    <attr name="levelItem1MinLevel" format="integer"/>
+    <attr name="levelItem1MaxLevel" format="integer"/>
+    <attr name="levelItem2Drawable" format="reference|color"/>
+    <attr name="levelItem2MinLevel" format="integer"/>
+    <attr name="levelItem2MaxLevel" format="integer"/>
+    <attr name="levelItem3Drawable" format="reference|color"/>
+    <attr name="levelItem3MinLevel" format="integer"/>
+    <attr name="levelItem3MaxLevel" format="integer"/>
+    <attr name="levelItem4Drawable" format="reference|color"/>
+    <attr name="levelItem4MinLevel" format="integer"/>
+    <attr name="levelItem4MaxLevel" format="integer"/>
+  </declare-styleable>
+  <!--level结束-->
+
 
 </resources>
