@@ -391,7 +391,7 @@ public final class Folivora {
     a.recycle();
     if (autoPlay) {
       if (ad.isOneShot()) {
-        Log.i("Folivora", "Auto play mode turned on in oneshot");
+        Log.i(TAG, "Auto play mode turned on in oneshot");
       }
       ad.start();
     }

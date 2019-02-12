@@ -159,7 +159,7 @@
     </attr>
     <attr name="clipDrawable" format="reference|color"/>
     <attr name="clipLevel" format="integer"/>
-    <attr name="clipGravity" format="enum">
+    <attr name="clipGravity" format="flags">
       <!-- Push object to the top of its container, not changing its size. -->
       <flag name="top" value="0x30" />
       <!-- Push object to the bottom of its container, not changing its size. -->
