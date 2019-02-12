@@ -18,9 +18,6 @@ package cn.cricin.folivora.uipreview;
 
 import com.intellij.openapi.diagnostic.Logger;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 @SuppressWarnings({"WeakerAccess", "unused"})
 public final class DebugLog {
   private static final Logger LOG = Logger.getInstance(DebugLog.class);
@@ -38,13 +35,13 @@ public final class DebugLog {
     }
   }
 
-  public static void warn(@NotNull String message) {
+  public static void warn(String message) {
     if (ENABLED) {
       LOG.warn(message);
     }
   }
 
-  public static void warn(String message, @Nullable Throwable err) {
+  public static void warn(String message, Throwable err) {
     if (ENABLED) {
       LOG.warn(message, err);
     }
@@ -56,7 +53,7 @@ public final class DebugLog {
     }
   }
 
-  public static void error(String message, @Nullable Throwable err) {
+  public static void error(String message, Throwable err) {
     if (ENABLED) {
       LOG.error(message, err);
     }
