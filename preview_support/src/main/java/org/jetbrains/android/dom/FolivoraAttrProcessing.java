@@ -36,9 +36,11 @@ import org.jetbrains.android.dom.layout.DataBindingElement;
 import org.jetbrains.android.dom.layout.LayoutElement;
 import org.jetbrains.android.dom.manifest.Manifest;
 import org.jetbrains.android.facet.AndroidFacet;
+import org.jetbrains.android.facet.AndroidFacetConfiguration;
 import org.jetbrains.android.resourceManagers.ModuleResourceManagers;
 import org.jetbrains.android.resourceManagers.ResourceManager;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 
 final class FolivoraAttrProcessing {
@@ -120,7 +122,7 @@ final class FolivoraAttrProcessing {
   private static String getNamespaceUriByResourcePackage(/*NotNull*/ AndroidFacet facet,
     /*Nullable*/ String resPackage) {
     if (resPackage == null) {
-      if (!facet.isAppProject() || facet.requiresAndroidModel()) {
+      if (!isAppProject(facet) || facet.requiresAndroidModel()) {
         return SdkConstants.AUTO_URI;
       }
       Manifest manifest = facet.getManifest();
@@ -134,6 +136,28 @@ final class FolivoraAttrProcessing {
       return SdkConstants.ANDROID_URI;
     }
     return null;
+  }
+
+  private static Method sIsAppProjectMethod;
+
+  private static boolean isAppProject(AndroidFacet facet) {
+    if (sIsAppProjectMethod != null) {
+      try {
+        return (boolean) sIsAppProjectMethod.invoke(facet.getConfiguration(), (Object[]) null);
+      } catch (Exception ignore) {
+      }
+    }
+    try {
+      return facet.isAppProject();
+    } catch (NoSuchMethodError nsme) {
+      AndroidFacetConfiguration conf = facet.getConfiguration();
+      try {
+        sIsAppProjectMethod = conf.getClass().getDeclaredMethod("isAppProject", (Class<?>[]) null);
+        return (boolean) sIsAppProjectMethod.invoke(conf, (Object[]) null);
+      } catch (Exception ignore) {
+      }
+    }
+    return false;
   }
 
   private static void registerStyleableAttributes(

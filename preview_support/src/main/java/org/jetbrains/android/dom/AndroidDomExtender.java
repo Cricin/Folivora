@@ -33,23 +33,50 @@ import java.util.Set;
  */
 public class AndroidDomExtender extends DomExtender<AndroidDomElement> {
 
+  private static Class legacyAttributeFormatClass;
+  private static Class attributeFormatClass;
+
+  static {
+    try {
+      legacyAttributeFormatClass = Class.forName("org.jetbrains.android.dom.attrs.AttributeFormat");
+    } catch (ClassNotFoundException ignore) {
+    }
+    try {
+      attributeFormatClass = Class.forName("com.android.ide.common.rendering.api.AttributeFormat");
+    } catch (ClassNotFoundException ignore) {
+    }
+  }
+
+
   @Override
   public boolean supportsStubs() {
     return false;
   }
 
-  private static Class getValueClass(AttributeFormat format) {
+  private static Class getValueClass(Object format) {
     if (format == null) return String.class;
-    switch (format) {
-      case Boolean:
+    if (legacyAttributeFormatClass != null && legacyAttributeFormatClass.isInstance(format)) {
+      if (AttributeFormat.Boolean == format) {
         return boolean.class;
-      case Reference:
-      case Dimension:
-      case Color:
+      } else if (AttributeFormat.Reference == format
+        || AttributeFormat.Dimension == format
+        || AttributeFormat.Color == format) {
         return ResourceValue.class;
-      default:
+      } else {
         return String.class;
+      }
+    } else if (attributeFormatClass != null && attributeFormatClass.isInstance(format)) {
+      if (com.android.ide.common.rendering.api.AttributeFormat.BOOLEAN == format) {
+        return boolean.class;
+      } else if (com.android.ide.common.rendering.api.AttributeFormat.REFERENCE == format
+        || com.android.ide.common.rendering.api.AttributeFormat.DIMENSION == format
+        || com.android.ide.common.rendering.api.AttributeFormat.COLOR == format) {
+        return ResourceValue.class;
+      } else {
+        return String.class;
+      }
     }
+    return String.class;
   }
 
   @Override
@@ -62,7 +89,7 @@ public class AndroidDomExtender extends DomExtender<AndroidDomElement> {
     }
 
     AttributeProcessingUtil.AttributeProcessor callback = (xmlName, attrDef, parentStyleableName) -> {
-      Set<AttributeFormat> formats = attrDef.getFormats();
+      Set<?> formats = attrDef.getFormats();
       Class valueClass = formats.size() == 1 ? getValueClass(formats.iterator().next()) : String.class;
       registrar.registerAttributeChildExtension(xmlName, GenericAttributeValue.class);
       return registrar.registerGenericAttributeValueChildExtension(xmlName, valueClass);

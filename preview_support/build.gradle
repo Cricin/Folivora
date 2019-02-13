@@ -1,11 +1,10 @@
 apply plugin: 'java'
 
-ext.compileWithStub = false
-
 def ideInstallationDir = new File('/Applications/Android Studio 3.1 Preview.app/Contents/')
 
 dependencies {
-  compileOnly 'com.android.tools:common:26.3.0'
+  compileOnly 'com.android.tools:common:26.3.1'
+  compileOnly 'com.android.tools.layoutlib:layoutlib-api:26.3.1'
   if (ideInstallationDir.exists() && ideInstallationDir.isDirectory()) {
     ['plugins/android/lib/layoutlib-loader.jar',
      'plugins/android/lib/layoutlib.jar',
