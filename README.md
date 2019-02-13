@@ -217,7 +217,7 @@ app:rippleContent|reference &#124; color|ripple的内容背景
 
 为了解决这个问题，Folivora提供了支持工具，按下面的方式使用：
 
-1. 下载jar包 [点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/preview_support/release/folivora_preview_support.jar)。
+1. 下载jar包 [点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/preview_support/release/folivora-preview-support.jar)。
 2. 拷贝下载的文件到Android Studio安装目录下的plugins/android/lib/下
 3. 重启IDE，如果你的项目依赖中有Folivora，打开layout文件即可实时预览
 

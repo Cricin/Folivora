@@ -21,7 +21,7 @@ import com.intellij.openapi.diagnostic.Logger;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public final class DebugLog {
   private static final Logger LOG = Logger.getInstance(DebugLog.class);
-  private static final boolean ENABLED = true;
+  private static final boolean ENABLED = false;
 
   public static void debug(String message) {
     if (ENABLED) {

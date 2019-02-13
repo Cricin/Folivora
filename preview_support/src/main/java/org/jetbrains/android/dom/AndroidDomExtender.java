@@ -69,7 +69,9 @@ public class AndroidDomExtender extends DomExtender<AndroidDomElement> {
     };
 
     AttributeProcessingUtil.processAttributes(element, facet, true, callback);
-    FolivoraAttrProcessing.registerFolivoraAttributes(facet, element, callback);
+    try {
+      FolivoraAttrProcessing.registerFolivoraAttributes(facet, element, callback);
+    } catch (Exception ignore) {}
 
     SubtagsProcessingUtil.processSubtags(facet, element,
       registrar::registerCollectionChildrenExtension);

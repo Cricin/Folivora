@@ -16,6 +16,9 @@
 
 package org.jetbrains.android.dom;
 
+import com.android.SdkConstants;
+import com.intellij.psi.xml.XmlAttribute;
+import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.xml.Converter;
 import com.intellij.util.xml.DomElement;
 import com.intellij.util.xml.XmlName;
@@ -29,6 +32,7 @@ import org.jetbrains.android.dom.attrs.ToolsAttributeUtil;
 import org.jetbrains.android.dom.converters.CompositeConverter;
 import org.jetbrains.android.dom.converters.ManifestPlaceholderConverter;
 import org.jetbrains.android.dom.converters.ResourceReferenceConverter;
+import org.jetbrains.android.dom.layout.DataBindingElement;
 import org.jetbrains.android.dom.layout.LayoutElement;
 import org.jetbrains.android.dom.manifest.Manifest;
 import org.jetbrains.android.facet.AndroidFacet;
@@ -55,11 +59,34 @@ final class FolivoraAttrProcessing {
                                          AndroidDomElement element,
                                          AttributeProcessingUtil.AttributeProcessor callback) {
     if (!(element instanceof LayoutElement)) return;
-    for (String styleableName : FOLIVORA_STYLEABLE_NAMES) {
-      registerAttributes(facet, element, styleableName, null, callback);
+    if (element instanceof DataBindingElement) return;
+    XmlTag tag = element.getXmlTag();
+    if (isInvalidTagName(tag.getName())) return;
+    if (hasFolivoraAttr(tag.getAttributes())) {
+      for (String styleableName : FOLIVORA_STYLEABLE_NAMES) {
+        registerAttributes(facet, element, styleableName, null, callback);
+      }
+    } else {
+      registerAttributes(facet, element, "Folivora", null, callback);
     }
   }
 
+  private static boolean hasFolivoraAttr(XmlAttribute[] attrs){
+    for (XmlAttribute attr : attrs) {
+      if ("drawableType".equals(attr.getLocalName()) || "setAs".equals(attr.getLocalName())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static boolean isInvalidTagName(String tagName) {
+    return "layout".equals(tagName)
+      || "fragment".equals(tagName)
+      || "include".equals(tagName)
+      || "requestFocus".equals(tagName)
+      || "merge".equals(tagName);
+  }
 
   private static void registerAttributes(/*NotNull*/ AndroidFacet facet,
     /*NotNull*/ DomElement element,
@@ -94,17 +121,17 @@ final class FolivoraAttrProcessing {
     /*Nullable*/ String resPackage) {
     if (resPackage == null) {
       if (!facet.isAppProject() || facet.requiresAndroidModel()) {
-        return "http://schemas.android.com/apk/res-auto"; //TODO
+        return SdkConstants.AUTO_URI;
       }
       Manifest manifest = facet.getManifest();
       if (manifest != null) {
         String aPackage = manifest.getPackage().getValue();
         if (aPackage != null && !aPackage.isEmpty()) {
-          return "http://schemas.android.com/apk/res/" + aPackage;//TODO
+          return SdkConstants.URI_PREFIX + aPackage;
         }
       }
-    } else if (resPackage.equals("android")) {//TODO
-      return "http://schemas.android.com/apk/res/android"; //TODO
+    } else if (resPackage.equals(SdkConstants.ANDROID_NS_NAME)) {
+      return SdkConstants.ANDROID_URI;
     }
     return null;
   }
@@ -115,8 +142,6 @@ final class FolivoraAttrProcessing {
     /*Nullable*/ String namespaceUri,
     /*NotNull*/ AttributeProcessingUtil.AttributeProcessor callback) {
     for (AttributeDefinition attrDef : styleable.getAttributes()) {
-      String attrName = attrDef.getName();
-      XmlName xmlName = new XmlName(attrName, namespaceUri);
       registerAttribute(attrDef, styleable.getName(), namespaceUri, element, callback);
     }
   }
@@ -128,10 +153,9 @@ final class FolivoraAttrProcessing {
     DomElement element,
     AttributeProcessingUtil.AttributeProcessor callback) {
     String name = attrDef.getName();
-    if (!"http://schemas.android.com/apk/res/android".equals(namespaceKey) && name.startsWith
-      ("android:")) {
-      name = name.substring("android:".length());
-      namespaceKey = "http://schemas.android.com/apk/res/android";
+    if (!SdkConstants.ANDROID_URI.equals(namespaceKey) && name.startsWith(SdkConstants.ANDROID_NS_NAME_PREFIX)) {
+      name = name.substring(SdkConstants.ANDROID_NS_NAME_PREFIX.length());
+      namespaceKey = SdkConstants.ANDROID_URI;
     }
 
     XmlName xmlName = new XmlName(name, namespaceKey);
@@ -139,7 +163,7 @@ final class FolivoraAttrProcessing {
     if (extension != null) {
       Converter converter = AndroidDomUtil.getSpecificConverter(xmlName, element);
       if (converter == null) {
-        if ("http://schemas.android.com/tools".equals(namespaceKey)) {
+        if (SdkConstants.TOOLS_URI.equals(namespaceKey)) {
           converter = ToolsAttributeUtil.getConverter(attrDef);
         } else {
           converter = AndroidDomUtil.getConverter(attrDef);
@@ -156,8 +180,8 @@ final class FolivoraAttrProcessing {
   }
 
   private static boolean mustBeSoft(Converter converter, Collection<AttributeFormat> formats) {
-    if (!(converter instanceof CompositeConverter) && !(converter instanceof
-      ResourceReferenceConverter)) {
+    if (!(converter instanceof CompositeConverter)
+      && !(converter instanceof ResourceReferenceConverter)) {
       return formats.size() > 1;
     } else {
       return false;
