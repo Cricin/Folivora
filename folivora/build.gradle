@@ -1,12 +1,14 @@
 apply plugin: 'com.android.library'
 
+def verName = '0.0.1'
+
 android {
   compileSdkVersion 27
   defaultConfig {
     minSdkVersion 16
     targetSdkVersion 27
     versionCode 1
-    versionName "1.0"
+    versionName verName
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
   buildTypes {
@@ -16,3 +18,10 @@ android {
     }
   }
 }
+
+ext {
+  PUBLISH_GROUP_ID = 'cn.cricin'
+  PUBLISH_ARTIFACT_ID = 'folivora'
+  PUBLISH_VERSION = verName
+}
+apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
