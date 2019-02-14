@@ -368,6 +368,7 @@ public final class Folivora {
    * Create a new LevelListDrawable, currently we only support 5 children drawables.
    * attrs:
    * <p>
+   * app:levelCurrentLevel        int
    * app:levelItem0Drawable       drawable
    * app:levelItem0MinLevel       int
    * app:levelItem0MaxLevel       int
@@ -422,6 +423,7 @@ public final class Folivora {
         a.getDrawable(R.styleable.Folivora_Level_levelItem4Drawable)
       );
     }
+    lld.setLevel(a.getInt(R.styleable.Folivora_Level_levelCurrentLevel, 0));
     a.recycle();
     return lld;
   }
@@ -438,7 +440,7 @@ public final class Folivora {
   private static ClipDrawable newClip(Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Clip);
     final Drawable child = a.getDrawable(R.styleable.Folivora_Clip_clipDrawable);
-    final int clipGravity = a.getInt(R.styleable.Folivora_Clip_clipGravity, Gravity.LEFT);
+    final int clipGravity = a.getInt(R.styleable.Folivora_Clip_clipGravity, Gravity.START);
     final int clipOrientation = a.getInt(R.styleable.Folivora_Clip_clipOrientation, ClipDrawable.HORIZONTAL);
 
     ClipDrawable cd = new ClipDrawable(child, clipGravity, clipOrientation);
@@ -483,15 +485,18 @@ public final class Folivora {
    * app:scaleGravity             enum
    * app:scaleWidth               float
    * app:scaleHeight              float
+   * app:scaleLevel               int
    */
   private static ScaleDrawable newScale(Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Scale);
     try {
-      return new ScaleDrawable(a.getDrawable(R.styleable.Folivora_Scale_scaleDrawable),
-        a.getInt(R.styleable.Folivora_Scale_scaleGravity, Gravity.LEFT),
-        a.getFloat(R.styleable.Folivora_Scale_scaleWidth, 1.0F),
-        a.getFloat(R.styleable.Folivora_Scale_scaleHeight, 1.0F)
+      ScaleDrawable sd = new ScaleDrawable(a.getDrawable(R.styleable.Folivora_Scale_scaleDrawable),
+        a.getInt(R.styleable.Folivora_Scale_scaleGravity, Gravity.START),
+        a.getFloat(R.styleable.Folivora_Scale_scaleWidth, -1F),
+        a.getFloat(R.styleable.Folivora_Scale_scaleHeight, -1F)
       );
+      sd.setLevel(a.getInt(R.styleable.Folivora_Scale_scaleLevel, 1));
+      return sd;
     } finally {
       a.recycle();
     }

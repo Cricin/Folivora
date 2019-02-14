@@ -211,6 +211,7 @@
 
   <!--scale-->
   <declare-styleable name="Folivora_Scale">
+    <attr name="scaleLevel" format="integer"/>
     <attr name="scaleDrawable" format="reference|color"/>
     <attr name="scaleGravity" format="flags">
 
@@ -287,6 +288,7 @@
 
   <!--level-->
   <declare-styleable name="Folivora_Level">
+    <attr name="levelCurrentLevel" format="integer"/>
     <attr name="levelItem0Drawable" format="reference|color"/>
     <attr name="levelItem0MinLevel" format="integer"/>
     <attr name="levelItem0MaxLevel" format="integer"/>
