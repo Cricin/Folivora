@@ -42,23 +42,25 @@ import org.jetbrains.android.resourceManagers.ResourceManager;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * Process folivora attr's to the current dom element
  */
 final class FolivoraAttrProcessing {
-  private static final String[] FOLIVORA_STYLEABLE_NAMES = {
-    "Folivora",
-    "Folivora_Shape",
-    "Folivora_Selector",
-    "Folivora_Layer",
-    "Folivora_Ripple",
-    "Folivora_Level",
-    "Folivora_Clip",
-    "Folivora_Inset",
-    "Folivora_Scale",
-    "Folivora_Animation"
-  };
+  private static final HashMap<String, String> TYPE_TO_STYLEABLE = new HashMap<>();
+
+  static {
+    TYPE_TO_STYLEABLE.put("shape", "Folivora_Shape");
+    TYPE_TO_STYLEABLE.put("selector", "Folivora_Selector");
+    TYPE_TO_STYLEABLE.put("layer_list", "Folivora_Layer");
+    TYPE_TO_STYLEABLE.put("ripple", "Folivora_Ripple");
+    TYPE_TO_STYLEABLE.put("level_list", "Folivora_Level");
+    TYPE_TO_STYLEABLE.put("clip", "Folivora_Clip");
+    TYPE_TO_STYLEABLE.put("inset", "Folivora_Inset");
+    TYPE_TO_STYLEABLE.put("scale", "Folivora_Scale");
+    TYPE_TO_STYLEABLE.put("animation", "Folivora_Animation");
+  }
 
   static void registerFolivoraAttributes(AndroidFacet facet,
                                          AndroidDomElement element,
@@ -67,22 +69,22 @@ final class FolivoraAttrProcessing {
     if (element instanceof DataBindingElement) return;
     XmlTag tag = element.getXmlTag();
     if (isInvalidTagName(tag.getName())) return;
-    if (hasFolivoraAttr(tag.getAttributes())) {
-      for (String styleableName : FOLIVORA_STYLEABLE_NAMES) {
-        registerAttributes(facet, element, styleableName, null, callback);
-      }
-    } else {
+    String type = getDrawableType(tag.getAttributes());
+    String styleableName = TYPE_TO_STYLEABLE.get(type);
+    if (styleableName == null) {
       registerAttributes(facet, element, "Folivora", null, callback);
+    } else {
+      registerAttributes(facet, element, styleableName, null, callback);
     }
   }
 
-  private static boolean hasFolivoraAttr(XmlAttribute[] attrs){
+  private static String getDrawableType(XmlAttribute[] attrs) {
     for (XmlAttribute attr : attrs) {
-      if ("drawableType".equals(attr.getLocalName()) || "setAs".equals(attr.getLocalName())) {
-        return true;
+      if ("drawableType".equals(attr.getLocalName())) {
+        return attr.getValue();
       }
     }
-    return false;
+    return "";
   }
 
   private static boolean isInvalidTagName(String tagName) {
