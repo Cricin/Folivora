@@ -12,7 +12,7 @@
 添加Gradle依赖，在项目的build.gradle中加入
 ```groovy
   dependencies {
-    implementation 'cn.cricin:folivora:0.0.1'
+    implementation 'cn.cricin:folivora:0.0.2'
   }
 ```
 
