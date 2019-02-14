@@ -24,6 +24,10 @@ import android.view.View;
 
 import java.lang.reflect.Field;
 
+/**
+ * A view factory takes responsibility of view creation, if the view
+ * is created, folivora will create a drawable for it if available.
+ */
 final class FolivoraViewFactory implements LayoutInflater.Factory2 {
   private static final String[] sClassPrefixList = {
     "android.widget.",
@@ -44,7 +48,7 @@ final class FolivoraViewFactory implements LayoutInflater.Factory2 {
     if (mFactory != null && result == null) {
       result = mFactory.onCreateView(name, context, attrs);
     }
-    if(name.endsWith("ViewStub")) return null;
+    if(name.endsWith("ViewStub")) return null;//fix an NPE when creating ViewStub
 
     if (result == null) {
       LayoutInflater inflater = getLayoutInflater(context);
@@ -53,7 +57,7 @@ final class FolivoraViewFactory implements LayoutInflater.Factory2 {
           result = inflater.createView(name, prefix, attrs);
           if (result != null) break;
         } catch (ClassNotFoundException e) {
-          // In this case we want to let the base class take a crack
+          // In this case we want to let the LayoutInflater self take a crack
           // at it.
         }
       }

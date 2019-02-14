@@ -36,6 +36,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * A LayoutLibraryLoader that create a {@link DelegateBridge} DelegateBridge to the LayoutLibrary
+ */
 public class LayoutLibraryLoader {
 
   private static final Logger LOG = Logger.getInstance("#org.jetbrains.android.uipreview.LayoutLibraryLoader");

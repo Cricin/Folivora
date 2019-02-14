@@ -24,6 +24,10 @@ import android.view.ViewGroup;
 
 import org.xmlpull.v1.XmlPullParser;
 
+/**
+ * A LayoutInflater implementation which delegate all inflation
+ * to another LayoutInflater. expect setFactoryXX() methods.
+ */
 final class FolivoraInflater extends LayoutInflater {
   private LayoutInflater mInflater;
 

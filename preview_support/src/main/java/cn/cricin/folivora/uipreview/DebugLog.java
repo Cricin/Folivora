@@ -18,6 +18,10 @@ package cn.cricin.folivora.uipreview;
 
 import com.intellij.openapi.diagnostic.Logger;
 
+/**
+ * A Log for debug purpose, write logs to IDE built-in logging system
+ * if {@link #ENABLED} if false, this class does nothing.
+ */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public final class DebugLog {
   private static final Logger LOG = Logger.getInstance(DebugLog.class);

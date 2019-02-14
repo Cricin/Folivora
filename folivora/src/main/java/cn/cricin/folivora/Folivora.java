@@ -44,6 +44,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Folivora support sets drawable directly in your layout.xml files, no need
+ * to create XXX.xml in drawable directory. just write down attributes we
+ * provided in your layout.xml, folivora will take care of with this attrs
+ * and create suitable drawable's for view.
+ * <p>
+ * Folivora is light weight, you would use {@link #wrap(Context)} wrap()
+ * or {@link #installViewFactory(Context)} installViewFactory() to enable
+ * folivora functions
+ *
+ * @see #wrap(Context)
+ * @see #installViewFactory(Context)
+ * @see #setRippleFallback(RippleFallback)
+ */
 public final class Folivora {
   private static final String TAG = "Folivora";
 
@@ -83,6 +97,36 @@ public final class Folivora {
   private static Appendable sOut;//for ui preview debug purpose
   private static RippleFallback sRippleFallback;
 
+  /**
+   * Create a new GradientDrawable(shape).
+   * attrs:
+   * <p>
+   * app:shapeType                    enum
+   * app:shapeSolidSize               dimension
+   * app:shapeSolidWidth              dimension
+   * app:shapeSolidHeight             dimension
+   * app:shapeSolidColor              color
+   *
+   * app:shapeStrokeWidth             dimension
+   * app:shapeStrokeColor             color
+   * app:shapeStrokeDashGap           dimension
+   * app:shapeStrokeDashWidth         dimension
+   *
+   * app:shapeGradientType            enum
+   * app:shapeGradientRadius          dimension
+   * app:shapeGradientCenterX         dimension
+   * app:shapeGradientCenterY         dimension
+   * app:shapeGradientStartColor      color
+   * app:shapeGradientCenterColor     color
+   * app:shapeGradientEndColor        color
+   * app:shapeGradientAngle           enum
+   *
+   * app:shapeCornerRadius            dimension
+   * app:shapeCornerRadiusTopLeft     dimension
+   * app:shapeCornerRadiusTopRight    dimension
+   * app:shapeCornerRadiusBottomLeft  dimension
+   * app:shapeCornerRadiusBottomRight dimension
+   */
   private static GradientDrawable newShape(Context ctx, AttributeSet attrs) {
     GradientDrawable gd = new GradientDrawable();
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Shape);
@@ -129,6 +173,23 @@ public final class Folivora {
     return gd;
   }
 
+  /**
+   * Create a new StateListDrawable, only support single state match.
+   * attrs:
+   * <p>
+   * app:selectorStateFirst       drawable
+   * app:selectorStateMiddle      drawable
+   * app:selectorStateLast        drawable
+   * app:selectorStateActive      drawable
+   * app:selectorStateActivate    drawable
+   * app:selectorStateAccelerate  drawable
+   * app:selectorStateChecked     drawable
+   * app:selectorStateCheckable   drawable
+   * app:selectorStateEnabled     drawable
+   * app:selectorStateFocused     drawable
+   * app:selectorStatePressed     drawable
+   * app:selectorStateNormal      drawable
+   */
   private static StateListDrawable newSelector(Context ctx, AttributeSet attrs) {
     StateListDrawable d = new StateListDrawable();
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Selector);
@@ -160,6 +221,45 @@ public final class Folivora {
     return d;
   }
 
+  /**
+   * Create a new LayerDrawable, currently we only support 5 children drawables.
+   * attrs:
+   * <p>
+   * app:layerItem0Drawable       drawable
+   * app:layerItem0Insets         dimension
+   * app:layerItem0Left           dimension
+   * app:layerItem0Top            dimension
+   * app:layerItem0Right          dimension
+   * app:layerItem0Bottom         dimension
+   * <p>
+   * app:layerItem1Drawable       drawable
+   * app:layerItem1Insets         dimension
+   * app:layerItem1Left           dimension
+   * app:layerItem1Top            dimension
+   * app:layerItem1Right          dimension
+   * app:layerItem1Bottom         dimension
+   * <p>
+   * app:layerItem2Drawable       drawable
+   * app:layerItem2Insets         dimension
+   * app:layerItem2Left           dimension
+   * app:layerItem2Top            dimension
+   * app:layerItem2Right          dimension
+   * app:layerItem2Bottom         dimension
+   * <p>
+   * app:layerItem3Drawable       drawable
+   * app:layerItem3Insets         dimension
+   * app:layerItem3Left           dimension
+   * app:layerItem3Top            dimension
+   * app:layerItem3Right          dimension
+   * app:layerItem3Bottom         dimension
+   * <p>
+   * app:layerItem4Drawable       drawable
+   * app:layerItem4Insets         dimension
+   * app:layerItem4Left           dimension
+   * app:layerItem4Top            dimension
+   * app:layerItem4Right          dimension
+   * app:layerItem4Bottom         dimension
+   */
   private static Drawable newLayer(Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Layer);
     List<Drawable> childDrawables = new ArrayList<>(5);
@@ -229,6 +329,15 @@ public final class Folivora {
     return d;
   }
 
+  /**
+   * Create a new RippleDrawable, if current platform does not support,
+   * we will try to create a substitute from {@link RippleFallback} rippleFallback.
+   * attrs:
+   * <p>
+   * app:rippleColor              color
+   * app:rippleContent            drawable
+   * app:rippleMask               drawable
+   */
   private static Drawable newRipple(Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Ripple);
     ColorStateList color;
@@ -255,6 +364,26 @@ public final class Folivora {
     }
   }
 
+  /**
+   * Create a new LevelListDrawable, currently we only support 5 children drawables.
+   * attrs:
+   * <p>
+   * app:levelItem0Drawable       drawable
+   * app:levelItem0MinLevel       int
+   * app:levelItem0MaxLevel       int
+   * app:levelItem1Drawable       drawable
+   * app:levelItem1MinLevel       int
+   * app:levelItem1MaxLevel       int
+   * app:levelItem2Drawable       drawable
+   * app:levelItem2MinLevel       int
+   * app:levelItem2MaxLevel       int
+   * app:levelItem3Drawable       drawable
+   * app:levelItem3MinLevel       int
+   * app:levelItem3MaxLevel       int
+   * app:levelItem4Drawable       drawable
+   * app:levelItem4MinLevel       int
+   * app:levelItem4MaxLevel       int
+   */
   private static LevelListDrawable newLevel(Context ctx, AttributeSet attrs) {
     LevelListDrawable lld = new LevelListDrawable();
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Level);
@@ -297,7 +426,15 @@ public final class Folivora {
     return lld;
   }
 
-
+  /**
+   * Create a new ClipDrawable.
+   * attrs:
+   * <p>
+   * app:clipDrawable             drawable
+   * app:clipGravity              enum
+   * app:clipOrientation          enum
+   * app:clipLevel                int(10000 means no clip)
+   */
   private static ClipDrawable newClip(Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Clip);
     final Drawable child = a.getDrawable(R.styleable.Folivora_Clip_clipDrawable);
@@ -310,6 +447,17 @@ public final class Folivora {
     return cd;
   }
 
+  /**
+   * Create a new InsetDrawable, inset by fraction is not support, since it is an new api.
+   * attrs:
+   * <p>
+   * app:insetDrawable            drawable
+   * app:insetAll                 dimension
+   * app:insetLeft                dimension
+   * app:insetTop                 dimension
+   * app:insetRight               dimension
+   * app:insetBottom              dimension
+   */
   private static InsetDrawable newInset(Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Inset);
     int insetAll = a.getDimensionPixelSize(R.styleable.Folivora_Inset_insetAll, 0);
@@ -327,6 +475,15 @@ public final class Folivora {
     return new InsetDrawable(child, ints[0], ints[1], ints[2], ints[3]);
   }
 
+  /**
+   * Create a new ScaleDrawable.
+   * attrs:
+   * <p>
+   * app:scaleDrawable            drawable
+   * app:scaleGravity             enum
+   * app:scaleWidth               float
+   * app:scaleHeight              float
+   */
   private static ScaleDrawable newScale(Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Scale);
     try {
@@ -340,6 +497,35 @@ public final class Folivora {
     }
   }
 
+  /**
+   * Create a new AnimationDrawable, currently we only support 10 frames.
+   * attrs:
+   * <p>
+   * app:animAutoPlay             boolean
+   * app:animDuration             int(millisecond)
+   * app:animOneShot              boolean
+   * <p>
+   * app:animFrame0               drawable
+   * app:animDuration0            int(millisecond)
+   * app:animFrame1               drawable
+   * app:animDuration1            int(millisecond)
+   * app:animFrame2               drawable
+   * app:animDuration2            int(millisecond)
+   * app:animFrame3               drawable
+   * app:animDuration3            int(millisecond)
+   * app:animFrame4               drawable
+   * app:animDuration4            int(millisecond)
+   * app:animFrame5               drawable
+   * app:animDuration5            int(millisecond)
+   * app:animFrame6               drawable
+   * app:animDuration6            int(millisecond)
+   * app:animFrame7               drawable
+   * app:animDuration7            int(millisecond)
+   * app:animFrame8               drawable
+   * app:animDuration8            int(millisecond)
+   * app:animFrame9               drawable
+   * app:animDuration9            int(millisecond)
+   */
   @SuppressWarnings("ConstantConditions")
   private static AnimationDrawable newAnimation(Context ctx, AttributeSet attrs) {
     AnimationDrawable ad = new AnimationDrawable();
@@ -398,6 +584,14 @@ public final class Folivora {
     return ad;
   }
 
+  /**
+   * Create a new drawable by the {@code drawableType} and using the {@code attrs} customize it.
+   *
+   * @param drawableType the type of drawable to create
+   * @param ctx          current context
+   * @param attrs        attributes from view tag
+   * @return a newly created drawable, or null
+   */
   private static Drawable newDrawable(int drawableType, Context ctx, AttributeSet attrs) {
     Drawable result = null;
     switch (drawableType) {
@@ -519,6 +713,14 @@ public final class Folivora {
     return result;
   }
 
+  /**
+   * Install Folivora's ViewFactory to current context. note that if
+   * you are using AppCompatActivity, this method should called after
+   * your activity's super.onCreate() method, since AppCompatDelegate
+   * will install a AppCompatViewFactory to this context.
+   *
+   * @param ctx context to enable folivora support
+   */
   public static void installViewFactory(Context ctx) {
     LayoutInflater inflater = LayoutInflater.from(ctx);
     LayoutInflater.Factory2 factory2 = inflater.getFactory2();
@@ -532,6 +734,14 @@ public final class Folivora {
     }
   }
 
+  /**
+   * Wraps the given context, replace the {@link LayoutInflater} inflater
+   * to folivora's implementation, this method does nothing if the given
+   * context is already been wrapped.
+   *
+   * @param newBase new base context
+   * @return a wrapped context
+   */
   public static Context wrap(final Context newBase) {
     final LayoutInflater inflater = LayoutInflater.from(newBase);
     if (inflater instanceof FolivoraInflater) return newBase;
@@ -551,6 +761,12 @@ public final class Folivora {
     };
   }
 
+  /**
+   * Set a fallback to create substitute drawable when the {@link RippleDrawable}
+   * RippleDrawable is not available in current device.
+   *
+   * @param fallback a fallback to create drawable
+   */
   public static void setRippleFallback(RippleFallback fallback) {
     sRippleFallback = fallback;
   }

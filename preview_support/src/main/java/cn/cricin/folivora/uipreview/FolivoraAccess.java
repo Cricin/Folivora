@@ -25,6 +25,12 @@ import com.android.ide.common.rendering.api.SessionParams;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+/**
+ * This class is an mediator between layoutlib inside IDE and
+ * Folivora inside current project's dependencies, this method
+ * will try to find Folivora class and try to invoke it's
+ * applyDrawableToView() method.
+ */
 final class FolivoraAccess {
   private static Method sMethod;
 

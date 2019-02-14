@@ -43,6 +43,9 @@ import org.jetbrains.android.resourceManagers.ResourceManager;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
+/**
+ * Process folivora attr's to the current dom element
+ */
 final class FolivoraAttrProcessing {
   private static final String[] FOLIVORA_STYLEABLE_NAMES = {
     "Folivora",

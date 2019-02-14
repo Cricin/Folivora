@@ -28,6 +28,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * A view factory takes responsibility of view creation, if the view
+ * is created, folivora will create a drawable for it if available.
+ */
 public final class ViewFactory implements LayoutInflater.Factory2 {
   private static final String[] sClassPrefixList = {
     "android.widget.",

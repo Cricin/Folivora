@@ -36,6 +36,12 @@ import java.util.Map;
 import static com.android.layoutlib.bridge.Bridge.cleanupThread;
 import static com.android.layoutlib.bridge.Bridge.prepareThread;
 
+/**
+ * This bridge delegate all methods to the system bridge instance,
+ * expect {@link #createSession(SessionParams)}, we will hook the
+ * view inflation in this method, if any error occurred, then delegate
+ * invocation to the system bridge's createSession().
+ */
 public final class DelegateBridge extends Bridge {
   private Bridge mBridge;
 
