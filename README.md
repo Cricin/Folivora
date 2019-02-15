@@ -1,9 +1,6 @@
 ### Folivora
 
-* 还在只为给一个view添加一个圆角背景而创建一个drawable/round_rect.xml而纠结？
-* drawable目录下的文件越来越多？好多文件都只是被引用了一次？
-
-现在可以使用Folivora，在layout文件中直接定义drawable。
+在你的layout文件中直接定义drawable。
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview.gif"></img>
 
@@ -76,7 +73,7 @@
 
 > selector
 
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_selector.png"></img>
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_selector.gif"></img>
 
 ```xml
 <TextView
@@ -92,7 +89,7 @@
 
 > ripple
 
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_ripple.png"></img>
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_ripple.gif"></img>
 
 ```xml
 <TextView
