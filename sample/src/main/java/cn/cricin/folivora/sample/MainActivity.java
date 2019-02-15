@@ -17,6 +17,10 @@
 package cn.cricin.folivora.sample;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -32,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    //create a selector if ripple drawable is unavailable
+    Folivora.setRippleFallback(new Folivora.RippleFallback() {
+      @Override
+      public Drawable onFallback(ColorStateList color, Drawable content, Drawable mask, Context ctx) {
+        StateListDrawable sld = new StateListDrawable();
+        sld.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(color.getDefaultColor()));
+        sld.addState(new int[0], content);
+        return sld;
+      }
+    });
     setContentView(R.layout.activity_main);
   }
 }

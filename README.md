@@ -5,7 +5,7 @@
 
 现在可以使用Folivora，在layout文件中直接定义drawable。
 
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview.gif" width="40%"></img>
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview.gif"></img>
 
 ### 使用方法
  - **STEP1** :
@@ -19,7 +19,7 @@
  - **STEP2** :
 在layout.xml中加入自定义的属性, 告诉Folivora如何创建drawable
 
-> 圆角的shape
+> shape
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_shape.png"></img>
 
@@ -29,28 +29,8 @@
   android:layout_height="wrap_content"
   android:text="round rect"
   app:drawableType="shape"
-  app:setAs="background"
   app:shapeCornerRadius="6dp"
   app:shapeSolidColor="@color/red"/>
-```
-
-> 圆形的shape
-
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_shape_circle.png"></img>
-
-```xml
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:gravity="center"
-    android:text="circle shape"
-    app:drawableType="shape"
-    app:setAs="background"
-    app:shapeCornerRadius="40dp"
-    app:shapeSolidColor="@color/colorAccent"
-    app:shapeSolidSize="80dp"
-    app:shapeType="rectangle"/>
 ```
 
 > layerlist
@@ -59,18 +39,39 @@
 
 ```xml
 <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:padding="12dp"
-    android:text="layerlist"
-    app:drawableType="layer_list"
-    app:layerItem0Drawable="#ff00ddff"
-    app:layerItem1Drawable="@color/colorPrimary"
-    app:layerItem1Insets="4dp"
-    app:layerItem2Drawable="@color/colorAccent"
-    app:layerItem2Insets="8dp"
-    app:setAs="background"/>
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_marginTop="10dp"
+  android:padding="12dp"
+  android:text="layerlist"
+  app:drawableType="layer_list"
+  app:layerItem0Drawable="#ff00ddff"
+  app:layerItem1Drawable="@color/colorPrimary"
+  app:layerItem1Insets="4dp"
+  app:layerItem2Drawable="@color/colorAccent"
+  app:layerItem2Insets="8dp"/>
+```
+
+> levellist
+
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_levellist.png"></img>
+
+```xml
+<TextView
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:layout_marginLeft="10dp"
+  android:clickable="true"
+  android:focusable="true"
+  android:gravity="center"
+  android:text="levellist"
+  android:textColor="@android:color/white"
+  app:drawableType="level_list"
+  app:levelCurrentLevel="95"
+  app:levelItem0Drawable="@color/colorPrimary"
+  app:levelItem1Drawable="@color/colorAccent"
+  app:levelItem1MaxLevel="100"
+  app:levelItem1MinLevel="90"/>
 ```
 
 > selector
@@ -79,15 +80,14 @@
 
 ```xml
 <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:padding="12dp"
-    android:text="selector"
-    app:drawableType="selector"
-    app:selectorStateNormal="@color/colorAccent"
-    app:selectorStatePressed="@color/colorPrimary"
-    app:setAs="background"/>
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_marginTop="10dp"
+  android:padding="12dp"
+  android:text="selector"
+  app:drawableType="selector"
+  app:selectorStateNormal="@color/colorAccent"
+  app:selectorStatePressed="@color/colorPrimary"/>
 ```
 
 > ripple
@@ -96,15 +96,92 @@
 
 ```xml
 <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:padding="20dp"
-    android:text="ripple"
-    app:drawableType="ripple"
-    app:rippleColor="@android:color/white"
-    app:rippleContent="@color/colorAccent"
-    app:setAs="background"/>
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_marginTop="10dp"
+  android:padding="20dp"
+  android:text="ripple"
+  app:drawableType="ripple"
+  app:rippleColor="@android:color/white"
+  app:rippleContent="@color/colorAccent"/>
+```
+
+> clip
+
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_clip.png"></img>
+
+```xml
+<TextView
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:gravity="center"
+  android:text="clip"
+  android:textColor="@android:color/white"
+  app:clipDrawable="@color/colorAccent"
+  app:clipLevel="6000"
+  app:drawableType="clip"/>
+```
+
+> inset
+
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_inset.png"></img>
+
+```xml
+<TextView
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:gravity="center"
+  android:text="inset"
+  android:textColor="@android:color/white"
+  app:drawableType="inset"
+  app:insetAll="4dp"
+  app:insetDrawable="@color/colorAccent"/>
+```
+
+> scale
+
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_scale.png"></img>
+
+```xml
+<TextView
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:gravity="center"
+  android:text="scale"
+  android:textColor="@android:color/white"
+  app:drawableType="scale"
+  app:scaleDrawable="@color/colorAccent"
+  app:scaleGravity="center"
+  app:scaleHeight="0.3"
+  app:scaleWidth="0.3"/>
+```
+
+> animation
+
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_animation.gif"></img>
+
+```xml
+<TextView
+  android:id="@+id/animation"
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:layout_marginLeft="10dp"
+  android:gravity="center"
+  android:text="animation"
+  android:textColor="@android:color/white"
+  app:animAutoPlay="true"
+  app:animDuration="300"
+  app:animFrame0="@drawable/animation0"
+  app:animFrame1="@drawable/animation1"
+  app:animFrame2="@drawable/animation2"
+  app:animFrame3="@drawable/animation3"
+  app:animFrame4="@drawable/animation4"
+  app:animFrame5="@drawable/animation5"
+  app:animFrame6="@drawable/animation6"
+  app:animFrame7="@drawable/animation7"
+  app:animFrame8="@drawable/animation8"
+  app:animFrame9="@drawable/animation9"
+  app:drawableType="animation"/>
 ```
 
 注: 许多 IDE (Android Studio, IntelliJ) 会把这些属性标注为错误，但是实际上是正确的。可以在这个View或者根ViewGroup上加上`tools:ignore="MissingPrefix"`来避免报错。为了使用 `ignore`属性，可以加上`xmlns:tools=" http://schemas.android.com/tools"`。关于这个问题，可以查看： https://code.google.com/p/android/issues/detail?id=65176.
@@ -199,7 +276,7 @@ app:layerItem0Bottom|dimension|该drawable的下margin
 
 ...
 
-layerlist支持最多5个layer，替换相应的数字即可
+layerlist支持最多5个drawable，替换相应的数字即可
 
 ##### ripple属性
 
@@ -211,13 +288,70 @@ app:rippleContent|reference &#124; color|ripple的内容背景
 
 如果设备不支持Ripple效果(<Api21)，可以给Folivora设置一个`RippleFallback`, 用来创建替代RippleDrawable的Drawable
 
+##### levellist属性
+
+属性 | 取值| 描述
+ ---|--- | --- |
+app:levelCurrentLevel|integer|当前的level
+app:levelItem0Drawable|reference &#124; color|第一个item的drawable
+app:levelItem1MinLevel|integer|该drawable的最小level
+app:levelItem1MaxLevel|integer|该drawable的最大level
+
+...
+
+levellist支持最多5个drawable，替换相应的数字即可
+
+##### clip属性
+
+属性 | 取值| 描述
+ ---|--- | --- |
+app:clipDrawable|reference &#124; color|需要裁剪的drawable
+app:clipGravity|同View的layout_gravity|裁剪位置
+app:clipOrientation|vertical &#124; horizontal|裁剪的方向
+app:clipLevel|integer|当前level
+
+##### scale属性
+
+属性 | 取值| 描述
+ ---|--- | --- |
+app:scaleDrawable|reference &#124; color|需要缩放的drawable
+app:scaleGravity|同View的layout_gravity|缩放位置
+app:scaleWidth|float[0,1] or -1()|宽度缩放比例
+app:scaleHeight|float[0,1] or -1()|高度缩放比例
+app:scaleLevel|integer[0,10000]|当前的level
+
+##### inset属性
+
+属性 | 取值| 描述
+ ---|--- | --- |
+app:insetDrawable|reference &#124; color|需要插入边距的drawable
+app:insetAll|dimension|所有方向的边距
+app:insetLeft|dimension|左边距
+app:insetTop|dimension|上边距
+app:insetRight|dimension|右边距
+app:insetBottom|dimension|下边距
+
+##### animation属性
+
+属性 | 取值| 描述
+ ---|--- | --- |
+app:animAutoPlay|boolean|是否自动开始动画
+app:animDuration|int(millisecond)|每一帧的持续时间
+app:animOneShot|boolean|是否只播放一次
+app:animFrame0|reference &#124; color|第0帧
+app:animDuration0|int(millisecond)|第0帧持续时间
+
+animation支持最多10帧，替换相应的数字即可
+
+### 下载示例APK
+[点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/sample.apk)
 
 ### Android Studio预览支持
-在Android Studio中提供了实时预览编辑layout文件，但是IDE不识别自定义的属性，预览窗口渲染不出自定义的View背景
+在Android Studio中提供了实时预览编辑layout文件，但是IDE不识别自定义的属性，预览窗口渲染不出自定义的View背景，也无法使用属性提示
 
 为了解决这个问题，Folivora提供了支持工具，按下面的方式使用：
 
-1. 下载jar包 [点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/preview_support/release/android-folivora-support.jar)。
+1. 下载jar包 [点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/android-folivora-support.jar)。
 2. 拷贝下载的文件到Android Studio安装目录下的plugins/android/lib/下
 3. 重启IDE，如果你的项目依赖中有Folivora，打开layout文件即可实时预览
 
@@ -225,7 +359,7 @@ app:rippleContent|reference &#124; color|ripple的内容背景
 
 > 预览效果
 
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.png" width="70%"></img>
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.gif"></img>
 
 ## License
 

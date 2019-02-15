@@ -22,185 +22,214 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical"
-  android:paddingLeft="10dp"
   tools:context=".MainActivity"
-  tools:ignore="MissingPrefix">
+  tools:ignore="MissingPrefix,Rtlhardcoded, HardcodedText">
 
-  <TextView
-    android:layout_width="100dp"
-    android:layout_height="40dp"
-    android:layout_marginTop="10dp"
-    android:gravity="center"
-    android:text="shape1"
-    android:textColor="@android:color/white"
-    app:drawableType="shape"
-    app:shapeCornerRadius="10dp"
-    app:shapeSolidColor="@color/colorAccent"/>
-
-  <TextView
-    android:layout_width="50dp"
-    android:layout_height="50dp"
-    android:layout_marginTop="10dp"
-    android:gravity="center"
-    android:text="shape2"
-    android:textColor="@android:color/white"
-    app:drawableType="shape"
-    app:shapeCornerRadius="40dp"
-    app:shapeSolidColor="@color/colorAccent"
-    app:shapeSolidSize="80dp"/>
-
-  <TextView
-    android:layout_width="100dp"
-    android:layout_height="40dp"
-    android:layout_marginTop="10dp"
-    android:gravity="center"
-    android:text="shape3"
-    android:textColor="@android:color/white"
-    app:drawableType="shape"
-    app:shapeGradientAngle="lr"
-    app:shapeGradientCenterColor="@android:color/holo_blue_dark"
-    app:shapeGradientEndColor="@android:color/holo_red_light"
-    app:shapeGradientStartColor="@android:color/holo_purple"/>
-
-  <TextView
-    android:layout_width="100dp"
-    android:layout_height="40dp"
-    android:layout_marginTop="10dp"
-    android:gravity="center"
-    android:text="layerlist"
-    android:textColor="@android:color/white"
-    app:drawableType="layer_list"
-    app:layerItem0Drawable="@color/colorAccent"
-    app:layerItem1Drawable="@android:color/holo_purple"
-    app:layerItem1Insets="4dp"
-    app:layerItem2Drawable="@android:color/holo_blue_light"
-    app:layerItem2Insets="8dp"/>
-
-  <TextView
-    android:layout_width="100dp"
-    android:layout_height="40dp"
-    android:layout_marginTop="10dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:gravity="center"
-    android:text="selector"
-    android:textColor="@android:color/white"
-    app:drawableType="selector"
-    app:selectorStateNormal="@color/colorAccent"
-    app:selectorStatePressed="@color/colorPrimary"/>
-
-  <TextView
-    android:layout_width="100dp"
-    android:layout_height="40dp"
-    android:layout_marginTop="10dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:gravity="center"
-    android:text="levellist"
-    android:textColor="@android:color/white"
-    app:drawableType="level_list"
-    app:levelCurrentLevel="95"
-    app:levelItem0Drawable="@color/colorPrimary"
-    app:levelItem1Drawable="@color/colorAccent"
-    app:levelItem1MaxLevel="100"
-    app:levelItem1MinLevel="90"/>
-
-  <TextView
-    android:layout_width="100dp"
-    android:layout_height="40dp"
-    android:layout_marginTop="10dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:gravity="center"
-    android:text="ripple"
-    android:textColor="@android:color/white"
-    app:drawableType="ripple"
-    app:rippleColor="@android:color/white"
-    app:rippleContent="@color/colorAccent"/>
-
-  <FrameLayout
-    android:layout_width="wrap_content"
+  <LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
-    app:drawableType="shape"
-    app:shapeStrokeColor="@android:color/holo_green_light"
-    app:shapeStrokeWidth="1dp">
+    android:orientation="horizontal">
 
     <TextView
       android:layout_width="100dp"
       android:layout_height="40dp"
       android:gravity="center"
-      android:text="clip"
+      android:text="shape1"
       android:textColor="@android:color/white"
-      app:clipDrawable="@color/colorAccent"
-      app:clipLevel="6000"
-      app:drawableType="clip"/>
+      app:drawableType="shape"
+      app:shapeCornerRadius="10dp"
+      app:shapeSolidColor="@color/colorAccent"/>
 
-  </FrameLayout>
+    <TextView
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_marginLeft="10dp"
+      android:gravity="center"
+      android:text="shape2"
+      android:textColor="@android:color/white"
+      app:drawableType="shape"
+      app:shapeCornerRadius="40dp"
+      app:shapeSolidColor="@color/colorAccent"
+      app:shapeSolidSize="80dp"/>
 
-  <FrameLayout
-    android:layout_width="wrap_content"
+    <TextView
+      android:layout_width="100dp"
+      android:layout_height="40dp"
+      android:layout_marginLeft="10dp"
+      android:gravity="center"
+      android:text="shape3"
+      android:textColor="@android:color/white"
+      app:drawableType="shape"
+      app:shapeGradientAngle="lr"
+      app:shapeGradientCenterColor="@android:color/holo_blue_dark"
+      app:shapeGradientEndColor="@android:color/holo_red_light"
+      app:shapeGradientStartColor="@android:color/holo_purple"/>
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
-    app:drawableType="shape"
-    app:shapeStrokeColor="@android:color/holo_green_light"
-    app:shapeStrokeWidth="1dp">
+    android:orientation="horizontal">
 
     <TextView
       android:layout_width="100dp"
       android:layout_height="40dp"
       android:gravity="center"
-      android:text="inset"
+      android:text="layerlist"
       android:textColor="@android:color/white"
-      app:drawableType="inset"
-      app:insetAll="4dp"
-      app:insetDrawable="@color/colorAccent"/>
-
-  </FrameLayout>
-
-
-  <FrameLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    app:drawableType="shape"
-    app:shapeStrokeColor="@android:color/holo_green_light"
-    app:shapeStrokeWidth="1dp">
+      app:drawableType="layer_list"
+      app:layerItem0Drawable="@color/colorAccent"
+      app:layerItem1Drawable="@android:color/holo_blue_dark"
+      app:layerItem1Insets="4dp"
+      app:layerItem2Drawable="@android:color/holo_blue_bright"
+      app:layerItem2Insets="8dp"/>
 
     <TextView
       android:layout_width="100dp"
       android:layout_height="40dp"
+      android:layout_marginLeft="10dp"
+      android:clickable="true"
+      android:focusable="true"
       android:gravity="center"
-      android:text="scale"
+      android:text="selector"
       android:textColor="@android:color/white"
-      app:drawableType="scale"
-      app:scaleDrawable="@color/colorAccent"
-      app:scaleGravity="center"
-      app:scaleHeight="0.3"
-      app:scaleWidth="0.3"/>
+      app:drawableType="selector"
+      app:selectorStateNormal="@color/colorAccent"
+      app:selectorStatePressed="@android:color/holo_blue_dark"/>
 
-  </FrameLayout>
+    <TextView
+      android:layout_width="100dp"
+      android:layout_height="40dp"
+      android:layout_marginLeft="10dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:gravity="center"
+      android:text="levellist"
+      android:textColor="@android:color/white"
+      app:drawableType="level_list"
+      app:levelCurrentLevel="95"
+      app:levelItem0Drawable="@color/colorPrimary"
+      app:levelItem1Drawable="@color/colorAccent"
+      app:levelItem1MaxLevel="100"
+      app:levelItem1MinLevel="90"/>
 
-  <TextView
-    android:id="@+id/anim"
-    android:layout_width="100dp"
-    android:layout_height="40dp"
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
-    android:gravity="center"
-    android:text="animation"
-    android:textColor="@android:color/white"
-    app:animAutoPlay="true"
-    app:animDuration="300"
-    app:animFrame0="@drawable/animation0"
-    app:animFrame1="@drawable/animation1"
-    app:animFrame2="@drawable/animation2"
-    app:animFrame3="@drawable/animation3"
-    app:animFrame4="@drawable/animation4"
-    app:animFrame5="@drawable/animation5"
-    app:animFrame6="@drawable/animation6"
-    app:animFrame7="@drawable/animation7"
-    app:animFrame8="@drawable/animation8"
-    app:animFrame9="@drawable/animation9"
-    app:drawableType="animation"/>
+    android:orientation="horizontal">
+
+    <TextView
+      android:layout_width="100dp"
+      android:layout_height="40dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:gravity="center"
+      android:text="ripple"
+      android:textColor="@android:color/white"
+      app:drawableType="ripple"
+      app:rippleColor="@android:color/white"
+      app:rippleContent="@color/colorAccent"/>
+
+    <FrameLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="10dp"
+      app:drawableType="shape"
+      app:shapeStrokeColor="@android:color/holo_green_light"
+      app:shapeStrokeWidth="1dp">
+
+      <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="clip"
+        android:textColor="@android:color/white"
+        app:clipDrawable="@color/colorAccent"
+        app:clipLevel="6000"
+        app:drawableType="clip"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="10dp"
+      app:drawableType="shape"
+      app:shapeStrokeColor="@android:color/holo_green_light"
+      app:shapeStrokeWidth="1dp">
+
+      <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="inset"
+        android:textColor="@android:color/white"
+        app:drawableType="inset"
+        app:insetAll="4dp"
+        app:insetDrawable="@color/colorAccent"/>
+
+    </FrameLayout>
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal">
+
+    <FrameLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:drawableType="shape"
+      app:shapeStrokeColor="@android:color/holo_green_light"
+      app:shapeStrokeWidth="1dp">
+
+      <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="scale"
+        android:textColor="@android:color/white"
+        app:drawableType="scale"
+        app:scaleDrawable="@color/colorAccent"
+        app:scaleGravity="center"
+        app:scaleHeight="0.3"
+        app:scaleWidth="0.3"/>
+
+    </FrameLayout>
+
+    <TextView
+      android:layout_width="100dp"
+      android:layout_height="40dp"
+      android:layout_marginLeft="10dp"
+      android:gravity="center"
+      android:text="animation"
+      android:textColor="@android:color/white"
+      app:animAutoPlay="true"
+      app:animDuration="300"
+      app:animFrame0="@drawable/animation0"
+      app:animFrame1="@drawable/animation1"
+      app:animFrame2="@drawable/animation2"
+      app:animFrame3="@drawable/animation3"
+      app:animFrame4="@drawable/animation4"
+      app:animFrame5="@drawable/animation5"
+      app:animFrame6="@drawable/animation6"
+      app:animFrame7="@drawable/animation7"
+      app:animFrame8="@drawable/animation8"
+      app:animFrame9="@drawable/animation9"
+      app:drawableType="animation"/>
+
+  </LinearLayout>
 
 </LinearLayout>
