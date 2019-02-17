@@ -1,6 +1,18 @@
-### Folivora
+### 为什么需要Folivora
+对于android开发者来说，在layout文件中引用drawable来设置`View`的背景或者`ImageView`的`src`是很常见的事情，需要我们在drawable文件夹下写好xml文件就可以应用了，但是有许多drawable文件可能只被使用了一次，也有可能我们只是为了实现一个简单的圆角背景的功能。越来越多的drawable文件导致开发和维护成本的增加，有没有什么方法可以直接在layout文件中去创建drawable呢，Folivora为你提供了这样的功能。
 
-在你的layout文件中直接定义drawable。
+### Folivora能做什么
+Folivora可以为你的View设置一个背景或者ImageView的src,当前支持的drawable类型有
+
+* shape (GradientDrawable)
+* selector (StateListDrawable)
+* ripple (RippleDrawable)
+* layerlist (LayerListDrawable)
+* levellist (LevelListDrawable)
+* inset (InsetDrawable)
+* clip (ClipDrawable)
+* scale (ScaleDrawable)
+* animation (AnimationDrawable)
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview.gif"></img>
 
@@ -25,9 +37,9 @@
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:text="round rect"
-  app:drawableType="shape"
+  app:drawableType="shape1"
   app:shapeCornerRadius="6dp"
-  app:shapeSolidColor="@color/red"/>
+  app:shapeSolidColor="@color/colorAccent"/>
 ```
 
 > layerlist
@@ -101,6 +113,19 @@
   app:drawableType="ripple"
   app:rippleColor="@android:color/white"
   app:rippleContent="@color/colorAccent"/>
+```
+
+使用ripple的确是酷炫多了，但是ripple效果是5.0之后引入的，那5.0之前的设备怎么办呢，Folivora为你提供了`RippleFallback`接口，用来创建一个替换`RippleDrawable`的`Drawable`实例，让我们试着用一个selector来代替ripple:
+```java
+Folivora.setRippleFallback(new RippleFallback()){
+  @Override
+  public Drawable onFallback(ColorStateList ripple, Drawable content, Drawable mask, Context ctx){
+    StateListDrawable sld = new StateListDrawable();
+    sld.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(ripple.getDefaultColor()));
+    sld.addState(new int[0], content);
+    return sld;
+  }
+}
 ```
 
 > clip
@@ -225,8 +250,8 @@ app:shapeSolidSize|dimension|宽高
 app:shapeSolidWidth|dimension|宽
 app:shapeSolidHeight|dimension|高
 app:shapeSolidColor|color|填充色
-app:shapeSolidStokeWidth|dimension|边框厚度
 app:shapeSolidColor|color|边框填充色
+app:shapeStokeWidth|dimension|边框厚度
 app:shapeStokeDashWidth|dimension|边框线宽
 app:shapeStokeDashGap|dimension|边框线间距
 app:shapeCornerRadius|dimension|角半径
@@ -352,7 +377,7 @@ animation支持最多10帧，替换相应的数字即可
 2. 拷贝下载的文件到Android Studio安装目录下的plugins/android/lib/下
 3. 重启IDE，如果你的项目依赖中有Folivora，打开layout文件即可实时预览
 
-注: 支持工具依赖java的classloader加载类的顺序(替换LayoutLibraryLoader)，所以下载的jar包请不要重命名，直接拷贝即可
+注: 支持工具依赖java的classloader加载类的顺序，所以下载的jar包请不要重命名，直接拷贝即可
 
 > 预览效果
 
