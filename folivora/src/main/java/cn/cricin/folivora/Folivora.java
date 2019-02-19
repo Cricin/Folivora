@@ -74,6 +74,12 @@ public final class Folivora {
   private static final int SET_AS_BACKGROUND = 0;
   private static final int SET_AS_SRC = 1;
 
+  private static final int SHAPE_INDEX_0 = 0;
+  private static final int SHAPE_INDEX_1 = 1;
+  private static final int SHAPE_INDEX_2 = 2;
+  private static final int SHAPE_INDEX_3 = 3;
+  private static final int SHAPE_INDEX_4 = 4;
+
   private static final int[] STATE_FIRST = {android.R.attr.state_first};
   private static final int[] STATE_MIDDLE = {android.R.attr.state_middle};
   private static final int[] STATE_LAST = {android.R.attr.state_last};
@@ -106,12 +112,12 @@ public final class Folivora {
    * app:shapeSolidWidth              dimension
    * app:shapeSolidHeight             dimension
    * app:shapeSolidColor              color
-   *
+   * <p>
    * app:shapeStrokeWidth             dimension
    * app:shapeStrokeColor             color
    * app:shapeStrokeDashGap           dimension
    * app:shapeStrokeDashWidth         dimension
-   *
+   * <p>
    * app:shapeGradientType            enum
    * app:shapeGradientRadius          dimension
    * app:shapeGradientCenterX         dimension
@@ -120,7 +126,7 @@ public final class Folivora {
    * app:shapeGradientCenterColor     color
    * app:shapeGradientEndColor        color
    * app:shapeGradientAngle           enum
-   *
+   * <p>
    * app:shapeCornerRadius            dimension
    * app:shapeCornerRadiusTopLeft     dimension
    * app:shapeCornerRadiusTopRight    dimension
@@ -193,29 +199,29 @@ public final class Folivora {
   private static StateListDrawable newSelector(Context ctx, AttributeSet attrs) {
     StateListDrawable d = new StateListDrawable();
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Selector);
-    Drawable temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStateFirst);
+    Drawable temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateFirst);
     if (temp != null) d.addState(STATE_FIRST, temp);
-    temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStateMiddle);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateMiddle);
     if (temp != null) d.addState(STATE_MIDDLE, temp);
-    temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStateLast);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateLast);
     if (temp != null) d.addState(STATE_LAST, temp);
-    temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStateActive);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateActive);
     if (temp != null) d.addState(STATE_ACTIVE, temp);
-    temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStateActivated);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateActivated);
     if (temp != null) d.addState(STATE_ACTIVATED, temp);
-    temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStateAccelerate);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateAccelerate);
     if (temp != null) d.addState(STATE_ACCELERATE, temp);
-    temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStateChecked);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateChecked);
     if (temp != null) d.addState(STATE_CHECKED, temp);
-    temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStateCheckable);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateCheckable);
     if (temp != null) d.addState(STATE_CHECKABLE, temp);
-    temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStateEnabled);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateEnabled);
     if (temp != null) d.addState(STATE_ENABLED, temp);
-    temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStateFocused);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateFocused);
     if (temp != null) d.addState(STATE_FOCUSED, temp);
-    temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStatePressed);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStatePressed);
     if (temp != null) d.addState(STATE_PRESSED, temp);
-    temp = a.getDrawable(R.styleable.Folivora_Selector_selectorStateNormal);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateNormal);
     if (temp != null) d.addState(STATE_NORMAL, temp);
     a.recycle();
     return d;
@@ -260,12 +266,12 @@ public final class Folivora {
    * app:layerItem4Right          dimension
    * app:layerItem4Bottom         dimension
    */
-  private static Drawable newLayer(Context ctx, AttributeSet attrs) {
+  private static LayerDrawable newLayer(Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Layer);
     List<Drawable> childDrawables = new ArrayList<>(5);
     List<Rect> childInsets = new ArrayList<>(5);
 
-    Drawable temp = a.getDrawable(R.styleable.Folivora_Layer_layerItem0Drawable);
+    Drawable temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Layer_layerItem0Drawable);
     if (temp != null) {
       childDrawables.add(temp);
       int insets = a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem0Insets, 0);
@@ -276,7 +282,7 @@ public final class Folivora {
         a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem0Bottom, insets)
       ));
     }
-    temp = a.getDrawable(R.styleable.Folivora_Layer_layerItem1Drawable);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Layer_layerItem1Drawable);
     if (temp != null) {
       childDrawables.add(temp);
       int insets = a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem1Insets, 0);
@@ -287,7 +293,7 @@ public final class Folivora {
         a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem1Bottom, insets)
       ));
     }
-    temp = a.getDrawable(R.styleable.Folivora_Layer_layerItem2Drawable);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Layer_layerItem2Drawable);
     if (temp != null) {
       childDrawables.add(temp);
       int insets = a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem2Insets, 0);
@@ -298,7 +304,7 @@ public final class Folivora {
         a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem2Bottom, insets)
       ));
     }
-    temp = a.getDrawable(R.styleable.Folivora_Layer_layerItem3Drawable);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Layer_layerItem3Drawable);
     if (temp != null) {
       childDrawables.add(temp);
       int insets = a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem3Insets, 0);
@@ -309,7 +315,7 @@ public final class Folivora {
         a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem3Bottom, insets)
       ));
     }
-    temp = a.getDrawable(R.styleable.Folivora_Layer_layerItem4Drawable);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Layer_layerItem4Drawable);
     if (temp != null) {
       childDrawables.add(temp);
       int insets = a.getDimensionPixelSize(R.styleable.Folivora_Layer_layerItem4Insets, 0);
@@ -348,8 +354,8 @@ public final class Folivora {
       if (color == null) {
         throw new IllegalStateException("rippleColor not set");
       }
-      content = a.getDrawable(R.styleable.Folivora_Ripple_rippleContent);
-      mask = a.getDrawable(R.styleable.Folivora_Ripple_rippleMask);
+      content = getDrawable(ctx, a, attrs, R.styleable.Folivora_Ripple_rippleContent);
+      mask = getDrawable(ctx, a, attrs, R.styleable.Folivora_Ripple_rippleMask);
     } finally {
       a.recycle();
     }
@@ -392,35 +398,35 @@ public final class Folivora {
       lld.addLevel(
         a.getInt(R.styleable.Folivora_Level_levelItem0MinLevel, 0),
         a.getInt(R.styleable.Folivora_Level_levelItem0MaxLevel, 0),
-        a.getDrawable(R.styleable.Folivora_Level_levelItem0Drawable)
+        getDrawable(ctx, a, attrs, R.styleable.Folivora_Level_levelItem0Drawable)
       );
     }
     if (a.hasValue(R.styleable.Folivora_Level_levelItem1Drawable)) {
       lld.addLevel(
         a.getInt(R.styleable.Folivora_Level_levelItem1MinLevel, 0),
         a.getInt(R.styleable.Folivora_Level_levelItem1MaxLevel, 0),
-        a.getDrawable(R.styleable.Folivora_Level_levelItem1Drawable)
+        getDrawable(ctx, a, attrs, R.styleable.Folivora_Level_levelItem1Drawable)
       );
     }
     if (a.hasValue(R.styleable.Folivora_Level_levelItem2Drawable)) {
       lld.addLevel(
         a.getInt(R.styleable.Folivora_Level_levelItem2MinLevel, 0),
         a.getInt(R.styleable.Folivora_Level_levelItem2MaxLevel, 0),
-        a.getDrawable(R.styleable.Folivora_Level_levelItem2Drawable)
+        getDrawable(ctx, a, attrs, R.styleable.Folivora_Level_levelItem2Drawable)
       );
     }
     if (a.hasValue(R.styleable.Folivora_Level_levelItem3Drawable)) {
       lld.addLevel(
         a.getInt(R.styleable.Folivora_Level_levelItem3MinLevel, 0),
         a.getInt(R.styleable.Folivora_Level_levelItem3MaxLevel, 0),
-        a.getDrawable(R.styleable.Folivora_Level_levelItem3Drawable)
+        getDrawable(ctx, a, attrs, R.styleable.Folivora_Level_levelItem3Drawable)
       );
     }
     if (a.hasValue(R.styleable.Folivora_Level_levelItem4Drawable)) {
       lld.addLevel(
         a.getInt(R.styleable.Folivora_Level_levelItem4MinLevel, 0),
         a.getInt(R.styleable.Folivora_Level_levelItem4MaxLevel, 0),
-        a.getDrawable(R.styleable.Folivora_Level_levelItem4Drawable)
+        getDrawable(ctx, a, attrs, R.styleable.Folivora_Level_levelItem4Drawable)
       );
     }
     lld.setLevel(a.getInt(R.styleable.Folivora_Level_levelCurrentLevel, 0));
@@ -439,7 +445,7 @@ public final class Folivora {
    */
   private static ClipDrawable newClip(Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Clip);
-    final Drawable child = a.getDrawable(R.styleable.Folivora_Clip_clipDrawable);
+    final Drawable child = getDrawable(ctx, a, attrs, R.styleable.Folivora_Clip_clipDrawable);
     final int clipGravity = a.getInt(R.styleable.Folivora_Clip_clipGravity, Gravity.START);
     final int clipOrientation = a.getInt(R.styleable.Folivora_Clip_clipOrientation, ClipDrawable.HORIZONTAL);
 
@@ -472,7 +478,7 @@ public final class Folivora {
     for (int i = 0; i < ints.length; i++) {
       ints[i] = a.getDimensionPixelSize(ints[i], insetAll);
     }
-    final Drawable child = a.getDrawable(R.styleable.Folivora_Inset_insetDrawable);
+    final Drawable child = getDrawable(ctx, a, attrs, R.styleable.Folivora_Inset_insetDrawable);
     a.recycle();
     return new InsetDrawable(child, ints[0], ints[1], ints[2], ints[3]);
   }
@@ -489,17 +495,15 @@ public final class Folivora {
    */
   private static ScaleDrawable newScale(Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Scale);
-    try {
-      ScaleDrawable sd = new ScaleDrawable(a.getDrawable(R.styleable.Folivora_Scale_scaleDrawable),
-        a.getInt(R.styleable.Folivora_Scale_scaleGravity, Gravity.START),
-        a.getFloat(R.styleable.Folivora_Scale_scaleWidth, -1F),
-        a.getFloat(R.styleable.Folivora_Scale_scaleHeight, -1F)
-      );
-      sd.setLevel(a.getInt(R.styleable.Folivora_Scale_scaleLevel, 1));
-      return sd;
-    } finally {
-      a.recycle();
-    }
+    ScaleDrawable sd = new ScaleDrawable(
+      getDrawable(ctx, a, attrs, R.styleable.Folivora_Scale_scaleDrawable),
+      a.getInt(R.styleable.Folivora_Scale_scaleGravity, Gravity.START),
+      a.getFloat(R.styleable.Folivora_Scale_scaleWidth, -1F),
+      a.getFloat(R.styleable.Folivora_Scale_scaleHeight, -1F)
+    );
+    sd.setLevel(a.getInt(R.styleable.Folivora_Scale_scaleLevel, 1));
+    a.recycle();
+    return sd;
   }
 
   /**
@@ -587,6 +591,48 @@ public final class Folivora {
       ad.start();
     }
     return ad;
+  }
+
+  /**
+   * Try to get a child drawable, if the attrIndex pointing to a specific drawable,
+   * then load it in normal way, if the attrIndex pointing a enum(shape index), try
+   * to create it from the given attrs
+   *
+   * @param ctx       current context
+   * @param a         caller's typed array
+   * @param attrs     attributes from view tag
+   * @param attrIndex attribute index in the typed array
+   * @return a drawable, or a newly created GradientDrawable from attrs, or null
+   */
+  private static Drawable getDrawable(Context ctx, TypedArray a, AttributeSet attrs, int attrIndex) {
+    if(!a.hasValue(attrIndex)) return null;
+    Drawable result = null;
+    final int shapeIndex = a.getInt(attrIndex, -1);
+    switch (shapeIndex) {
+      case -1://not used
+        break;
+      case SHAPE_INDEX_0:
+        result = newShape(ctx, attrs);
+        break;
+      case SHAPE_INDEX_1:
+        result = ShapeFactory.newShape1(ctx, attrs);
+        break;
+      case SHAPE_INDEX_2:
+        result = ShapeFactory.newShape2(ctx, attrs);
+        break;
+      case SHAPE_INDEX_3:
+        result = ShapeFactory.newShape3(ctx, attrs);
+        break;
+      case SHAPE_INDEX_4:
+        result = ShapeFactory.newShape4(ctx, attrs);
+      default:
+        Log.w(TAG, "Unexpected shape index" + shapeIndex);
+        break;
+    }
+    if (result == null) {
+      result = a.getDrawable(attrIndex);
+    }
+    return result;
   }
 
   /**
@@ -775,4 +821,6 @@ public final class Folivora {
   public static void setRippleFallback(RippleFallback fallback) {
     sRippleFallback = fallback;
   }
+
+  private Folivora() {}
 }

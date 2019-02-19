@@ -41,14 +41,17 @@ import org.jetbrains.android.resourceManagers.ModuleResourceManagers;
 import org.jetbrains.android.resourceManagers.ResourceManager;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Process folivora attr's to the current dom element
  */
 final class FolivoraAttrProcessing {
   private static final HashMap<String, String> TYPE_TO_STYLEABLE = new HashMap<>();
+  private static final HashMap<String, String> SHAPE_TO_STYLEABLE = new HashMap<>();
 
   static {
     TYPE_TO_STYLEABLE.put("shape", "Folivora_Shape");
@@ -60,6 +63,12 @@ final class FolivoraAttrProcessing {
     TYPE_TO_STYLEABLE.put("inset", "Folivora_Inset");
     TYPE_TO_STYLEABLE.put("scale", "Folivora_Scale");
     TYPE_TO_STYLEABLE.put("animation", "Folivora_Animation");
+
+    SHAPE_TO_STYLEABLE.put("shape", "Folivora_Shape");
+    SHAPE_TO_STYLEABLE.put("shape1", "Folivora_Shape1");
+    SHAPE_TO_STYLEABLE.put("shape2", "Folivora_Shape2");
+    SHAPE_TO_STYLEABLE.put("shape3", "Folivora_Shape3");
+    SHAPE_TO_STYLEABLE.put("shape4", "Folivora_Shape4");
   }
 
   static void registerFolivoraAttributes(AndroidFacet facet,
@@ -69,22 +78,48 @@ final class FolivoraAttrProcessing {
     if (element instanceof DataBindingElement) return;
     XmlTag tag = element.getXmlTag();
     if (isInvalidTagName(tag.getName())) return;
-    String type = getDrawableType(tag.getAttributes());
-    String styleableName = TYPE_TO_STYLEABLE.get(type);
-    if (styleableName == null) {
-      registerAttributes(facet, element, "Folivora", null, callback);
-    } else {
+    List<String> styleableNames = getStyleablesToRegister(tag.getAttributes());
+    for (String styleableName : styleableNames) {
       registerAttributes(facet, element, styleableName, null, callback);
     }
   }
 
-  private static String getDrawableType(XmlAttribute[] attrs) {
+  private static List<String> getStyleablesToRegister(XmlAttribute[] attrs) {
+    List<String> styleableNames = new ArrayList<>(6);
+    String styleable;
+    boolean drawableTypeFound = false;
     for (XmlAttribute attr : attrs) {
-      if ("drawableType".equals(attr.getLocalName())) {
-        return attr.getValue();
+      String attrName = attr.getLocalName();
+      String attrValue = attr.getValue();
+      if ("drawableType".equals(attrName)) {
+        drawableTypeFound = true;
+        styleable = TYPE_TO_STYLEABLE.get(attrValue);
+        if (styleable != null) {
+          styleableNames.add(styleable);
+        }
+        continue;
+      }
+      styleable = SHAPE_TO_STYLEABLE.get(attrValue);
+      if (styleable != null && isAttrDefinedByFolivoraDrawables(attrName)) {
+        styleableNames.add(styleable);
       }
     }
-    return "";
+    if (!drawableTypeFound) {
+      styleableNames.add("Folivora");
+    }
+    return styleableNames;
+  }
+
+  private static boolean isAttrDefinedByFolivoraDrawables(String attrName) {
+    return attrName.startsWith("shape")
+      || attrName.startsWith("selector")
+      || attrName.startsWith("layer")
+      || attrName.startsWith("ripple")
+      || attrName.startsWith("level")
+      || attrName.startsWith("clip")
+      || attrName.startsWith("inset")
+      || attrName.startsWith("scale")
+      || attrName.startsWith("anim");
   }
 
   private static boolean isInvalidTagName(String tagName) {

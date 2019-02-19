@@ -21,7 +21,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 添加Gradle依赖，在项目的build.gradle中加入
 ```groovy
   dependencies {
-    implementation 'cn.cricin:folivora:0.0.2'
+    implementation 'cn.cricin:folivora:0.0.3'
   }
 ```
 
@@ -34,10 +34,12 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 
 ```xml
 <TextView
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:text="round rect"
-  app:drawableType="shape1"
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:text="shape1"
+  android:gravity="center"
+  android:textColor="@android:color/white"
+  app:drawableType="shape"
   app:shapeCornerRadius="6dp"
   app:shapeSolidColor="@color/colorAccent"/>
 ```
@@ -48,11 +50,11 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 
 ```xml
 <TextView
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:layout_marginTop="10dp"
-  android:padding="12dp"
+  android:layout_width="100dp"
+  android:layout_height="40dp"
   android:text="layerlist"
+  android:gravity="center"
+  android:textColor="@android:color/white"
   app:drawableType="layer_list"
   app:layerItem0Drawable="#ff00ddff"
   app:layerItem1Drawable="@color/colorPrimary"
@@ -69,9 +71,6 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 <TextView
   android:layout_width="100dp"
   android:layout_height="40dp"
-  android:layout_marginLeft="10dp"
-  android:clickable="true"
-  android:focusable="true"
   android:gravity="center"
   android:text="levellist"
   android:textColor="@android:color/white"
@@ -89,10 +88,10 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 
 ```xml
 <TextView
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:layout_marginTop="10dp"
-  android:padding="12dp"
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:textColor="@android:color/white"
+  android:gravity="center"
   android:text="selector"
   app:drawableType="selector"
   app:selectorStateNormal="@color/colorAccent"
@@ -105,10 +104,10 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 
 ```xml
 <TextView
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:layout_marginTop="10dp"
-  android:padding="20dp"
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:textColor="@android:color/white"
+  android:gravity="center"
   android:text="ripple"
   app:drawableType="ripple"
   app:rippleColor="@android:color/white"
@@ -187,7 +186,6 @@ Folivora.setRippleFallback(new RippleFallback()){
   android:id="@+id/animation"
   android:layout_width="100dp"
   android:layout_height="40dp"
-  android:layout_marginLeft="10dp"
   android:gravity="center"
   android:text="animation"
   android:textColor="@android:color/white"
@@ -205,6 +203,29 @@ Folivora.setRippleFallback(new RippleFallback()){
   app:animFrame9="@drawable/animation9"
   app:drawableType="animation"/>
 ```
+#### 0.0.3版本更新，嵌套shape支持
+
+Folivora现在支持在在drawable中嵌套shape了，除了animation以外，所有的drawable的子drawable除了可以使用`@drawable/xxx`和颜色之外，新增了shape/shape1/shape2/shape3/shape4这5个值，参考定义shape的例子，替换相应的前缀即可, 我们来定义嵌套了shape的selector试一试
+
+```xml
+<TextView
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:gravity="center"
+  android:text="selector"
+  android:textColor="@android:color/white"
+  app:drawableType="selector"
+  app:selectorStateNormal="shape"
+  app:shapeSolidColor="@android:color/holo_blue_light"
+  app:shapeCornerRadius="10dp"
+  app:selectorStatePressed="shape1"
+  app:shape1CornerRadius="10dp"
+  app:shape1SolidColor="@android:color/holo_blue_dark"/>
+```
+
+效果是这样的
+
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_shape_nested.gif"></img>
 
 注: 许多 IDE (Android Studio, IntelliJ) 会把这些属性标注为错误，但是实际上是正确的。可以在这个View或者根ViewGroup上加上`tools:ignore="MissingPrefix"`来避免报错。为了使用 `ignore`属性，可以加上`xmlns:tools=" http://schemas.android.com/tools"`。关于这个问题，可以查看： https://code.google.com/p/android/issues/detail?id=65176.
 

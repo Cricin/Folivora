@@ -68,20 +68,296 @@
   </declare-styleable>
   <!--shape结束-->
 
+  <!--shape1-->
+  <declare-styleable name="Folivora_Shape1">
+    <attr name="shape1Type" format="enum">
+      <enum name="rectangle" value="0"/>
+      <enum name="oval" value="1"/>
+      <enum name="line" value="2"/>
+      <enum name="ring" value="3"/>
+    </attr>
+
+    <attr name="shape1SolidSize" format="dimension"/>
+    <attr name="shape1SolidWidth" format="dimension"/>
+    <attr name="shape1SolidHeight" format="dimension"/>
+    <attr name="shape1SolidColor" format="color"/>
+
+    <attr name="shape1StrokeWidth" format="dimension"/>
+    <attr name="shape1StrokeColor" format="color"/>
+    <attr name="shape1StokeDashWidth" format="dimension"/>
+    <attr name="shape1StokeDashGap" format="dimension"/>
+
+    <attr name="shape1CornerRadius" format="dimension"/>
+    <attr name="shape1CornerRadiusTopLeft" format="dimension"/>
+    <attr name="shape1CornerRadiusTopRight" format="dimension"/>
+    <attr name="shape1CornerRadiusBottomLeft" format="dimension"/>
+    <attr name="shape1CornerRadiusBottomRight" format="dimension"/>
+
+    <attr name="shape1GradientType" format="enum">
+      <enum name="linear" value="0"/>
+      <enum name="radial" value="1"/>
+      <enum name="sweep" value="2"/>
+    </attr>
+    <attr name="shape1GradientAngle" format="enum">
+      <enum name="tb" value="0"/>
+      <enum name="tr_bl" value="1"/>
+      <enum name="rl" value="2"/>
+      <enum name="br_tl" value="3"/>
+      <enum name="bt" value="4"/>
+      <enum name="bl_tr" value="5"/>
+      <enum name="lr" value="6"/>
+      <enum name="tl_br" value="7"/>
+
+    </attr>
+    <attr name="shape1GradientStartColor" format="color"/>
+    <attr name="shape1GradientCenterColor" format="color"/>
+    <attr name="shape1GradientEndColor" format="color"/>
+    <attr name="shape1GradientRadius" format="dimension"/>
+    <attr name="shape1GradientCenterX" format="dimension"/>
+    <attr name="shape1GradientCenterY" format="dimension"/>
+
+  </declare-styleable>
+  <!--shape1结束-->
+
+  <!--shape2-->
+  <declare-styleable name="Folivora_Shape2">
+    <attr name="shape2Type" format="enum">
+      <enum name="rectangle" value="0"/>
+      <enum name="oval" value="1"/>
+      <enum name="line" value="2"/>
+      <enum name="ring" value="3"/>
+    </attr>
+
+    <attr name="shape2SolidSize" format="dimension"/>
+    <attr name="shape2SolidWidth" format="dimension"/>
+    <attr name="shape2SolidHeight" format="dimension"/>
+    <attr name="shape2SolidColor" format="color"/>
+
+    <attr name="shape2StrokeWidth" format="dimension"/>
+    <attr name="shape2StrokeColor" format="color"/>
+    <attr name="shape2StokeDashWidth" format="dimension"/>
+    <attr name="shape2StokeDashGap" format="dimension"/>
+
+    <attr name="shape2CornerRadius" format="dimension"/>
+    <attr name="shape2CornerRadiusTopLeft" format="dimension"/>
+    <attr name="shape2CornerRadiusTopRight" format="dimension"/>
+    <attr name="shape2CornerRadiusBottomLeft" format="dimension"/>
+    <attr name="shape2CornerRadiusBottomRight" format="dimension"/>
+
+    <attr name="shape2GradientType" format="enum">
+      <enum name="linear" value="0"/>
+      <enum name="radial" value="1"/>
+      <enum name="sweep" value="2"/>
+    </attr>
+    <attr name="shape2GradientAngle" format="enum">
+      <enum name="tb" value="0"/>
+      <enum name="tr_bl" value="1"/>
+      <enum name="rl" value="2"/>
+      <enum name="br_tl" value="3"/>
+      <enum name="bt" value="4"/>
+      <enum name="bl_tr" value="5"/>
+      <enum name="lr" value="6"/>
+      <enum name="tl_br" value="7"/>
+
+    </attr>
+    <attr name="shape2GradientStartColor" format="color"/>
+    <attr name="shape2GradientCenterColor" format="color"/>
+    <attr name="shape2GradientEndColor" format="color"/>
+    <attr name="shape2GradientRadius" format="dimension"/>
+    <attr name="shape2GradientCenterX" format="dimension"/>
+    <attr name="shape2GradientCenterY" format="dimension"/>
+
+  </declare-styleable>
+  <!--shape2结束-->
+
+  <!--shape3-->
+  <declare-styleable name="Folivora_Shape3">
+    <attr name="shape3Type" format="enum">
+      <enum name="rectangle" value="0"/>
+      <enum name="oval" value="1"/>
+      <enum name="line" value="2"/>
+      <enum name="ring" value="3"/>
+    </attr>
+
+    <attr name="shape3SolidSize" format="dimension"/>
+    <attr name="shape3SolidWidth" format="dimension"/>
+    <attr name="shape3SolidHeight" format="dimension"/>
+    <attr name="shape3SolidColor" format="color"/>
+
+    <attr name="shape3StrokeWidth" format="dimension"/>
+    <attr name="shape3StrokeColor" format="color"/>
+    <attr name="shape3StokeDashWidth" format="dimension"/>
+    <attr name="shape3StokeDashGap" format="dimension"/>
+
+    <attr name="shape3CornerRadius" format="dimension"/>
+    <attr name="shape3CornerRadiusTopLeft" format="dimension"/>
+    <attr name="shape3CornerRadiusTopRight" format="dimension"/>
+    <attr name="shape3CornerRadiusBottomLeft" format="dimension"/>
+    <attr name="shape3CornerRadiusBottomRight" format="dimension"/>
+
+    <attr name="shape3GradientType" format="enum">
+      <enum name="linear" value="0"/>
+      <enum name="radial" value="1"/>
+      <enum name="sweep" value="2"/>
+    </attr>
+    <attr name="shape3GradientAngle" format="enum">
+      <enum name="tb" value="0"/>
+      <enum name="tr_bl" value="1"/>
+      <enum name="rl" value="2"/>
+      <enum name="br_tl" value="3"/>
+      <enum name="bt" value="4"/>
+      <enum name="bl_tr" value="5"/>
+      <enum name="lr" value="6"/>
+      <enum name="tl_br" value="7"/>
+
+    </attr>
+    <attr name="shape3GradientStartColor" format="color"/>
+    <attr name="shape3GradientCenterColor" format="color"/>
+    <attr name="shape3GradientEndColor" format="color"/>
+    <attr name="shape3GradientRadius" format="dimension"/>
+    <attr name="shape3GradientCenterX" format="dimension"/>
+    <attr name="shape3GradientCenterY" format="dimension"/>
+
+  </declare-styleable>
+  <!--shape3结束-->
+
+  <!--shape4-->
+  <declare-styleable name="Folivora_Shape4">
+    <attr name="shape4Type" format="enum">
+      <enum name="rectangle" value="0"/>
+      <enum name="oval" value="1"/>
+      <enum name="line" value="2"/>
+      <enum name="ring" value="3"/>
+    </attr>
+
+    <attr name="shape4SolidSize" format="dimension"/>
+    <attr name="shape4SolidWidth" format="dimension"/>
+    <attr name="shape4SolidHeight" format="dimension"/>
+    <attr name="shape4SolidColor" format="color"/>
+
+    <attr name="shape4StrokeWidth" format="dimension"/>
+    <attr name="shape4StrokeColor" format="color"/>
+    <attr name="shape4StokeDashWidth" format="dimension"/>
+    <attr name="shape4StokeDashGap" format="dimension"/>
+
+    <attr name="shape4CornerRadius" format="dimension"/>
+    <attr name="shape4CornerRadiusTopLeft" format="dimension"/>
+    <attr name="shape4CornerRadiusTopRight" format="dimension"/>
+    <attr name="shape4CornerRadiusBottomLeft" format="dimension"/>
+    <attr name="shape4CornerRadiusBottomRight" format="dimension"/>
+
+    <attr name="shape4GradientType" format="enum">
+      <enum name="linear" value="0"/>
+      <enum name="radial" value="1"/>
+      <enum name="sweep" value="2"/>
+    </attr>
+    <attr name="shape4GradientAngle" format="enum">
+      <enum name="tb" value="0"/>
+      <enum name="tr_bl" value="1"/>
+      <enum name="rl" value="2"/>
+      <enum name="br_tl" value="3"/>
+      <enum name="bt" value="4"/>
+      <enum name="bl_tr" value="5"/>
+      <enum name="lr" value="6"/>
+      <enum name="tl_br" value="7"/>
+
+    </attr>
+    <attr name="shape4GradientStartColor" format="color"/>
+    <attr name="shape4GradientCenterColor" format="color"/>
+    <attr name="shape4GradientEndColor" format="color"/>
+    <attr name="shape4GradientRadius" format="dimension"/>
+    <attr name="shape4GradientCenterX" format="dimension"/>
+    <attr name="shape4GradientCenterY" format="dimension"/>
+
+  </declare-styleable>
+  <!--shape4结束-->
+
   <!--selector-->
   <declare-styleable name="Folivora_Selector">
-    <attr name="selectorStateFirst" format="reference|color"/>
-    <attr name="selectorStateMiddle" format="reference|color"/>
-    <attr name="selectorStateLast" format="reference|color"/>
-    <attr name="selectorStateActive" format="reference|color"/>
-    <attr name="selectorStateActivated" format="reference|color"/>
-    <attr name="selectorStateAccelerate" format="reference|color"/>
-    <attr name="selectorStateChecked" format="reference|color"/>
-    <attr name="selectorStateCheckable" format="reference|color"/>
-    <attr name="selectorStateEnabled" format="reference|color"/>
-    <attr name="selectorStateFocused" format="reference|color"/>
-    <attr name="selectorStatePressed" format="reference|color"/>
-    <attr name="selectorStateNormal" format="reference|color"/>
+    <attr name="selectorStateFirst" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateMiddle" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateLast" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateActive" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateActivated" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateAccelerate" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateChecked" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateCheckable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateEnabled" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateFocused" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStatePressed" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateNormal" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
     <!--selector结束-->
   </declare-styleable>
 
@@ -92,43 +368,85 @@
     <attr name="layerItem0Top" format="dimension"/>
     <attr name="layerItem0Right" format="dimension"/>
     <attr name="layerItem0Bottom" format="dimension"/>
-    <attr name="layerItem0Drawable" format="reference|color"/>
+    <attr name="layerItem0Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
 
     <attr name="layerItem1Insets" format="dimension"/>
     <attr name="layerItem1Left" format="dimension"/>
     <attr name="layerItem1Top" format="dimension"/>
     <attr name="layerItem1Right" format="dimension"/>
     <attr name="layerItem1Bottom" format="dimension"/>
-    <attr name="layerItem1Drawable" format="reference|color"/>
+    <attr name="layerItem1Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
 
     <attr name="layerItem2Insets" format="dimension"/>
     <attr name="layerItem2Left" format="dimension"/>
     <attr name="layerItem2Top" format="dimension"/>
     <attr name="layerItem2Right" format="dimension"/>
     <attr name="layerItem2Bottom" format="dimension"/>
-    <attr name="layerItem2Drawable" format="reference|color"/>
+    <attr name="layerItem2Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
 
     <attr name="layerItem3Insets" format="dimension"/>
     <attr name="layerItem3Left" format="dimension"/>
     <attr name="layerItem3Top" format="dimension"/>
     <attr name="layerItem3Right" format="dimension"/>
     <attr name="layerItem3Bottom" format="dimension"/>
-    <attr name="layerItem3Drawable" format="reference|color"/>
+    <attr name="layerItem3Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
 
     <attr name="layerItem4Insets" format="dimension"/>
     <attr name="layerItem4Left" format="dimension"/>
     <attr name="layerItem4Top" format="dimension"/>
     <attr name="layerItem4Right" format="dimension"/>
     <attr name="layerItem4Bottom" format="dimension"/>
-    <attr name="layerItem4Drawable" format="reference|color"/>
+    <attr name="layerItem4Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
   </declare-styleable>
   <!--layer-list结束-->
 
   <!--ripple only worked on Lollipop or higher-->
   <declare-styleable name="Folivora_Ripple">
     <attr name="rippleColor" format="color"/>
-    <attr name="rippleMask" format="reference|color"/>
-    <attr name="rippleContent" format="reference|color"/>
+    <attr name="rippleMask" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="rippleContent" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
   </declare-styleable>
   <!--ripple结束-->
 
@@ -157,7 +475,13 @@
       <enum name="horizontal" value="1"/>
       <enum name="vertical" value="2"/>
     </attr>
-    <attr name="clipDrawable" format="reference|color"/>
+    <attr name="clipDrawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
     <attr name="clipLevel" format="integer"/>
     <attr name="clipGravity" format="flags">
       <!-- Push object to the top of its container, not changing its size. -->
@@ -200,7 +524,13 @@
 
   <!--inset-->
   <declare-styleable name="Folivora_Inset">
-    <attr name="insetDrawable" format="reference|color"/>
+    <attr name="insetDrawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
     <attr name="insetAll" format="dimension|fraction"/>
     <attr name="insetLeft" format="dimension|fraction"/>
     <attr name="insetTop" format="dimension|fraction"/>
@@ -212,7 +542,13 @@
   <!--scale-->
   <declare-styleable name="Folivora_Scale">
     <attr name="scaleLevel" format="integer"/>
-    <attr name="scaleDrawable" format="reference|color"/>
+    <attr name="scaleDrawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
     <attr name="scaleGravity" format="flags">
 
       <!-- Push object to the top of its container, not changing its size. -->
@@ -260,7 +596,6 @@
   <declare-styleable name="Folivora_Animation">
     <attr name="animAutoPlay" format="boolean"/>
     <attr name="animOneShot" format="boolean"/>
-    <attr name="animVairablePadding" format="dimension"/>
     <attr name="animFrame0" format="reference|color"/>
     <attr name="animFrame1" format="reference|color"/>
     <attr name="animFrame2" format="reference|color"/>
@@ -289,19 +624,49 @@
   <!--level-->
   <declare-styleable name="Folivora_Level">
     <attr name="levelCurrentLevel" format="integer"/>
-    <attr name="levelItem0Drawable" format="reference|color"/>
+    <attr name="levelItem0Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
     <attr name="levelItem0MinLevel" format="integer"/>
     <attr name="levelItem0MaxLevel" format="integer"/>
-    <attr name="levelItem1Drawable" format="reference|color"/>
+    <attr name="levelItem1Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
     <attr name="levelItem1MinLevel" format="integer"/>
     <attr name="levelItem1MaxLevel" format="integer"/>
-    <attr name="levelItem2Drawable" format="reference|color"/>
+    <attr name="levelItem2Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
     <attr name="levelItem2MinLevel" format="integer"/>
     <attr name="levelItem2MaxLevel" format="integer"/>
-    <attr name="levelItem3Drawable" format="reference|color"/>
+    <attr name="levelItem3Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
     <attr name="levelItem3MinLevel" format="integer"/>
     <attr name="levelItem3MaxLevel" format="integer"/>
-    <attr name="levelItem4Drawable" format="reference|color"/>
+    <attr name="levelItem4Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
     <attr name="levelItem4MinLevel" format="integer"/>
     <attr name="levelItem4MaxLevel" format="integer"/>
   </declare-styleable>

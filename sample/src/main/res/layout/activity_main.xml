@@ -230,6 +230,23 @@
       app:animFrame9="@drawable/animation9"
       app:drawableType="animation"/>
 
+    <TextView
+      android:layout_width="100dp"
+      android:layout_height="40dp"
+      android:layout_marginLeft="10dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:gravity="center"
+      android:text="nested shape"
+      android:textColor="@android:color/white"
+      app:drawableType="selector"
+      app:selectorStateNormal="shape"
+      app:shapeSolidColor="@color/colorAccent"
+      app:shapeCornerRadius="10dp"
+      app:shape1CornerRadius="10dp"
+      app:shape1SolidColor="@android:color/holo_blue_dark"
+      app:selectorStatePressed="shape1"/>
+
   </LinearLayout>
 
 </LinearLayout>
