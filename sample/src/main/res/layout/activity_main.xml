@@ -249,4 +249,32 @@
 
   </LinearLayout>
 
+  <LinearLayout
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+      app:drawableName="cn.cricin.folivora.sample.drawable.WindmillDrawable"
+      app:color0="@color/colorAccent"
+      app:color1="@color/colorPrimary"
+      app:color2="@android:color/holo_green_light"
+      app:color3="@android:color/holo_purple"
+      app:rotateDegrees="45"
+      android:layout_width="120dp"
+      android:layout_height="120dp"/>
+
+    <View
+      android:layout_marginLeft="10dp"
+      app:drawableName="cn.cricin.folivora.sample.drawable.AlphaBackgroundDrawable"
+      app:squareSize="5dp"
+      app:squareColor0="#FF888888"
+      app:squareColor1="#FFDDDDDD"
+      android:layout_width="120dp"
+      android:layout_height="120dp"/>
+
+  </LinearLayout>
+
 </LinearLayout>

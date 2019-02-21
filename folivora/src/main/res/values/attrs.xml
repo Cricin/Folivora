@@ -456,7 +456,7 @@
       <enum name="src" value="1"/>
     </attr>
 
-    <attr name="drawableType" format="enum">
+    <attr name="drawableType" format="enum|string">
       <enum name="shape" value="0"/>
       <enum name="selector" value="1"/>
       <enum name="layer_list" value="2"/>
@@ -467,6 +467,7 @@
       <enum name="scale" value="7"/>
       <enum name="animation" value="8"/>
     </attr>
+    <attr name="drawableName" format="string"/>
   </declare-styleable>
 
   <!--clip-->

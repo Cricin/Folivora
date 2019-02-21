@@ -1,3 +1,4 @@
 include ':sample'
 include ':folivora'
 include ':preview_support'
+include ':lint'

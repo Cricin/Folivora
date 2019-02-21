@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="WindmillDrawable">
+    <attr name="size" format="dimension"/>
+    <attr name="color0" format="color"/>
+    <attr name="color1" format="color"/>
+    <attr name="color2" format="color"/>
+    <attr name="color3" format="color"/>
+    <attr name="centerDotRadius" format="dimension"/>
+    <attr name="centerDotColor" format="color"/>
+    <attr name="rotateDegrees" format="integer"/>
+  </declare-styleable>
+
+  <declare-styleable name="AlphaBackgroundDrawable">
+    <attr name="squareSize" format="dimension"/>
+    <attr name="squareColor0" format="color"/>
+    <attr name="squareColor1" format="color"/>
+
+  </declare-styleable>
+
+</resources>

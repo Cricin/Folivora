@@ -29,7 +29,7 @@ import android.util.AttributeSet;
  * @see Folivora#getDrawable(Context, TypedArray, AttributeSet, int)
  * @see Folivora#newShape(Context, AttributeSet)
  */
-final class ShapeFactory {
+final class FolivoraShapeFactory {
 
   /**
    * Create a new GradientDrawable(shape) using attrs from shape1
@@ -235,5 +235,5 @@ final class ShapeFactory {
     return gd;
   }
 
-  private ShapeFactory() {}
+  private FolivoraShapeFactory() {}
 }

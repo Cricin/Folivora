@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.jetbrains.android.dom;
+package cn.cricin.folivora.dom;
 
 import com.android.SdkConstants;
 import com.intellij.psi.xml.XmlAttribute;
@@ -24,6 +24,9 @@ import com.intellij.util.xml.DomElement;
 import com.intellij.util.xml.XmlName;
 import com.intellij.util.xml.reflect.DomExtension;
 
+import org.jetbrains.android.dom.AndroidDomElement;
+import org.jetbrains.android.dom.AndroidDomUtil;
+import org.jetbrains.android.dom.AttributeProcessingUtil;
 import org.jetbrains.android.dom.attrs.AttributeDefinition;
 import org.jetbrains.android.dom.attrs.AttributeDefinitions;
 import org.jetbrains.android.dom.attrs.AttributeFormat;

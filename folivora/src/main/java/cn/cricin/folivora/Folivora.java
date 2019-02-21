@@ -41,8 +41,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Folivora support sets drawable directly in your layout.xml files, no need
@@ -102,6 +107,12 @@ public final class Folivora {
   @SuppressWarnings("unused")
   private static Appendable sOut;//for ui preview debug purpose
   private static RippleFallback sRippleFallback;
+  private static List<DrawableFactory> sDrawableFactories;
+
+  private static Class[] sConstructorSignature = {Context.class, AttributeSet.class};
+  private static Object[] sConstructorArgs = new Object[2];
+  private static Map<String, Constructor<? extends Drawable>> sConstructorCache = new HashMap<>();
+  private static Set<String> sFailedNames = new HashSet<>();
 
   /**
    * Create a new GradientDrawable(shape).
@@ -604,8 +615,9 @@ public final class Folivora {
    * @param attrIndex attribute index in the typed array
    * @return a drawable, or a newly created GradientDrawable from attrs, or null
    */
-  private static Drawable getDrawable(Context ctx, TypedArray a, AttributeSet attrs, int attrIndex) {
-    if(!a.hasValue(attrIndex)) return null;
+  @SuppressWarnings("WeakerAccess")
+  public static Drawable getDrawable(Context ctx, TypedArray a, AttributeSet attrs, int attrIndex) {
+    if (!a.hasValue(attrIndex)) return null;
     Drawable result = null;
     final int shapeIndex = a.getInt(attrIndex, -1);
     switch (shapeIndex) {
@@ -615,16 +627,16 @@ public final class Folivora {
         result = newShape(ctx, attrs);
         break;
       case SHAPE_INDEX_1:
-        result = ShapeFactory.newShape1(ctx, attrs);
+        result = FolivoraShapeFactory.newShape1(ctx, attrs);
         break;
       case SHAPE_INDEX_2:
-        result = ShapeFactory.newShape2(ctx, attrs);
+        result = FolivoraShapeFactory.newShape2(ctx, attrs);
         break;
       case SHAPE_INDEX_3:
-        result = ShapeFactory.newShape3(ctx, attrs);
+        result = FolivoraShapeFactory.newShape3(ctx, attrs);
         break;
       case SHAPE_INDEX_4:
-        result = ShapeFactory.newShape4(ctx, attrs);
+        result = FolivoraShapeFactory.newShape4(ctx, attrs);
       default:
         Log.w(TAG, "Unexpected shape index" + shapeIndex);
         break;
@@ -646,6 +658,8 @@ public final class Folivora {
   private static Drawable newDrawable(int drawableType, Context ctx, AttributeSet attrs) {
     Drawable result = null;
     switch (drawableType) {
+      case -1://not used
+        break;
       case DRAWABLE_TYPE_SHAPE:
         result = newShape(ctx, attrs);
         break;
@@ -680,12 +694,84 @@ public final class Folivora {
     return result;
   }
 
+  /**
+   * Try to create a custom drawable from the given class name, note
+   * that the custom drawable class must have a public constructor
+   * that takes a {@link Context} context and a {@link AttributeSet}
+   * attrs as parameters, if it is difficult to make this constructor,
+   * you can supply a {@link DrawableFactory} drawable factory to
+   * folivora instead, which can receive attributes to create and
+   * configure the drawable manually.
+   *
+   * @param name  full qualified drawable name
+   * @param ctx   current context
+   * @param attrs attributes from view tag
+   * @return a newly created drawable, or null
+   */
+  private static Drawable newCustomDrawable(String name, Context ctx, AttributeSet attrs) {
+    if (sFailedNames.contains(name)) return null;
+    if (name.indexOf('.') == -1) return null;
+    Constructor<? extends Drawable> constructor = sConstructorCache.get(name);
+
+    try {
+      if (constructor == null) {
+        Class<? extends Drawable> clazz = ctx.getClassLoader().loadClass(name).asSubclass(Drawable.class);
+        constructor = clazz.getConstructor(sConstructorSignature);
+        constructor.setAccessible(true);
+        sConstructorCache.put(name, constructor);
+      }
+      sConstructorArgs[0] = ctx;
+      sConstructorArgs[1] = attrs;
+      return constructor.newInstance(sConstructorArgs);
+    } catch (ClassNotFoundException cnfe) {
+      sFailedNames.add(name);
+      Log.w(TAG, "drawable class [" + name + "] not found, Folivora will never try to load it any more");
+    } catch (NoSuchMethodException nsme) {
+      sFailedNames.add(name);
+      final String classSimpleName = name.substring(name.lastIndexOf('.') + 1);
+      final String msg = "constructor " + classSimpleName + "(Context context, AttributeSet attrs)"
+        + " does not exists in drawable class [" + name + "], Folivora will never try to load it any more";
+      Log.w(TAG, msg);
+    } catch (IllegalAccessException iae) {
+      throw new AssertionError();//never happen
+    } catch (Exception e) {
+      Log.w(TAG, "exception occurred instantiating drawable [" + name + "]", e);
+    } finally {
+      sConstructorArgs[0] = null;
+      sConstructorArgs[1] = null;
+    }
+
+    return null;
+  }
+
+  /**
+   * Create a new drawable by the {@link DrawableFactory} with the specific
+   * drawableType and using the {@code attrs} customize it.
+   *
+   * @param drawableTypeName a drawableType used to find suitable DrawableFactory
+   * @param ctx              current context
+   * @param attrs            attributes from view tag
+   * @return a newly created drawable, or null
+   */
+  private static Drawable newDrawableFromFactory(String drawableTypeName, Context ctx, AttributeSet attrs) {
+    if (sDrawableFactories == null) return null;
+    for (DrawableFactory creator : sDrawableFactories) {
+      if (drawableTypeName.equals(creator.drawableType())) {
+        return creator.newDrawable(ctx, attrs);
+      }
+    }
+    return null;
+  }
+
   static void applyDrawableToView(View view, AttributeSet attrs) {
-    TypedArray a = view.getContext().obtainStyledAttributes(attrs, R.styleable.Folivora);
+    final Context ctx = view.getContext();
+    TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora);
+
     int drawableType = a.getInt(R.styleable.Folivora_drawableType, -1);
+    String drawableName = a.getString(R.styleable.Folivora_drawableName);
     int setAs = a.getInt(R.styleable.Folivora_setAs, SET_AS_BACKGROUND);
     a.recycle();
-    if (drawableType < 0 || setAs < 0) return;
+    if ((drawableType < 0 && drawableName == null) || setAs < 0) return;
 
     if (sOut != null) {
       try {
@@ -702,9 +788,18 @@ public final class Folivora {
       }
     }
 
-    Drawable d = newDrawable(drawableType, view.getContext(), attrs);
+    Drawable d = null;
+    if (drawableType >= 0) {
+      d = newDrawable(drawableType, ctx, attrs);
+    }
+    if (d == null && drawableName != null) {
+      d = newDrawableFromFactory(drawableName, ctx, attrs);
+      if (d == null) {
+        d = newCustomDrawable(drawableName, ctx, attrs);
+      }
+    }
     if (d == null) return;
-    if (setAs == 1 && view instanceof ImageView) {
+    if (setAs == SET_AS_SRC && view instanceof ImageView) {
       ((ImageView) view).setImageDrawable(d);
     } else {
       view.setBackground(d);
@@ -820,6 +915,21 @@ public final class Folivora {
    */
   public static void setRippleFallback(RippleFallback fallback) {
     sRippleFallback = fallback;
+  }
+
+  /**
+   * Add a {@link DrawableFactory} factory to folivora, folivora
+   * will create drawables from this factory if the drawableType
+   * specified in view attrs equals with {@link DrawableFactory#drawableType()}
+   * return value
+   *
+   * @param factory factory for create drawable
+   */
+  public static void addDrawableFactory(DrawableFactory factory) {
+    if (sDrawableFactories == null) {
+      sDrawableFactories = new ArrayList<>();
+    }
+    sDrawableFactories.add(factory);
   }
 
   private Folivora() {}
