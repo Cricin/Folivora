@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <declare-styleable name="WindmillDrawable">
-    <attr name="size" format="dimension"/>
-    <attr name="color0" format="color"/>
-    <attr name="color1" format="color"/>
-    <attr name="color2" format="color"/>
-    <attr name="color3" format="color"/>
-    <attr name="centerDotRadius" format="dimension"/>
-    <attr name="centerDotColor" format="color"/>
-    <attr name="rotateDegrees" format="integer"/>
+    <attr name="wdSize" format="dimension"/>
+    <attr name="wdColor0" format="color"/>
+    <attr name="wdColor1" format="color"/>
+    <attr name="wdColor2" format="color"/>
+    <attr name="wdColor3" format="color"/>
+    <attr name="wdCenterDotRadius" format="dimension"/>
+    <attr name="wdCenterDotColor" format="color"/>
+    <attr name="wdRotateDegrees" format="integer"/>
   </declare-styleable>
 
   <declare-styleable name="AlphaBackgroundDrawable">
-    <attr name="squareSize" format="dimension"/>
-    <attr name="squareColor0" format="color"/>
-    <attr name="squareColor1" format="color"/>
+    <attr name="abdSquareSize" format="dimension"/>
+    <attr name="abdSquareColor0" format="color"/>
+    <attr name="abdSquareColor1" format="color"/>
+  </declare-styleable>
 
+  <declare-styleable name="UmbrellaDrawable">
+    <attr name="udBackgroundColor" format="color"/>
+    <attr name="udColor1" format="color"/>
+    <attr name="udColor2" format="color"/>
   </declare-styleable>
 
 </resources>

@@ -18,13 +18,16 @@ package cn.cricin.folivora.sample;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 
 import cn.cricin.folivora.Folivora;
+import cn.cricin.folivora.sample.drawable.UmbrellaDrawable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    //Folivora.installViewFactory(this); //if you do not want folivora wraps the base context, using this
+
     //create a selector if ripple drawable is unavailable
     Folivora.setRippleFallback(new Folivora.RippleFallback() {
       @Override
@@ -46,6 +51,27 @@ public class MainActivity extends AppCompatActivity {
         return sld;
       }
     });
+
+    //UmbrellaDrawable does not have a UmbrellaDrawable(Context ctx, AttributeSet attrs)
+    //constructor, so we take over creation here
+    Folivora.addDrawableFactory(new Folivora.DrawableFactory() {
+      @Override
+      public Drawable newDrawable(Context context, AttributeSet attrs) {
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.UmbrellaDrawable);
+        UmbrellaDrawable d = new UmbrellaDrawable();
+        d.setBackgroundColor(a.getColor(R.styleable.UmbrellaDrawable_udBackgroundColor, d.getBackgroundColor()));
+        d.setColor1(a.getColor(R.styleable.UmbrellaDrawable_udColor1, d.getColor1()));
+        d.setColor2(a.getColor(R.styleable.UmbrellaDrawable_udColor2, d.getColor2()));
+        a.recycle();
+        return d;
+      }
+
+      @Override
+      public Class<? extends Drawable> drawableClass() {
+        return UmbrellaDrawable.class;
+      }
+    });
+
     setContentView(R.layout.activity_main);
   }
 }

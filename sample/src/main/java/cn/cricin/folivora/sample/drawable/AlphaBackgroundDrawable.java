@@ -51,9 +51,9 @@ public class AlphaBackgroundDrawable extends Drawable {
 
   public AlphaBackgroundDrawable(Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.AlphaBackgroundDrawable);
-    final int color0 = a.getColor(R.styleable.AlphaBackgroundDrawable_squareColor0, DEFAULT_COLOR_0);
-    final int color1 = a.getColor(R.styleable.AlphaBackgroundDrawable_squareColor1, DEFAULT_COLOR_1);
-    final int squareSize = a.getDimensionPixelSize(R.styleable.AlphaBackgroundDrawable_squareSize,
+    final int color0 = a.getColor(R.styleable.AlphaBackgroundDrawable_abdSquareColor0, DEFAULT_COLOR_0);
+    final int color1 = a.getColor(R.styleable.AlphaBackgroundDrawable_abdSquareColor1, DEFAULT_COLOR_1);
+    final int squareSize = a.getDimensionPixelSize(R.styleable.AlphaBackgroundDrawable_abdSquareSize,
       DEFAULT_SQUARE_SIZE);
     a.recycle();
 

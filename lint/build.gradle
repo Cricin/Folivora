@@ -4,6 +4,10 @@ def ideInstallationDir = new File('/Applications/Android Studio 3.1 Preview.app/
 def androidPluginLibPath = 'plugins/android/lib'
 def lintVersion = '26.2.0-alpha06'
 
+configurations {
+  lintChecks
+}
+
 dependencies {
   compileOnly "com.android.tools.lint:lint-api:$lintVersion"
   compileOnly "com.android.tools.lint:lint-checks:$lintVersion"
@@ -27,6 +31,7 @@ dependencies {
   } else {
     throw new GradleException('Invalid ide installation dir')
   }
+  lintChecks files(jar)
 }
 
 jar {
@@ -43,4 +48,15 @@ task installLint(type: Copy) {
   dependsOn(jarTask)
   from(jarTask.outputs.files)
   into(new File(new File(System.getProperty("user.home")), '.android/lint/'))
+}
+
+task uninstallLint() {
+  setGroup('install')
+  doFirst {
+    File lintLibDir = new File(new File(System.getProperty("user.home")), '.android/lint')
+    def folivoraLintJar = new File(lintLibDir, 'folivora-lint.jar')
+    if (folivoraLintJar.exists()) {
+      folivoraLintJar.delete()
+    }
+  }
 }

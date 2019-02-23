@@ -63,28 +63,28 @@ public class WindmillDrawable extends Drawable {
     for (int i = 0; i < count; i++) {
       int index = a.getIndex(i);
       switch (index) {
-        case R.styleable.WindmillDrawable_size:
+        case R.styleable.WindmillDrawable_wdSize:
           mSize = a.getDimensionPixelSize(index, mSize);
           break;
-        case R.styleable.WindmillDrawable_color0:
+        case R.styleable.WindmillDrawable_wdColor0:
           mColors[0] = a.getColor(index, mColors[0]);
           break;
-        case R.styleable.WindmillDrawable_color1:
+        case R.styleable.WindmillDrawable_wdColor1:
           mColors[1] = a.getColor(index, mColors[1]);
           break;
-        case R.styleable.WindmillDrawable_color2:
+        case R.styleable.WindmillDrawable_wdColor2:
           mColors[2] = a.getColor(index, mColors[2]);
           break;
-        case R.styleable.WindmillDrawable_color3:
+        case R.styleable.WindmillDrawable_wdColor3:
           mColors[3] = a.getColor(index, mColors[3]);
           break;
-        case R.styleable.WindmillDrawable_centerDotRadius:
+        case R.styleable.WindmillDrawable_wdCenterDotRadius:
           mCenterDotRadius = a.getDimensionPixelSize(index, mCenterDotRadius);
           break;
-        case R.styleable.WindmillDrawable_centerDotColor:
+        case R.styleable.WindmillDrawable_wdCenterDotColor:
           mCenterDotColor = a.getColor(index, mCenterDotColor);
           break;
-        case R.styleable.WindmillDrawable_rotateDegrees:
+        case R.styleable.WindmillDrawable_wdRotateDegrees:
           mRotateDegrees = a.getInt(index, 0);
           break;
         default://no-op

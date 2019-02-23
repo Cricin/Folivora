@@ -43,7 +43,7 @@ final class FolivoraInflater extends LayoutInflater {
       mInflater.setFactory2(new FolivoraViewFactory());
     } else {
       if (!(factory2 instanceof FolivoraViewFactory))
-        Log.i("Folivora", "The Activity's LayoutInflater already has a Factory installed"
+        Log.i(Folivora.TAG, "The Activity's LayoutInflater already has a Factory installed"
           + " so we can not install Folivora's");
     }
   }

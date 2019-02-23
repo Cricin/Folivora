@@ -38,6 +38,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -62,9 +63,11 @@ import java.util.Set;
  * @see #wrap(Context)
  * @see #installViewFactory(Context)
  * @see #setRippleFallback(RippleFallback)
+ * @see #addDrawableFactory(DrawableFactory)
+ * @see #getDrawable(Context, TypedArray, AttributeSet, int)
  */
 public final class Folivora {
-  private static final String TAG = "Folivora";
+  static final String TAG = "Folivora";
 
   private static final int DRAWABLE_TYPE_SHAPE = 0;
   private static final int DRAWABLE_TYPE_SELECTOR = 1;
@@ -78,6 +81,7 @@ public final class Folivora {
 
   private static final int SET_AS_BACKGROUND = 0;
   private static final int SET_AS_SRC = 1;
+  private static final int SET_AS_FOREGROUND = 2;
 
   private static final int SHAPE_INDEX_0 = 0;
   private static final int SHAPE_INDEX_1 = 1;
@@ -98,14 +102,56 @@ public final class Folivora {
   private static final int[] STATE_PRESSED = {android.R.attr.state_pressed};
   private static final int[] STATE_NORMAL = {};
 
+  /**
+   * This class is designed for device platform lowers than
+   * {@link Build.VERSION_CODES#LOLLIPOP} lollipop, which RippleDrawable
+   * is unavailable, you can create substitution drawable here
+   */
   public interface RippleFallback {
-    /*Nullable*/
-    Drawable onFallback(ColorStateList color/*Nonnull*/, Drawable content/*Nullable*/,
-                        Drawable mask/*Nullable*/, Context ctx/*Nonnull*/);
+    /**
+     * Called when the view want a RippleDrawable, but it is unavailable in
+     * current device
+     *
+     * @param color   ripple color, nonnull
+     * @param content content of ripple, nullable
+     * @param mask    ripple mask, nullable
+     * @param ctx     current context
+     * @return a substitute drawable, or null
+     */
+    Drawable onFallback(ColorStateList color, Drawable content,
+                        Drawable mask, Context ctx);
   }
 
-  @SuppressWarnings("unused")
-  private static Appendable sOut;//for ui preview debug purpose
+  /**
+   * A drawable factory takes responsibility of drawable creation
+   * when the drawable name retrieved from view tag matches this
+   * factory's {@link #drawableClass()} ()} drawableClass()
+   *
+   * @see Folivora#addDrawableFactory(DrawableFactory)
+   * @see Folivora#newDrawableFromFactory(String, Context, AttributeSet)
+   */
+  public interface DrawableFactory {
+    /**
+     * Create a new drawable instance from the given attrs, if the
+     * specific drawable contains other drawables, note that you need
+     * to use {@link Folivora#getDrawable(Context, TypedArray, AttributeSet, int)}
+     * to get a drawable, which takes care of nested shape creation
+     *
+     * @param ctx   current context
+     * @param attrs attrs in view tag
+     * @return a newly created drawable, or null
+     */
+    Drawable newDrawable(Context ctx, AttributeSet attrs);
+
+    /**
+     * Returns drawable class this factory can handles
+     *
+     * @return a drawable class
+     */
+    Class<? extends Drawable> drawableClass();
+  }
+
+
   private static RippleFallback sRippleFallback;
   private static List<DrawableFactory> sDrawableFactories;
 
@@ -376,7 +422,7 @@ public final class Folivora {
     } else if (sRippleFallback != null) {
       return sRippleFallback.onFallback(color, content, mask, ctx);
     } else {
-      Log.e(TAG, "RippleDrawable is not available in current platform");
+      Log.w(TAG, "RippleDrawable is not available in current platform");
       return null;
     }
   }
@@ -597,7 +643,7 @@ public final class Folivora {
     a.recycle();
     if (autoPlay) {
       if (ad.isOneShot()) {
-        Log.i(TAG, "Auto play mode turned on in oneshot");
+        Log.i(TAG, "Auto play and oneshot both enabled, you could not see the animation");
       }
       ad.start();
     }
@@ -703,39 +749,42 @@ public final class Folivora {
    * folivora instead, which can receive attributes to create and
    * configure the drawable manually.
    *
-   * @param name  full qualified drawable name
-   * @param ctx   current context
-   * @param attrs attributes from view tag
+   * @param drawableName full qualified drawable name
+   * @param ctx          current context
+   * @param attrs        attributes from view tag
    * @return a newly created drawable, or null
    */
-  private static Drawable newCustomDrawable(String name, Context ctx, AttributeSet attrs) {
-    if (sFailedNames.contains(name)) return null;
-    if (name.indexOf('.') == -1) return null;
-    Constructor<? extends Drawable> constructor = sConstructorCache.get(name);
+  private static Drawable newCustomDrawable(String drawableName, Context ctx, AttributeSet attrs) {
+    if (sFailedNames.contains(drawableName)) return null;
+    if (drawableName.indexOf('.') == -1) return null;
+    Constructor<? extends Drawable> constructor = sConstructorCache.get(drawableName);
 
     try {
       if (constructor == null) {
-        Class<? extends Drawable> clazz = ctx.getClassLoader().loadClass(name).asSubclass(Drawable.class);
+        Class<? extends Drawable> clazz = ctx.getClassLoader().loadClass(drawableName)
+          .asSubclass(Drawable.class);
         constructor = clazz.getConstructor(sConstructorSignature);
         constructor.setAccessible(true);
-        sConstructorCache.put(name, constructor);
+        sConstructorCache.put(drawableName, constructor);
       }
       sConstructorArgs[0] = ctx;
       sConstructorArgs[1] = attrs;
       return constructor.newInstance(sConstructorArgs);
     } catch (ClassNotFoundException cnfe) {
-      sFailedNames.add(name);
-      Log.w(TAG, "drawable class [" + name + "] not found, Folivora will never try to load it any more");
+      sFailedNames.add(drawableName);
+      Log.w(TAG, "drawable class [" + drawableName
+        + "] not found, Folivora will never try to load it any more");
     } catch (NoSuchMethodException nsme) {
-      sFailedNames.add(name);
-      final String classSimpleName = name.substring(name.lastIndexOf('.') + 1);
+      sFailedNames.add(drawableName);
+      final String classSimpleName = drawableName.substring(drawableName.lastIndexOf('.') + 1);
       final String msg = "constructor " + classSimpleName + "(Context context, AttributeSet attrs)"
-        + " does not exists in drawable class [" + name + "], Folivora will never try to load it any more";
+        + " does not exists in drawable class [" + drawableName + "], Folivora will never try to" +
+        " load it any more";
       Log.w(TAG, msg);
     } catch (IllegalAccessException iae) {
-      throw new AssertionError();//never happen
+      throw new AssertionError(iae);//never happen
     } catch (Exception e) {
-      Log.w(TAG, "exception occurred instantiating drawable [" + name + "]", e);
+      Log.w(TAG, "exception occurred instantiating drawable [" + drawableName + "]", e);
     } finally {
       sConstructorArgs[0] = null;
       sConstructorArgs[1] = null;
@@ -748,22 +797,41 @@ public final class Folivora {
    * Create a new drawable by the {@link DrawableFactory} with the specific
    * drawableType and using the {@code attrs} customize it.
    *
-   * @param drawableTypeName a drawableType used to find suitable DrawableFactory
-   * @param ctx              current context
-   * @param attrs            attributes from view tag
+   * @param drawableName a drawableName used to find suitable DrawableFactory
+   * @param ctx          current context
+   * @param attrs        attributes from view tag
    * @return a newly created drawable, or null
    */
-  private static Drawable newDrawableFromFactory(String drawableTypeName, Context ctx, AttributeSet attrs) {
+  private static Drawable newDrawableFromFactory(String drawableName, Context ctx, AttributeSet attrs) {
     if (sDrawableFactories == null) return null;
     for (DrawableFactory creator : sDrawableFactories) {
-      if (drawableTypeName.equals(creator.drawableType())) {
+      if (drawableName.equals(creator.drawableClass().getCanonicalName())) {
         return creator.newDrawable(ctx, attrs);
       }
     }
     return null;
   }
 
-  static void applyDrawableToView(View view, AttributeSet attrs) {
+  /**
+   * Create a drawable to the specific view with attrs, this method is
+   * used by folivora internally, but in order to support preview for
+   * the views folivora not stubbed, this method becomes publicly
+   * <p>
+   * note:
+   * this method should only be use to support preview, simple usage is:
+   * <pre>
+   *   public class CustomViewStub extends CustomView {
+   *     public CustomViewStub(Context context, AttributeSet attrs){
+   *       super(context, attrs);
+   *       Folivora.applyDrawableToView(this, attrs);
+   *     }
+   *   }
+   * </pre>
+   *
+   * @param view  view of drawable attached
+   * @param attrs attributes from view tag
+   */
+  public static void applyDrawableToView(View view, AttributeSet attrs) {
     final Context ctx = view.getContext();
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora);
 
@@ -772,21 +840,6 @@ public final class Folivora {
     int setAs = a.getInt(R.styleable.Folivora_setAs, SET_AS_BACKGROUND);
     a.recycle();
     if ((drawableType < 0 && drawableName == null) || setAs < 0) return;
-
-    if (sOut != null) {
-      try {
-        sOut
-          .append("Folivora: ")
-          .append(view.getClass().getSimpleName())
-          .append(" { drawableType: ")
-          .append(drawableTypeToString(drawableType))
-          .append(" setAs: ")
-          .append(setAsToString(setAs))
-          .append(" }\n");
-      } catch (IOException e) {
-        //never happen
-      }
-    }
 
     Drawable d = null;
     if (drawableType >= 0) {
@@ -801,69 +854,27 @@ public final class Folivora {
     if (d == null) return;
     if (setAs == SET_AS_SRC && view instanceof ImageView) {
       ((ImageView) view).setImageDrawable(d);
+    } else if (setAs == SET_AS_FOREGROUND) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        view.setForeground(d);
+      } else if (view instanceof FrameLayout) {
+        //noinspection RedundantCast
+        ((FrameLayout) view).setForeground(d);
+      } else {
+        Log.w(TAG, "Folivora can not set foreground to [" + view.getClass()
+          + "], Current device platform is lower than MarshMallow");
+      }
     } else {
       view.setBackground(d);
     }
-  }
-
-  private static String drawableTypeToString(int drawableType) {
-    String result;
-    switch (drawableType) {
-      case DRAWABLE_TYPE_SHAPE:
-        result = "shape";
-        break;
-      case DRAWABLE_TYPE_SELECTOR:
-        result = "selector";
-        break;
-      case DRAWABLE_TYPE_LAYER:
-        result = "layer-list";
-        break;
-      case DRAWABLE_TYPE_RIPPLE:
-        result = "ripple";
-        break;
-      case DRAWABLE_TYPE_LEVEL:
-        result = "level-list";
-        break;
-      case DRAWABLE_TYPE_CLIP:
-        result = "clip";
-        break;
-      case DRAWABLE_TYPE_INSET:
-        result = "inset";
-        break;
-      case DRAWABLE_TYPE_SCALE:
-        result = "scale";
-        break;
-      case DRAWABLE_TYPE_ANIMATION:
-        result = "animation";
-        break;
-      default:
-        result = "unknown";
-        break;
-    }
-    return result;
-  }
-
-  private static String setAsToString(int setAs) {
-    String result;
-    switch (setAs) {
-      case SET_AS_BACKGROUND:
-        result = "background";
-        break;
-      case SET_AS_SRC:
-        result = "src";
-        break;
-      default:
-        result = "unknown";
-        break;
-    }
-    return result;
   }
 
   /**
    * Install Folivora's ViewFactory to current context. note that if
    * you are using AppCompatActivity, this method should called after
    * your activity's super.onCreate() method, since AppCompatDelegate
-   * will install a AppCompatViewFactory to this context.
+   * will install a {@link LayoutInflater.Factory2} factory2 to this
+   * context.
    *
    * @param ctx context to enable folivora support
    */
@@ -871,12 +882,12 @@ public final class Folivora {
     LayoutInflater inflater = LayoutInflater.from(ctx);
     LayoutInflater.Factory2 factory2 = inflater.getFactory2();
     if (factory2 instanceof FolivoraViewFactory) return;
-    FolivoraViewFactory mine = new FolivoraViewFactory();
-    mine.mFactory2 = factory2;
+    FolivoraViewFactory viewFactory = new FolivoraViewFactory();
+    viewFactory.mFactory2 = factory2;
     if (factory2 != null) {
-      FolivoraViewFactory.forceSetFactory2(inflater, mine);
+      FolivoraViewFactory.forceSetFactory2(inflater, viewFactory);
     } else {
-      inflater.setFactory2(mine);
+      inflater.setFactory2(viewFactory);
     }
   }
 
@@ -919,9 +930,8 @@ public final class Folivora {
 
   /**
    * Add a {@link DrawableFactory} factory to folivora, folivora
-   * will create drawables from this factory if the drawableType
-   * specified in view attrs equals with {@link DrawableFactory#drawableType()}
-   * return value
+   * will create drawables from this factory if the drawableName
+   * specified in view attrs equals with {@link DrawableFactory#drawableClass()}
    *
    * @param factory factory for create drawable
    */

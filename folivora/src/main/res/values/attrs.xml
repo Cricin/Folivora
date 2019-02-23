@@ -454,9 +454,10 @@
     <attr name="setAs" format="enum">
       <enum name="background" value="0"/>
       <enum name="src" value="1"/>
+      <enum name="foreground" value="2"/>
     </attr>
-
-    <attr name="drawableType" format="enum|string">
+    <attr name="replacedBy" format="string"/>
+    <attr name="drawableType" format="enum">
       <enum name="shape" value="0"/>
       <enum name="selector" value="1"/>
       <enum name="layer_list" value="2"/>

@@ -17,10 +17,12 @@
 package cn.cricin.folivora.dom;
 
 import com.android.SdkConstants;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.xml.Converter;
 import com.intellij.util.xml.DomElement;
+import com.intellij.util.xml.GenericAttributeValue;
 import com.intellij.util.xml.XmlName;
 import com.intellij.util.xml.reflect.DomExtension;
 
@@ -34,10 +36,14 @@ import org.jetbrains.android.dom.attrs.StyleableDefinition;
 import org.jetbrains.android.dom.attrs.ToolsAttributeUtil;
 import org.jetbrains.android.dom.converters.CompositeConverter;
 import org.jetbrains.android.dom.converters.ManifestPlaceholderConverter;
+import org.jetbrains.android.dom.converters.PackageClassConverter;
 import org.jetbrains.android.dom.converters.ResourceReferenceConverter;
+import org.jetbrains.android.dom.converters.ViewClassConverter;
 import org.jetbrains.android.dom.layout.DataBindingElement;
 import org.jetbrains.android.dom.layout.LayoutElement;
+import org.jetbrains.android.dom.layout.LayoutViewElement;
 import org.jetbrains.android.dom.manifest.Manifest;
+import org.jetbrains.android.dom.resources.DeclareStyleable;
 import org.jetbrains.android.facet.AndroidFacet;
 import org.jetbrains.android.facet.AndroidFacetConfiguration;
 import org.jetbrains.android.resourceManagers.ModuleResourceManagers;
@@ -53,6 +59,10 @@ import java.util.List;
  * Process folivora attr's to the current dom element
  */
 final class FolivoraAttrProcessing {
+  private static final PackageClassConverter DRAWABLE_CLASS_CONVERTER =
+    new PackageClassConverter("android.graphics.drawable.Drawable");
+  private static final ViewClassConverter VIEW_CLASS_CONVERTER =
+    new ViewClassConverter();
   private static final HashMap<String, String> TYPE_TO_STYLEABLE = new HashMap<>();
   private static final HashMap<String, String> SHAPE_TO_STYLEABLE = new HashMap<>();
 
@@ -83,46 +93,55 @@ final class FolivoraAttrProcessing {
     if (isInvalidTagName(tag.getName())) return;
     List<String> styleableNames = getStyleablesToRegister(tag.getAttributes());
     for (String styleableName : styleableNames) {
-      registerAttributes(facet, element, styleableName, null, callback);
+      if (styleableName != null) {
+        registerAttributes(facet, element, styleableName, null, callback);
+      }
     }
   }
 
   private static List<String> getStyleablesToRegister(XmlAttribute[] attrs) {
     List<String> styleableNames = new ArrayList<>(6);
-    String styleable;
-    boolean drawableTypeFound = false;
+    styleableNames.add("Folivora");
+    String drawableType = null;
+    String drawableName = null;
     for (XmlAttribute attr : attrs) {
       String attrName = attr.getLocalName();
       String attrValue = attr.getValue();
       if ("drawableType".equals(attrName)) {
-        drawableTypeFound = true;
-        styleable = TYPE_TO_STYLEABLE.get(attrValue);
-        if (styleable != null) {
-          styleableNames.add(styleable);
-        }
-        continue;
-      }
-      styleable = SHAPE_TO_STYLEABLE.get(attrValue);
-      if (styleable != null && isAttrDefinedByFolivoraDrawables(attrName)) {
-        styleableNames.add(styleable);
+        drawableType = attrValue;
+      } else if ("drawableName".equals(attrName)) {
+        drawableName = attrValue;
       }
     }
-    if (!drawableTypeFound) {
-      styleableNames.add("Folivora");
+    if (drawableType == null && drawableName == null) return styleableNames;
+    if (drawableType != null) styleableNames.add(TYPE_TO_STYLEABLE.get(drawableType));
+    if (drawableName != null) styleableNames.add(getSimpleClassName(drawableName));
+
+    //process nested shapes
+    String styleable;
+    for (XmlAttribute attr : attrs) {
+      String attrName = attr.getLocalName();
+      String attrValue = attr.getValue();
+      if (attrName.startsWith("shape1")
+        || attrName.startsWith("shape2")
+        || attrName.startsWith("shape3")
+        || attrName.startsWith("shape4")) continue;
+      styleable = SHAPE_TO_STYLEABLE.get(attrValue);
+      if (styleable == null) continue;
+      if (drawableType != null && attrName.startsWith(drawableType)) {
+        styleableNames.add(styleable);
+      } else if (drawableName != null) {//if is custom drawable, register nested shape
+        styleableNames.add(styleable);
+      }
     }
     return styleableNames;
   }
 
-  private static boolean isAttrDefinedByFolivoraDrawables(String attrName) {
-    return attrName.startsWith("shape")
-      || attrName.startsWith("selector")
-      || attrName.startsWith("layer")
-      || attrName.startsWith("ripple")
-      || attrName.startsWith("level")
-      || attrName.startsWith("clip")
-      || attrName.startsWith("inset")
-      || attrName.startsWith("scale")
-      || attrName.startsWith("anim");
+  private static String getSimpleClassName(String className) {
+    if (className == null) return null;
+    int dotIndex = className.lastIndexOf('.');
+    if (dotIndex == -1 || dotIndex + 1 >= className.length()) return null;
+    return className.substring(dotIndex + 1);
   }
 
   private static boolean isInvalidTagName(String tagName) {
@@ -229,14 +248,16 @@ final class FolivoraAttrProcessing {
     DomExtension extension = callback.processAttribute(xmlName, attrDef, parentStyleableName);
     if (extension != null) {
       Converter converter = AndroidDomUtil.getSpecificConverter(xmlName, element);
+      if ("drawableName".equals(name)) {
+        converter = DRAWABLE_CLASS_CONVERTER;
+      } else if ("replacedBy".equals(name)) {
+        converter = VIEW_CLASS_CONVERTER;
+      }
       if (converter == null) {
         if (SdkConstants.TOOLS_URI.equals(namespaceKey)) {
           converter = ToolsAttributeUtil.getConverter(attrDef);
         } else {
           converter = AndroidDomUtil.getConverter(attrDef);
-          if (converter != null && element.getParentOfType(Manifest.class, true) != null) {
-            converter = new ManifestPlaceholderConverter(converter);
-          }
         }
       }
 

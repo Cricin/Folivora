@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 
-def verName = '0.0.3'
+def verName = '0.0.4'
 
 android {
   compileSdkVersion 27
@@ -17,6 +17,26 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+}
+
+configurations {
+  lintChecks
+}
+
+dependencies {
+  lintChecks project(path: ':lint', configuration: 'lintChecks')
+}
+
+task copyLintJar(type: Copy) {
+  from(configurations.lintChecks) {
+    rename { 'lint.jar' }
+  }
+  into 'build/intermediates/lint/'
+}
+
+project.afterEvaluate {
+  def compileLintTask = project.tasks.find { it.name == 'compileLint' }
+  compileLintTask.dependsOn(copyLintJar)
 }
 
 ext {

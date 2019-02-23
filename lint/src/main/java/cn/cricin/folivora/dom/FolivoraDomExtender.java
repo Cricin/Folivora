@@ -25,18 +25,15 @@ import com.intellij.util.xml.reflect.DomExtensionsRegistrar;
 import org.jetbrains.android.dom.AndroidDomElement;
 import org.jetbrains.android.dom.AttributeProcessingUtil;
 import org.jetbrains.android.dom.attrs.AttributeFormat;
-import org.jetbrains.android.dom.converters.PackageClassConverter;
 import org.jetbrains.android.dom.resources.ResourceValue;
 import org.jetbrains.android.facet.AndroidFacet;
 
-import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.util.Set;
 
-public final class FolivoraDomExtender extends DomExtender<AndroidDomElement> {
+import javax.annotation.Nonnull;
 
-  private static final PackageClassConverter DRAWABLE_CLASS_CONVERTER =
-    new PackageClassConverter("android.graphics.drawable.Drawable");
+public final class FolivoraDomExtender extends DomExtender<AndroidDomElement> {
   private static Class sLegacyAttributeFormatClass;
   private static Class sAttributeFormatClass;
 

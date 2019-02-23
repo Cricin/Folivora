@@ -1,6 +1,15 @@
 <resources>
   <color name="colorPrimary">#008577</color>
   <color name="colorPrimaryDark">#00574B</color>
-  <!--<color name="colorAccent">#D81B60</color>-->
   <color name="colorAccent">@android:color/holo_blue_light</color>
+  <color name="red">#FF0000</color>
+  <color name="white">#FFFFFF</color>
+  <color name="black">#000000</color>
+  <color name="gray_light">#DDDDDD</color>
+  <color name="gray">#888888</color>
+  <color name="purple">@android:color/holo_purple</color>
+  <color name="blue_light">@android:color/holo_blue_light</color>
+  <color name="blue_dark">@android:color/holo_blue_dark</color>
+  <color name="green_light">@android:color/holo_green_light</color>
+  <color name="green_dark">@color/colorPrimary</color>
 </resources>

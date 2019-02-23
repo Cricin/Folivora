@@ -15,266 +15,313 @@
   * limitations under the License.
 -->
 
-<LinearLayout
+<android.support.v4.widget.NestedScrollView
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical"
   tools:context=".MainActivity"
   tools:ignore="MissingPrefix,Rtlhardcoded, HardcodedText">
 
   <LinearLayout
+    android:layout_marginLeft="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <TextView
-      android:layout_width="100dp"
-      android:layout_height="40dp"
-      android:gravity="center"
-      android:text="shape1"
-      android:textColor="@android:color/white"
-      app:drawableType="shape"
-      app:shapeCornerRadius="10dp"
-      app:shapeSolidColor="@color/colorAccent"/>
-
-    <TextView
-      android:layout_width="50dp"
-      android:layout_height="50dp"
-      android:layout_marginLeft="10dp"
-      android:gravity="center"
-      android:text="shape2"
-      android:textColor="@android:color/white"
-      app:drawableType="shape"
-      app:shapeCornerRadius="40dp"
-      app:shapeSolidColor="@color/colorAccent"
-      app:shapeSolidSize="80dp"/>
-
-    <TextView
-      android:layout_width="100dp"
-      android:layout_height="40dp"
-      android:layout_marginLeft="10dp"
-      android:gravity="center"
-      android:text="shape3"
-      android:textColor="@android:color/white"
-      app:drawableType="shape"
-      app:shapeGradientAngle="lr"
-      app:shapeGradientCenterColor="@android:color/holo_blue_dark"
-      app:shapeGradientEndColor="@android:color/holo_red_light"
-      app:shapeGradientStartColor="@android:color/holo_purple"/>
-
-  </LinearLayout>
-
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:orientation="horizontal">
-
-    <TextView
-      android:layout_width="100dp"
-      android:layout_height="40dp"
-      android:gravity="center"
-      android:text="layerlist"
-      android:textColor="@android:color/white"
-      app:drawableType="layer_list"
-      app:layerItem0Drawable="@color/colorAccent"
-      app:layerItem1Drawable="@android:color/holo_blue_dark"
-      app:layerItem1Insets="4dp"
-      app:layerItem2Drawable="@android:color/holo_blue_bright"
-      app:layerItem2Insets="8dp"/>
-
-    <TextView
-      android:layout_width="100dp"
-      android:layout_height="40dp"
-      android:layout_marginLeft="10dp"
-      android:clickable="true"
-      android:focusable="true"
-      android:gravity="center"
-      android:text="selector"
-      android:textColor="@android:color/white"
-      app:drawableType="selector"
-      app:selectorStateNormal="@color/colorAccent"
-      app:selectorStatePressed="@android:color/holo_blue_dark"/>
-
-    <TextView
-      android:layout_width="100dp"
-      android:layout_height="40dp"
-      android:layout_marginLeft="10dp"
-      android:clickable="true"
-      android:focusable="true"
-      android:gravity="center"
-      android:text="levellist"
-      android:textColor="@android:color/white"
-      app:drawableType="level_list"
-      app:levelCurrentLevel="95"
-      app:levelItem0Drawable="@color/colorPrimary"
-      app:levelItem1Drawable="@color/colorAccent"
-      app:levelItem1MaxLevel="100"
-      app:levelItem1MinLevel="90"/>
-
-  </LinearLayout>
-
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:orientation="horizontal">
-
-    <TextView
-      android:layout_width="100dp"
-      android:layout_height="40dp"
-      android:clickable="true"
-      android:focusable="true"
-      android:gravity="center"
-      android:text="ripple"
-      android:textColor="@android:color/white"
-      app:drawableType="ripple"
-      app:rippleColor="@android:color/white"
-      app:rippleContent="@color/colorAccent"/>
-
-    <FrameLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="10dp"
-      app:drawableType="shape"
-      app:shapeStrokeColor="@android:color/holo_green_light"
-      app:shapeStrokeWidth="1dp">
+      android:layout_marginTop="10dp"
+      android:text="Drawables builtin supported:"
+      android:textColor="@color/colorPrimary"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:orientation="horizontal">
 
       <TextView
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:gravity="center"
-        android:text="clip"
-        android:textColor="@android:color/white"
-        app:clipDrawable="@color/colorAccent"
-        app:clipLevel="6000"
-        app:drawableType="clip"/>
+        android:text="shape1"
+        android:textColor="@color/white"
+        app:drawableType="shape"
+        app:shapeCornerRadius="10dp"
+        app:shapeSolidColor="@color/blue_light"/>
 
-    </FrameLayout>
+      <TextView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:text="shape2"
+        android:textColor="@color/white"
+        app:drawableType="shape"
+        app:shapeCornerRadius="40dp"
+        app:shapeSolidColor="@color/blue_light"/>
 
-    <FrameLayout
-      android:layout_width="wrap_content"
+      <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:text="shape3"
+        android:textColor="@color/white"
+        app:drawableType="shape"
+        app:shapeGradientAngle="lr"
+        app:shapeGradientCenterColor="@color/blue_light"
+        app:shapeGradientEndColor="@color/red"
+        app:shapeGradientStartColor="@color/purple"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="10dp"
-      app:drawableType="shape"
-      app:shapeStrokeColor="@android:color/holo_green_light"
-      app:shapeStrokeWidth="1dp">
+      android:layout_marginTop="10dp"
+      android:orientation="horizontal">
 
       <TextView
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:gravity="center"
-        android:text="inset"
-        android:textColor="@android:color/white"
-        app:drawableType="inset"
-        app:insetAll="4dp"
-        app:insetDrawable="@color/colorAccent"/>
-
-    </FrameLayout>
-
-  </LinearLayout>
-
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:orientation="horizontal">
-
-    <FrameLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      app:drawableType="shape"
-      app:shapeStrokeColor="@android:color/holo_green_light"
-      app:shapeStrokeWidth="1dp">
+        android:text="layerlist"
+        android:textColor="@color/white"
+        app:drawableType="layer_list"
+        app:layerItem0Drawable="@color/blue_light"
+        app:layerItem1Drawable="@color/purple"
+        app:layerItem1Insets="4dp"
+        app:layerItem2Drawable="@color/blue_dark"
+        app:layerItem2Insets="8dp"/>
 
       <TextView
         android:layout_width="100dp"
         android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="center"
-        android:text="scale"
-        android:textColor="@android:color/white"
-        app:drawableType="scale"
-        app:scaleDrawable="@color/colorAccent"
-        app:scaleGravity="center"
-        app:scaleHeight="0.3"
-        app:scaleWidth="0.3"/>
+        android:text="selector"
+        android:textColor="@color/white"
+        app:drawableType="selector"
+        app:selectorStateNormal="@color/blue_light"
+        app:selectorStatePressed="@color/blue_dark"/>
 
-    </FrameLayout>
+      <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="levellist"
+        android:textColor="@color/white"
+        app:drawableType="level_list"
+        app:levelCurrentLevel="95"
+        app:levelItem0Drawable="@color/green_dark"
+        app:levelItem1Drawable="@color/blue_light"
+        app:levelItem1MaxLevel="100"
+        app:levelItem1MinLevel="90"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:orientation="horizontal">
+
+      <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="ripple"
+        android:textColor="@color/white"
+        app:drawableType="ripple"
+        app:rippleColor="@color/white"
+        app:rippleContent="@color/blue_light"/>
+
+      <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        app:drawableType="shape"
+        app:shapeStrokeColor="@color/green_light"
+        app:shapeStrokeWidth="1dp">
+
+        <TextView
+          android:layout_width="100dp"
+          android:layout_height="40dp"
+          android:gravity="center"
+          android:text="clip"
+          android:textColor="@color/white"
+          app:clipDrawable="@color/blue_light"
+          app:clipLevel="6000"
+          app:drawableType="clip"/>
+
+      </FrameLayout>
+
+      <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        app:drawableType="shape"
+        app:shapeStrokeColor="@color/green_light"
+        app:shapeStrokeWidth="1dp">
+
+        <TextView
+          android:layout_width="100dp"
+          android:layout_height="40dp"
+          android:gravity="center"
+          android:text="inset"
+          android:textColor="@color/white"
+          app:drawableType="inset"
+          app:insetAll="4dp"
+          app:insetDrawable="@color/blue_light"/>
+
+      </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:orientation="horizontal">
+
+      <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:drawableType="shape"
+        app:shapeStrokeColor="@color/green_light"
+        app:shapeStrokeWidth="1dp">
+
+        <TextView
+          android:layout_width="100dp"
+          android:layout_height="40dp"
+          android:gravity="center"
+          android:text="scale"
+          android:textColor="@color/white"
+          app:drawableType="scale"
+          app:scaleDrawable="@color/blue_light"
+          app:scaleGravity="center"
+          app:scaleHeight="0.3"
+          app:scaleWidth="0.3"/>
+
+      </FrameLayout>
+
+      <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:text="animation"
+        android:textColor="@color/white"
+        app:animAutoPlay="true"
+        app:animDuration="300"
+        app:animFrame0="@drawable/animation0"
+        app:animFrame1="@drawable/animation1"
+        app:animFrame2="@drawable/animation2"
+        app:animFrame3="@drawable/animation3"
+        app:animFrame4="@drawable/animation4"
+        app:animFrame5="@drawable/animation5"
+        app:animFrame6="@drawable/animation6"
+        app:animFrame7="@drawable/animation7"
+        app:animFrame8="@drawable/animation8"
+        app:animFrame9="@drawable/animation9"
+        app:drawableType="animation"/>
+
+      <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="nested shape"
+        android:textColor="@color/white"
+        app:drawableType="selector"
+        app:selectorStateNormal="shape"
+        app:selectorStatePressed="shape1"
+        app:shape1CornerRadius="10dp"
+        app:shape1SolidColor="@color/blue_dark"
+        app:shapeCornerRadius="10dp"
+        app:shapeSolidColor="@color/blue_light"/>
+
+    </LinearLayout>
 
     <TextView
-      android:layout_width="100dp"
-      android:layout_height="40dp"
-      android:layout_marginLeft="10dp"
-      android:gravity="center"
-      android:text="animation"
-      android:textColor="@android:color/white"
-      app:animAutoPlay="true"
-      app:animDuration="300"
-      app:animFrame0="@drawable/animation0"
-      app:animFrame1="@drawable/animation1"
-      app:animFrame2="@drawable/animation2"
-      app:animFrame3="@drawable/animation3"
-      app:animFrame4="@drawable/animation4"
-      app:animFrame5="@drawable/animation5"
-      app:animFrame6="@drawable/animation6"
-      app:animFrame7="@drawable/animation7"
-      app:animFrame8="@drawable/animation8"
-      app:animFrame9="@drawable/animation9"
-      app:drawableType="animation"/>
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:text="Custom drawables loaded by it's constructor:"
+      android:textColor="@color/colorPrimary"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:orientation="horizontal">
+
+      <View
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:wdColor0="@color/blue_light"
+        app:wdColor1="@color/green_dark"
+        app:wdColor2="@color/green_light"
+        app:wdColor3="@color/purple"
+        app:drawableName="cn.cricin.folivora.sample.drawable.WindmillDrawable"
+        app:wdRotateDegrees="45"/>
+
+      <View
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginLeft="10dp"
+        app:drawableName="cn.cricin.folivora.sample.drawable.AlphaBackgroundDrawable"
+        app:abdSquareColor0="@color/gray"
+        app:abdSquareColor1="@color/gray_light"
+        app:abdSquareSize="5dp"/>
+
+    </LinearLayout>
 
     <TextView
-      android:layout_width="100dp"
-      android:layout_height="40dp"
-      android:layout_marginLeft="10dp"
-      android:clickable="true"
-      android:focusable="true"
-      android:gravity="center"
-      android:text="nested shape"
-      android:textColor="@android:color/white"
-      app:drawableType="selector"
-      app:selectorStateNormal="shape"
-      app:shapeSolidColor="@color/colorAccent"
-      app:shapeCornerRadius="10dp"
-      app:shape1CornerRadius="10dp"
-      app:shape1SolidColor="@android:color/holo_blue_dark"
-      app:selectorStatePressed="shape1"/>
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:text="Custom drawables loaded by DrawableFactory:"
+      android:textColor="@color/colorPrimary"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:orientation="horizontal">
+
+      <View
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:drawableName="cn.cricin.folivora.sample.drawable.UmbrellaDrawable"
+        app:udBackgroundColor="@color/black"
+        app:udColor1="@color/red"
+        app:udColor2="@color/white"/>
+
+      <View
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginLeft="10dp"
+        app:drawableName="cn.cricin.folivora.sample.drawable.UmbrellaDrawable"
+        app:udBackgroundColor="@color/black"
+        app:udColor1="@color/green_dark"
+        app:udColor2="@color/white"/>
+
+    </LinearLayout>
 
   </LinearLayout>
 
-  <LinearLayout
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <View
-      app:drawableName="cn.cricin.folivora.sample.drawable.WindmillDrawable"
-      app:color0="@color/colorAccent"
-      app:color1="@color/colorPrimary"
-      app:color2="@android:color/holo_green_light"
-      app:color3="@android:color/holo_purple"
-      app:rotateDegrees="45"
-      android:layout_width="120dp"
-      android:layout_height="120dp"/>
-
-    <View
-      android:layout_marginLeft="10dp"
-      app:drawableName="cn.cricin.folivora.sample.drawable.AlphaBackgroundDrawable"
-      app:squareSize="5dp"
-      app:squareColor0="#FF888888"
-      app:squareColor1="#FFDDDDDD"
-      android:layout_width="120dp"
-      android:layout_height="120dp"/>
-
-  </LinearLayout>
-
-</LinearLayout>
+</android.support.v4.widget.NestedScrollView>
