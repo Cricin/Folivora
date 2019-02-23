@@ -25,8 +25,8 @@ import cn.cricin.folivora.Folivora;
  * Stub LinearLayout to support previewing, will be replaced by android.widget.LinearLayout
  * at runtime
  */
-public class LinearLayout extends android.widget.LinearLayout {
-  private LinearLayout(Context context, AttributeSet attrs) {
+public final class LinearLayout extends android.widget.LinearLayout {
+  protected LinearLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

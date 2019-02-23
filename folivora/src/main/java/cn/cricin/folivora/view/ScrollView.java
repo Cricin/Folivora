@@ -25,8 +25,8 @@ import cn.cricin.folivora.Folivora;
  * Stub ScrollView to support previewing, will be replaced by android.widget.ScrollView
  * at runtime
  */
-public class ScrollView extends android.widget.ScrollView {
-  private ScrollView(Context context, AttributeSet attrs) {
+public final class ScrollView extends android.widget.ScrollView {
+  protected ScrollView(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

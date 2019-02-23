@@ -25,8 +25,8 @@ import cn.cricin.folivora.Folivora;
  * Stub EditText to support previewing, will be replaced by android.widget.EditText
  * at runtime
  */
-public class EditText extends android.widget.EditText {
-  private EditText(Context context, AttributeSet attrs) {
+public final class EditText extends android.widget.EditText {
+  protected EditText(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

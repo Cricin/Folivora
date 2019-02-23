@@ -25,8 +25,8 @@ import cn.cricin.folivora.Folivora;
  * Stub Button to support previewing, will be replaced by android.widget.Button
  * at runtime
  */
-public class Button extends android.widget.Button {
-  private Button(Context context, AttributeSet attrs) {
+public final class Button extends android.widget.Button {
+  protected Button(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

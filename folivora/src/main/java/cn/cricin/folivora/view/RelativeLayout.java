@@ -25,8 +25,8 @@ import cn.cricin.folivora.Folivora;
  * Stub RelativeLayout to support previewing, will be replaced by android.widget.RelativeLayout
  * at runtime
  */
-public class RelativeLayout extends android.widget.RelativeLayout {
-  private RelativeLayout(Context context, AttributeSet attrs) {
+public final class RelativeLayout extends android.widget.RelativeLayout {
+  protected RelativeLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

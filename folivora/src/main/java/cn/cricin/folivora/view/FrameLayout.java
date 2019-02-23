@@ -25,8 +25,8 @@ import cn.cricin.folivora.Folivora;
  * Stub FrameLayout to support previewing, will be replaced by android.widget.FrameLayout
  * at runtime
  */
-public class FrameLayout extends android.widget.FrameLayout {
-  private FrameLayout(Context context, AttributeSet attrs) {
+public final class FrameLayout extends android.widget.FrameLayout {
+  protected FrameLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

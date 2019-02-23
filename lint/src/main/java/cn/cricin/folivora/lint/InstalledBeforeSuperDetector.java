@@ -38,7 +38,7 @@ import org.jetbrains.uast.visitor.AbstractUastVisitor;
 import java.util.Collections;
 import java.util.List;
 
-public class InstalledBeforeSuperDetector extends Detector implements SourceCodeScanner, Detector
+public final class InstalledBeforeSuperDetector extends Detector implements SourceCodeScanner, Detector
   .UastScanner {
   static final Issue ISSUE = Issue.create(
     "FolivoraInstalledBeforeSuper",

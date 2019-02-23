@@ -25,8 +25,8 @@ import cn.cricin.folivora.Folivora;
  * Stub HorizontalScrollView to support previewing, will be replaced by
  * android.widget.HorizontalScrollView at runtime
  */
-public class HorizontalScrollView extends android.widget.HorizontalScrollView {
-  private HorizontalScrollView(Context context, AttributeSet attrs) {
+public final class HorizontalScrollView extends android.widget.HorizontalScrollView {
+  protected HorizontalScrollView(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

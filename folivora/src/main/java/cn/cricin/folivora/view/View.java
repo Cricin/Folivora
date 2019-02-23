@@ -25,8 +25,8 @@ import cn.cricin.folivora.Folivora;
  * Stub View to support previewing, will be replaced by android.view.View
  * at runtime
  */
-public class View extends android.view.View {
-  private View(Context context, AttributeSet attrs) {
+public final class View extends android.view.View {
+  protected View(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

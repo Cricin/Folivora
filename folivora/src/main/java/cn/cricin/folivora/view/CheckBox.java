@@ -25,8 +25,8 @@ import cn.cricin.folivora.Folivora;
  * Stub CheckBox to support previewing, will be replaced by android.widget.CheckBox
  * at runtime
  */
-public class CheckBox extends android.widget.CheckBox {
-  private CheckBox(Context context, AttributeSet attrs) {
+public final class CheckBox extends android.widget.CheckBox {
+  protected CheckBox(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

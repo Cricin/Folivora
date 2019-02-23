@@ -25,8 +25,8 @@ import cn.cricin.folivora.Folivora;
  * Stub TextView to support previewing, will be replaced by android.widget.TextView
  * at runtime
  */
-public class TextView extends android.widget.TextView {
-  private TextView(Context context, AttributeSet attrs) {
+public final class TextView extends android.widget.TextView {
+  protected TextView(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }
