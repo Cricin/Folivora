@@ -26,7 +26,7 @@ import cn.cricin.folivora.Folivora;
  * at runtime
  */
 public final class ScrollView extends android.widget.ScrollView {
-  protected ScrollView(Context context, AttributeSet attrs) {
+  public ScrollView(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

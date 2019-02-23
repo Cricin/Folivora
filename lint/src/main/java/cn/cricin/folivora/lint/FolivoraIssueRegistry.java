@@ -50,7 +50,11 @@ public final class FolivoraIssueRegistry extends IssueRegistry {
   @NotNull
   @Override
   public List<Issue> getIssues() {
-    return Arrays.asList(InstalledBeforeSuperDetector.ISSUE, InternalFolivoraApiDetector.ISSUE);
+    return Arrays.asList(
+      InstalledBeforeSuperDetector.ISSUE,
+      InternalFolivoraApiDetector.ISSUE,
+      PreferStubViewDetector.ISSUE
+    );
   }
 
   @Override

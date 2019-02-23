@@ -26,7 +26,7 @@ import cn.cricin.folivora.Folivora;
  * at runtime
  */
 public final class CheckBox extends android.widget.CheckBox {
-  protected CheckBox(Context context, AttributeSet attrs) {
+  public CheckBox(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

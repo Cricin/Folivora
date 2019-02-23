@@ -26,7 +26,7 @@ import cn.cricin.folivora.Folivora;
  * at runtime
  */
 public final class SeekBar extends android.widget.SeekBar {
-  protected SeekBar(Context context, AttributeSet attrs) {
+  public SeekBar(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

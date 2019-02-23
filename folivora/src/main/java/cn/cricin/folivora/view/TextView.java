@@ -26,7 +26,7 @@ import cn.cricin.folivora.Folivora;
  * at runtime
  */
 public final class TextView extends android.widget.TextView {
-  protected TextView(Context context, AttributeSet attrs) {
+  public TextView(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

@@ -26,7 +26,7 @@ import cn.cricin.folivora.Folivora;
  * android.widget.HorizontalScrollView at runtime
  */
 public final class HorizontalScrollView extends android.widget.HorizontalScrollView {
-  protected HorizontalScrollView(Context context, AttributeSet attrs) {
+  public HorizontalScrollView(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

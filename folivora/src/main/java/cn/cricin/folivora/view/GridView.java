@@ -26,7 +26,7 @@ import cn.cricin.folivora.Folivora;
  * at runtime
  */
 public final class GridView extends android.widget.GridView {
-  protected GridView(Context context, AttributeSet attrs) {
+  public GridView(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

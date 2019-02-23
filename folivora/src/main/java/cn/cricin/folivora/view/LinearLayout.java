@@ -26,7 +26,7 @@ import cn.cricin.folivora.Folivora;
  * at runtime
  */
 public final class LinearLayout extends android.widget.LinearLayout {
-  protected LinearLayout(Context context, AttributeSet attrs) {
+  public LinearLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

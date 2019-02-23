@@ -26,7 +26,7 @@ import cn.cricin.folivora.Folivora;
  * at runtime
  */
 public final class ImageView extends android.widget.ImageView {
-  protected ImageView(Context context, AttributeSet attrs) {
+  public ImageView(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

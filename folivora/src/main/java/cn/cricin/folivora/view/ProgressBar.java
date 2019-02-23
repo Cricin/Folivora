@@ -26,7 +26,7 @@ import cn.cricin.folivora.Folivora;
  * at runtime
  */
 public final class ProgressBar extends android.widget.ProgressBar {
-  protected ProgressBar(Context context, AttributeSet attrs) {
+  public ProgressBar(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

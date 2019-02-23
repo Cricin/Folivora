@@ -26,7 +26,7 @@ import cn.cricin.folivora.Folivora;
  * at runtime
  */
 public final class RelativeLayout extends android.widget.RelativeLayout {
-  protected RelativeLayout(Context context, AttributeSet attrs) {
+  public RelativeLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }

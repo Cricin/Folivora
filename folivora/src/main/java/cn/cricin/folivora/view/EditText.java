@@ -26,7 +26,7 @@ import cn.cricin.folivora.Folivora;
  * at runtime
  */
 public final class EditText extends android.widget.EditText {
-  protected EditText(Context context, AttributeSet attrs) {
+  public EditText(Context context, AttributeSet attrs) {
     super(context, attrs);
     Folivora.applyDrawableToView(this, attrs);
   }
