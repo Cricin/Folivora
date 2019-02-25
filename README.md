@@ -15,7 +15,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 * animation (AnimationDrawable)
 * 自定义的Drawable**(新增)**
 
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview.gif"></img>
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview.gif" width="50%" height="50%"></img>
 
 ### 使用方法
  - **STEP1** :
@@ -248,28 +248,30 @@ Folivora现在支持在drawable中嵌套shape了，除了animation以外，所�
 ```
 可以看到，自定义属性这部分和普通的`View`自定义属性是一样的。name和自定义drawable的类名相同就行了，Folivora就可以在layout文件中为这些drawable的自定义属性提供属性的自动提示了
 
-2. 创建自定义的`WillnillDrawable`，继承自`Drawable`, 提供一个`public WindmillDrawable(Context ctx, AttributeSet attrs)`的构造方法，在这个构造方法里就可以获取自定义的属性, 代码如下：
+2. 创建自定义的`WindmillDrawable`，继承自`Drawable`, 提供一个`public WindmillDrawable(Context ctx, AttributeSet attrs)`的构造方法，在这个构造方法里就可以获取自定义的属性, 代码如下：
 ```java
-TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.WindmillDrawable);
-int count = a.getIndexCount();
-for (int i = 0; i < count; i++) {
-  int index = a.getIndex(i);
-  switch (index) {
-    case R.styleable.WindmillDrawable_wdSize:
-      mSize = a.getDimensionPixelSize(index, mSize);
-      break;
-    case R.styleable.WindmillDrawable_wdColor0:
-      mColors[0] = a.getColor(index, mColors[0]);
-      break;
-    case R.styleable.WindmillDrawable_wdColor1:
-      mColors[1] = a.getColor(index, mColors[1]);
-      break;
-    ...
-    default://no-op
-      break;
+public WindmillDrawable(Context ctx, AttributeSet attrs) {
+  TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.WindmillDrawable);
+  int count = a.getIndexCount();
+  for (int i = 0; i < count; i++) {
+    int index = a.getIndex(i);
+    switch (index) {
+      case R.styleable.WindmillDrawable_wdSize:
+        mSize = a.getDimensionPixelSize(index, mSize);
+        break;
+      case R.styleable.WindmillDrawable_wdColor0:
+        mColors[0] = a.getColor(index, mColors[0]);
+        break;
+      case R.styleable.WindmillDrawable_wdColor1:
+        mColors[1] = a.getColor(index, mColors[1]);
+        break;
+      ...
+      default://no-op
+        break;
+    }
   }
+  a.recycle();
 }
-a.recycle();
 ```
 这部分代码其实和自定义`View`的属性获取没有什么区别，主要就是给drawable添加一个构造方法，具体绘制代码就不贴了，如果想要查看具体细节，可以点击[这里](https://github.com/Cricin/Folivora/master/sample/src/main/java/cn/cricin/folivora/sample/drawable/WindmillDrawable.java)查看源码
 
@@ -287,7 +289,7 @@ a.recycle();
 ```
 运行之后的效果：
 
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_custom_drawable.gif"></img>
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_custom_drawable.png"></img>
 
 
 到这里，Folivora就会为该`View`设置我们指定的drawable了，有人可能就会问了，drawable名字这么长，写起来会不会太复杂了，不用担心，当你敲出drawableName的时候，Folivora会为你自动提示可用的drawable名字的，并且该drawable的自定义属性也会有自动提示。
@@ -373,7 +375,7 @@ Folivora使用lint原本是为了内嵌的xml代码自动提示引入的，之�
 
 Folivora在0.0.4版本之后，把xml属性自动提示的代码移入到了lint中，如果当前lint运行在IDE中，Folivora会尝试为IDE安装xml属性自动提示的功能
 
-注: 许多 IDE (Android Studio, IntelliJ) 会把这些属性标注为错误，但是实际上是正确的。可以在这个View或者根ViewGroup上加上`tools:ignore="MissingPrefix"`来避免报错。为了使用 `ignore`属性，可以加上`xmlns:tools=" http://schemas.android.com/tools"`。关于这个问题，可以查看： https://code.google.com/p/android/issues/detail?id=65176.
+注: 如果你坚持在layout文件中使用系统控件，如`View`和`TextView`等，除了不支持预览以外，在运行时是OK的，但是许多 IDE (Android Studio, IntelliJ) 会把这些Folivora提供的属性标注为错误，但是实际上是正确的。可以在这个View或者根ViewGroup上加上`tools:ignore="MissingPrefix"`来避免报错。为了使用 `ignore`属性，可以加上`xmlns:tools=" http://schemas.android.com/tools"`。关于这个问题，可以查看： https://code.google.com/p/android/issues/detail?id=65176.
 
  - **STEP3** :
 在Activity中注入Folivora, Folivora可以通过两种方法注入：
