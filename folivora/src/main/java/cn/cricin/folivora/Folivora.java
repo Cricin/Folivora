@@ -41,7 +41,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -819,14 +818,6 @@ public final class Folivora {
    * <p>
    * note:
    * this method should only be use to support preview, simple usage is:
-   * <pre>
-   *   public class CustomViewStub extends CustomView {
-   *     public CustomViewStub(Context context, AttributeSet attrs){
-   *       super(context, attrs);
-   *       Folivora.applyDrawableToView(this, attrs);
-   *     }
-   *   }
-   * </pre>
    *
    * @param view  view of drawable attached
    * @param attrs attributes from view tag

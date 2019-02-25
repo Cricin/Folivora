@@ -13,6 +13,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 * clip (ClipDrawable)
 * scale (ScaleDrawable)
 * animation (AnimationDrawable)
+* 自定义的Drawable**(新增)**
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview.gif"></img>
 
@@ -21,7 +22,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 添加Gradle依赖，在项目的build.gradle中加入
 ```groovy
   dependencies {
-    implementation 'cn.cricin:folivora:0.0.4'
+    implementation 'cn.cricin:folivora:0.0.5'
   }
 ```
 
@@ -203,9 +204,9 @@ Folivora.setRippleFallback(new RippleFallback()){
   app:animFrame9="@drawable/animation9"
   app:drawableType="animation"/>
 ```
-#### 0.0.3版本更新，嵌套shape支持
+### 使用嵌套的shape
 
-Folivora现在支持在在drawable中嵌套shape了，除了animation以外，所有的drawable的子drawable除了可以使用`@drawable/xxx`和颜色之外，新增了shape/shape1/shape2/shape3/shape4这5个值，参考定义shape的例子，替换相应的前缀即可, 我们来定义嵌套了shape的selector试一试
+Folivora现在支持在drawable中嵌套shape了，除了animation以外，所有的drawable的子drawable除了可以使用`@drawable/xxx`和颜色之外，新增了shape/shape1/shape2/shape3/shape4这5个值，参考定义shape的例子，替换相应的前缀即可, 我们来定义嵌套了shape的selector试一试
 
 ```xml
 <TextView
@@ -226,6 +227,151 @@ Folivora现在支持在在drawable中嵌套shape了，除了animation以外，�
 效果是这样的
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_shape_nested.gif"></img>
+
+### 使用自定义Drawable
+
+从0.0.4版本开始，Folivora除了支持自带的drawable以外，还支持使用自定的drawable类型了，让你使用自定义drawable就和使用自定义view一样轻松。这里我们以自定义一个绘制纸风车的`WindmillDrawable`为例，来让Folivora为我们提供支持：
+
+1. 首先我们和自定义`View`一样，为`WindmillDrawable`提供自定义的属性：
+```xml
+<!-- 和自定义view相同，这里declare-styleable的name最好和自定义drawable的名字一样 -->
+<declare-styleable name="WindmillDrawable">
+    <attr name="wdSize" format="dimension"/> <!-- 纸风车的默认大小 -->
+    <attr name="wdColor0" format="color"/> <!-- 纸风车第一个叶子的颜色 -->
+    <attr name="wdColor1" format="color"/> <!-- 纸风车第二个叶子的颜色 -->
+    <attr name="wdColor2" format="color"/> <!-- 纸风车第三个叶子的颜色 -->
+    <attr name="wdColor3" format="color"/> <!-- 纸风车第四个叶子的颜色 -->
+    <attr name="wdCenterDotRadius" format="dimension"/> <!-- 中心圆的半径 -->
+    <attr name="wdCenterDotColor" format="color"/> <!-- 中心圆的填充色 -->
+    <attr name="wdRotateDegrees" format="integer"/> <!-- 纸风车旋转角度 -->
+  </declare-styleable>
+```
+可以看到，自定义属性这部分和普通的`View`自定义属性是一样的。name和自定义drawable的类名相同就行了，Folivora就可以在layout文件中为这些drawable的自定义属性提供属性的自动提示了
+
+2. 创建自定义的`WillnillDrawable`，继承自`Drawable`, 提供一个`public WindmillDrawable(Context ctx, AttributeSet attrs)`的构造方法，在这个构造方法里就可以获取自定义的属性, 代码如下：
+```java
+TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.WindmillDrawable);
+int count = a.getIndexCount();
+for (int i = 0; i < count; i++) {
+  int index = a.getIndex(i);
+  switch (index) {
+    case R.styleable.WindmillDrawable_wdSize:
+      mSize = a.getDimensionPixelSize(index, mSize);
+      break;
+    case R.styleable.WindmillDrawable_wdColor0:
+      mColors[0] = a.getColor(index, mColors[0]);
+      break;
+    case R.styleable.WindmillDrawable_wdColor1:
+      mColors[1] = a.getColor(index, mColors[1]);
+      break;
+    ...
+    default://no-op
+      break;
+  }
+}
+a.recycle();
+```
+这部分代码其实和自定义`View`的属性获取没有什么区别，主要就是给drawable添加一个构造方法，具体绘制代码就不贴了，如果想要查看具体细节，可以点击[这里](https://github.com/Cricin/Folivora/master/sample/src/main/java/cn/cricin/folivora/sample/drawable/WindmillDrawable.java)查看源码
+
+3. 在layout文件中使用自定义drawable，Folivora提供了`drawableName`属性，使用该属性指定需要使用的drawable：
+```xml
+<View
+  andorid:layout_width="120dp"
+  android:layout_height="120dp"
+  app:drawableName="cn.cricin.folivora.sample.drawable.WindmillDrawable"
+  app:wdColor0="@color/blue_light"
+  app:wdColor1="@color/green_dark"
+  app:wdColor2="@color/green_light"
+  app:wdColor3="@color/purple"
+  app:wdRotateDegrees="45"/>
+```
+运行之后的效果：
+
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_custom_drawable.gif"></img>
+
+
+到这里，Folivora就会为该`View`设置我们指定的drawable了，有人可能就会问了，drawable名字这么长，写起来会不会太复杂了，不用担心，当你敲出drawableName的时候，Folivora会为你自动提示可用的drawable名字的，并且该drawable的自定义属性也会有自动提示。
+
+> 如果我的自定义drawable没有上面指定的构造方法，并且我没办法直接修改该drawable的源码来添加这个构造方法该怎么办呢？
+
+Folivora考虑到了这一点，有些drawable的源码我们没法修改，但是它总会有向外提供设置属性的方法吧？所以，我们提供了一个`DrawableFactory`接口，假设`WindmillDrawable`只有一个无参的构造方法，但是提供了设置各种属性的方法，我们需要让Folivora支持`WindmillDrawable`，我们可以这样做：
+```java
+Folivora.addDrawableFactory(new Folivora.DrawableFactory() {
+  @Override
+  public Drawable newDrawable(Context context, AttributeSet attrs) {
+    TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.WindmillDrawable);
+    WindmillDrawable d = new WindmillDrawable();
+    d.setColor0(a.getColor(R.styleable.WindmillDrawable_wdColor0, Color.BLACK));
+    d.setRotateDegrees(a.getInt(R.styleable.WindmillDrawable_wdRotateDegrees, 0));
+    ...
+    a.recycle();
+    return d;
+  }
+
+  @Override
+  public Class<? extends Drawable> drawableClass() {
+    return WindmillDrawable.class;
+  }
+});
+```
+> 自定义Drawable请注意，如果你的drawable需要获取其他drawable，建议使用`Folivora.getDrawable(Context ctx, TypedArray a, AttributeSet attrs, int attrIndex)`方法获取，这样可以支持获取内嵌的`shape`，当然如果你不需要支持内嵌的`shape`，可以不用这样做。
+
+### 预览支持工具废弃
+Folivora现在对预览工具的支持已经停止，因为hook了许多IDE中的组件，工具本身并不是很稳定，兼容问题也比较大。在新版本中，不建议再使用该工具。
+
+对于在IDE中编辑时的预览效果，建议使用Folivora自带支持预览的插桩`View`，这些插桩`View`在运行时会被指定的View替换掉，不会对原来的view树结构产生任何影响，例如，如果你想要支持`TextView`的实时预览，你可以使用`cn.cricin.folivora.view.TextView`代替原来的`TextView`, 代码如下:
+```xml
+<!-- this becomes android.widget.TextView at runtime -->
+<cn.cricin.folivora.view.TextView
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:gravity="center"
+  android:text="Stubbed TextView"
+  android:textColor="@color/white"
+  app:drawableType="shape"
+  app:shapeCornerRadius="10dp"
+  app:shapeSolidColor="@color/blue_light"/>
+```
+Folivora对系统常用的控件的预览提供了支持，如`Button`，`TextView`，`ImageView`等，使用这些控件即可实时预览。
+
+> 对于你自己或者第三方的控件，如何提供预览支持呢?
+
+Folivora也是支持的，例如RecyclerView在预览时是不支持Folivora的，让它支持预览可以这样做：
+```java
+public class StubRecyclerView extends RecyclerView {
+  public StubRecyclerView(Context ctx, AttributeSet attrs){
+    super(ctx, attrs);
+    if (!isInEditMode()) {
+      throw new IllegalStateException("this view only available at design time");
+    }
+    Folivora.applyDrawableToView(this, attrs);
+  }
+}
+```
+在xml代码中就可以使用了：
+```xml
+<your.package.name.StubRecyclerView
+  android:layout_width="120dp"
+  android:layout_height="120dp"
+  app:replacedBy="android.support.v7.widget.RecyclerView"
+  app:drawableType="shape"
+  app:shapeSolidColor="@color/black"
+  app:shapeCornerRadius="10dp"/>
+```
+可以看到，我们指定了`replacedBy`属性, 告诉Folivora需要把这个`StubRecyclerView`替换成`RecyclerView`，注意如果没有该属性，在运行时`StubRecyclerView`不会被替换，导致直接抛出异常。如果不想每次都写`replacedBy`，可以使用`ReplacedBySuper`这个接口, Folivora会自动的用父类替换它. 让我们修改一下我们的StubRecyclerView：
+```java
+public class StubRecyclerView extends RecyclerView implements ReplacedBySuper {
+...
+```
+这样Folivora就会自动的用父View替换它了。说点题外话，看到`replacedBy`可以替换当前的View，是不是有什么大胆的想法浮现在脑海里了？
+
+### 关于lint
+Folivora使用lint原本是为了内嵌的xml代码自动提示引入的，之后就顺便做了几个检查规则，为使用者做代码检查，主要检查以下几个问题点
+* 如果当前`Activity`是`AppCompatActivity`的子类，会检查`Folivora.installViewFactory()`是不是在`super.onCreate()`之后调用的(`AppCompatActivity`会为`LayoutInflater`设置创建AppCompat系列`View`的`Factory2`)
+* 检查`Folivora.applyDrawableToView()`调用是否在`XXView(Context ctx, AttributeSet attrs)`构造方法中
+* 检查Folivora的属性是否被设置在了不支持在IDE中预览的`View`上，如果是的话，使用alt+enter会提供替换为支持预览的插桩`View`的快捷修复(需要IDE支持)
+
+Folivora在0.0.4版本之后，把xml属性自动提示的代码移入到了lint中，如果当前lint运行在IDE中，Folivora会尝试为IDE安装xml属性自动提示的功能
 
 注: 许多 IDE (Android Studio, IntelliJ) 会把这些属性标注为错误，但是实际上是正确的。可以在这个View或者根ViewGroup上加上`tools:ignore="MissingPrefix"`来避免报错。为了使用 `ignore`属性，可以加上`xmlns:tools=" http://schemas.android.com/tools"`。关于这个问题，可以查看： https://code.google.com/p/android/issues/detail?id=65176.
 
@@ -252,6 +398,24 @@ public class MainActivity extends AppCompatActivity {
 
 ```
 
+### 下载示例APK
+[点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/sample.apk)
+
+### Android Studio预览支持 (已废弃)
+在Android Studio中提供了实时预览编辑layout文件，但是IDE不识别自定义的属性，预览窗口渲染不出自定义的View背景，也无法使用属性提示
+
+为了解决这个问题，Folivora提供了支持工具，按下面的方式使用：
+
+1. 下载jar包 [点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/android-folivora-support.jar)。
+2. 拷贝下载的文件到Android Studio安装目录下的plugins/android/lib/下
+3. 重启IDE，如果你的项目依赖中有Folivora，打开layout文件即可实时预览
+
+注: 支持工具依赖java的classloader加载类的顺序，所以下载的jar包请不要重命名，直接拷贝即可
+
+> 预览效果
+
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.gif"></img>
+
 
 ### Folivora支持的属性列表
 
@@ -259,8 +423,10 @@ public class MainActivity extends AppCompatActivity {
 
 属性 | 取值| 描述
  ---|--- | --- |
-app:setAs|background(default) &#124; src| 设置view背景或者ImageView的src
+app:setAs|background(default) &#124; src &#124; foreground| 设置view背景或者ImageView的src或者view前景
 app:drawableType|shape &#124; layer_list &#124; selector &#124; ripple|drawable类型(必须设置)
+app:drawableName|string|自定义的drawable的class全名
+app:replacedBy|string|需要替换当前view的view class全名
 
 ##### shape属性
 
@@ -386,23 +552,6 @@ app:animDuration0|int(millisecond)|第0帧持续时间
 
 animation支持最多10帧，替换相应的数字即可
 
-### 下载示例APK
-[点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/sample.apk)
-
-### Android Studio预览支持
-在Android Studio中提供了实时预览编辑layout文件，但是IDE不识别自定义的属性，预览窗口渲染不出自定义的View背景，也无法使用属性提示
-
-为了解决这个问题，Folivora提供了支持工具，按下面的方式使用：
-
-1. 下载jar包 [点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/android-folivora-support.jar)。
-2. 拷贝下载的文件到Android Studio安装目录下的plugins/android/lib/下
-3. 重启IDE，如果你的项目依赖中有Folivora，打开layout文件即可实时预览
-
-注: 支持工具依赖java的classloader加载类的顺序，所以下载的jar包请不要重命名，直接拷贝即可
-
-> 预览效果
-
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.gif"></img>
 
 ## License
 

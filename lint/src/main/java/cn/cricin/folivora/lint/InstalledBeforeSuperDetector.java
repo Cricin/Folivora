@@ -44,10 +44,10 @@ public final class InstalledBeforeSuperDetector extends Detector implements Sour
     "FolivoraInstalledBeforeSuper",
     "Folivora installed before super.onCreate()",
     "You have installed Folivora before super.onCreate()," +
-      " this will cause runtime failure if you are using AppCompatActivity",
+      " this will cause AppCompatViews unavailable if you are using AppCompatActivity",
     Category.CORRECTNESS,
     7,
-    Severity.ERROR,
+    Severity.WARNING,
     new Implementation(InstalledBeforeSuperDetector.class, Scope.JAVA_FILE_SCOPE)
   );
 
@@ -94,7 +94,7 @@ public final class InstalledBeforeSuperDetector extends Detector implements Sour
     uMethod.accept(finder);
     if (!finder.isSuperOnCreateCalled()) {
       context.report(ISSUE, call, context.getLocation(call),
-        "calling `Folivora.installViewFactory()` before super.onCreate can cause runtime failure");
+        "calling `Folivora.installViewFactory()` before super.onCreate can cause AppCompatViews unavailable");
     }
   }
 

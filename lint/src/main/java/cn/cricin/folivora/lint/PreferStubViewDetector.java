@@ -21,6 +21,7 @@ import com.android.tools.lint.detector.api.Category;
 import com.android.tools.lint.detector.api.Detector;
 import com.android.tools.lint.detector.api.Implementation;
 import com.android.tools.lint.detector.api.Issue;
+import com.android.tools.lint.detector.api.LintFix;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
 import com.android.tools.lint.detector.api.XmlContext;
@@ -47,7 +48,7 @@ public final class PreferStubViewDetector extends Detector implements Detector.X
   );
 
 
-  private Set<String> sSystemViewNames = new HashSet<>(Arrays.asList(
+  private static Set<String> sSystemViewNames = new HashSet<>(Arrays.asList(
     "Button", "CheckBox", "EditText", "FrameLayout", "GridView", "HorizontalScrollView",
     "ImageView", "LinearLayout", "ListView", "ProgressBar", "RelativeLayout", "ScrollView",
     "SeekBar", "Spinner", "TextView", "View"));
@@ -66,9 +67,12 @@ public final class PreferStubViewDetector extends Detector implements Detector.X
   @Override
   public void visitAttribute(@NotNull XmlContext context, @NotNull Attr attribute) {
     Element tag = attribute.getOwnerElement();
-    if (sSystemViewNames.contains(tag.getTagName())) {
-      context.report(ISSUE, tag, context.getLocation(tag),
-        "Using cn.cricin.folivora.view." + tag.getTagName() + " instead");
+    String tagName = tag.getTagName();
+    if (sSystemViewNames.contains(tagName)) {
+      LintFix fix = LintFix.create().replace().range(context.getLocation(tag))
+        .text(tagName).with("cn.cricin.folivora.view." + tagName).build();
+      context.report(ISSUE, context.getLocation(tag),
+        "Using cn.cricin.folivora.view." + tagName + " instead to support design time preview", fix);
     }
   }
 }
