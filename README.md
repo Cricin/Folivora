@@ -305,14 +305,14 @@ public WindmillDrawable(Context ctx, AttributeSet attrs) {
 ```
 运行之后的效果：
 
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_custom_drawable.png" width="70%" height="70%"></img>
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_custom_drawable.png"></img>
 
 
 到这里，Folivora就会为该`View`设置我们指定的drawable了，有人可能就会问了，drawable名字这么长，写起来会不会太复杂了，不用担心，当你敲出drawableName的时候，Folivora会为你自动提示可用的drawable名字的，并且该drawable的自定义属性也会有自动提示。
 
 > 如果我的自定义drawable没有上面指定的构造方法，并且我没办法直接修改该drawable的源码来添加这个构造方法该怎么办呢？
 
-Folivora考虑到了这一点，有些drawable的源码我们没法修改，但是它总会有向外提供设置属性的方法吧？所以，我们提供了一个`DrawableFactory`接口，假设`WindmillDrawable`只有一个无参的构造方法，但是提供了设置各种属性的方法，我们需要让Folivora支持`WindmillDrawable`，我们可以这样做：
+Folivora考虑到了这一点，有些drawable的源码我们没法修改，但是它总会有向外提供设置属性的方法吧？所以，我们提供了一个`DrawableFactory`接口，假设`WindmillDrawable`只有一个无参的构造方法，但是提供了设置各种属性的方法，我们需要让Folivora支持`WindmillDrawable`，可以这样做：
 ```java
 Folivora.addDrawableFactory(new Folivora.DrawableFactory() {
   @Override
@@ -381,7 +381,6 @@ public class StubRecyclerView extends RecyclerView {
 public class StubRecyclerView extends RecyclerView implements ReplacedBySuper {
 ...
 ```
-这样Folivora就会自动的用父View替换它了。说点题外话，看到`replacedBy`可以替换当前的View，是不是有什么大胆的想法浮现在脑海里了？
 
 ### 关于lint
 Folivora使用lint原本是为了内嵌的xml代码自动提示引入的，之后就顺便做了几个检查规则，为使用者做代码检查，主要检查以下几个问题点
