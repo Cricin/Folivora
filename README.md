@@ -13,7 +13,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 * clip (ClipDrawable)
 * scale (ScaleDrawable)
 * animation (AnimationDrawable)
-* 自定义的Drawable**(新增)**
+* 自定义的Drawable **(新增)**
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview.gif" width="50%" height="50%"></img>
 
@@ -27,11 +27,26 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 ```
 
  - **STEP2** :
-在layout.xml中加入自定义的属性, 告诉Folivora如何创建drawable
+在layout.xml中加入自定义的属性, 告诉Folivora如何创建drawable，Folivora提供的内置drawable属性前缀如下
+
+* shape       -> shape
+* selectror   -> selector
+* layer-list  -> layer
+* level-list  -> level
+* clip        -> clip
+* scale       -> scale
+* inset       -> inset
+* ripple      -> ripple
+* animation   -> anim
+
+例如所有的shape属性设置的前缀都是shape, 如`shapeSolidColor`, `shapeCornerRadius`等, 在设置了`drawableType`
+之后，敲出指定的前缀，IDE会自动的给出所有该drawableType可用的属性
 
 > shape
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_shape.png"></img>
+
+我们来试着在xml中书写Folivora为我们提供的属性来实现上图中第一个的圆角shape效果
 
 ```xml
 <TextView
@@ -42,7 +57,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
   android:textColor="@android:color/white"
   app:drawableType="shape"
   app:shapeCornerRadius="6dp"
-  app:shapeSolidColor="@color/colorAccent"/>
+  app:shapeSolidColor="@color/blue_light"/>
 ```
 
 > layerlist
@@ -57,10 +72,10 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
   android:gravity="center"
   android:textColor="@android:color/white"
   app:drawableType="layer_list"
-  app:layerItem0Drawable="#ff00ddff"
-  app:layerItem1Drawable="@color/colorPrimary"
+  app:layerItem0Drawable="@color/blue_light"
+  app:layerItem1Drawable="@color/blue_dark"
   app:layerItem1Insets="4dp"
-  app:layerItem2Drawable="@color/colorAccent"
+  app:layerItem2Drawable="@color/blue_bright"
   app:layerItem2Insets="8dp"/>
 ```
 
@@ -69,6 +84,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_levellist.png"></img>
 
 ```xml
+<!-- this level-list level is 95, levelItem1 matches -->
 <TextView
   android:layout_width="100dp"
   android:layout_height="40dp"
@@ -77,8 +93,8 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
   android:textColor="@android:color/white"
   app:drawableType="level_list"
   app:levelCurrentLevel="95"
-  app:levelItem0Drawable="@color/colorPrimary"
-  app:levelItem1Drawable="@color/colorAccent"
+  app:levelItem0Drawable="@color/green_dark"
+  app:levelItem1Drawable="@color/blue_light"
   app:levelItem1MaxLevel="100"
   app:levelItem1MinLevel="90"/>
 ```
@@ -95,8 +111,8 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
   android:gravity="center"
   android:text="selector"
   app:drawableType="selector"
-  app:selectorStateNormal="@color/colorAccent"
-  app:selectorStatePressed="@color/colorPrimary"/>
+  app:selectorStateNormal="@color/blue_light"
+  app:selectorStatePressed="@color/blue_dark"/>
 ```
 
 > ripple
@@ -112,12 +128,12 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
   android:text="ripple"
   app:drawableType="ripple"
   app:rippleColor="@android:color/white"
-  app:rippleContent="@color/colorAccent"/>
+  app:rippleContent="@color/blue_light"/>
 ```
 
 使用ripple的确是酷炫多了，但是ripple效果是5.0之后引入的，那5.0之前的设备怎么办呢，Folivora为你提供了`RippleFallback`接口，用来创建一个替换`RippleDrawable`的`Drawable`实例，让我们试着用一个selector来代替ripple:
 ```java
-Folivora.setRippleFallback(new RippleFallback()){
+Folivora.setRippleFallback(new Folivora.RippleFallback()){
   @Override
   public Drawable onFallback(ColorStateList ripple, Drawable content, Drawable mask, Context ctx){
     StateListDrawable sld = new StateListDrawable();
@@ -139,7 +155,7 @@ Folivora.setRippleFallback(new RippleFallback()){
   android:gravity="center"
   android:text="clip"
   android:textColor="@android:color/white"
-  app:clipDrawable="@color/colorAccent"
+  app:clipDrawable="@color/blue_light"
   app:clipLevel="6000"
   app:drawableType="clip"/>
 ```
@@ -157,7 +173,7 @@ Folivora.setRippleFallback(new RippleFallback()){
   android:textColor="@android:color/white"
   app:drawableType="inset"
   app:insetAll="4dp"
-  app:insetDrawable="@color/colorAccent"/>
+  app:insetDrawable="@color/blue_light"/>
 ```
 
 > scale
@@ -172,7 +188,7 @@ Folivora.setRippleFallback(new RippleFallback()){
   android:text="scale"
   android:textColor="@android:color/white"
   app:drawableType="scale"
-  app:scaleDrawable="@color/colorAccent"
+  app:scaleDrawable="@color/blue_light"
   app:scaleGravity="center"
   app:scaleHeight="0.3"
   app:scaleWidth="0.3"/>
@@ -217,11 +233,11 @@ Folivora现在支持在drawable中嵌套shape了，除了animation以外，所�
   android:textColor="@android:color/white"
   app:drawableType="selector"
   app:selectorStateNormal="shape"
-  app:shapeSolidColor="@android:color/holo_blue_light"
+  app:shapeSolidColor="@color/blue_light"
   app:shapeCornerRadius="10dp"
   app:selectorStatePressed="shape1"
-  app:shape1CornerRadius="10dp"
-  app:shape1SolidColor="@android:color/holo_blue_dark"/>
+  app:shape1SolidColor="@color/blue_dark"
+  app:shape1CornerRadius="10dp"/>
 ```
 
 效果是这样的
@@ -266,14 +282,14 @@ public WindmillDrawable(Context ctx, AttributeSet attrs) {
         mColors[1] = a.getColor(index, mColors[1]);
         break;
       ...
-      default://no-op
+      default://no-op unexpected attr index
         break;
     }
   }
   a.recycle();
 }
 ```
-这部分代码其实和自定义`View`的属性获取没有什么区别，主要就是给drawable添加一个构造方法，具体绘制代码就不贴了，如果想要查看具体细节，可以点击[这里](https://github.com/Cricin/Folivora/master/sample/src/main/java/cn/cricin/folivora/sample/drawable/WindmillDrawable.java)查看源码
+这部分代码其实和自定义`View`的属性获取没有什么区别，主要就是给drawable添加一个构造方法，具体绘制代码就不贴了，如果想要查看具体细节，可以点击[这里](https://github.com/Cricin/Folivora/blob/master/sample/src/main/java/cn/cricin/folivora/sample/drawable/WindmillDrawable.java)查看源码
 
 3. 在layout文件中使用自定义drawable，Folivora提供了`drawableName`属性，使用该属性指定需要使用的drawable：
 ```xml
@@ -289,7 +305,7 @@ public WindmillDrawable(Context ctx, AttributeSet attrs) {
 ```
 运行之后的效果：
 
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_custom_drawable.png"></img>
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_custom_drawable.png" width="70%" height="70%"></img>
 
 
 到这里，Folivora就会为该`View`设置我们指定的drawable了，有人可能就会问了，drawable名字这么长，写起来会不会太复杂了，不用担心，当你敲出drawableName的时候，Folivora会为你自动提示可用的drawable名字的，并且该drawable的自定义属性也会有自动提示。
@@ -319,7 +335,7 @@ Folivora.addDrawableFactory(new Folivora.DrawableFactory() {
 > 自定义Drawable请注意，如果你的drawable需要获取其他drawable，建议使用`Folivora.getDrawable(Context ctx, TypedArray a, AttributeSet attrs, int attrIndex)`方法获取，这样可以支持获取内嵌的`shape`，当然如果你不需要支持内嵌的`shape`，可以不用这样做。
 
 ### 预览支持工具废弃
-Folivora现在对预览工具的支持已经停止，因为hook了许多IDE中的组件，工具本身并不是很稳定，兼容问题也比较大。在新版本中，不建议再使用该工具。
+Folivora现在对预览工具的支持已经停止，因为hook了IDE中的组件，工具本身并不是很稳定，兼容问题也比较大。在新版本中，不建议再使用该工具。
 
 对于在IDE中编辑时的预览效果，建议使用Folivora自带支持预览的插桩`View`，这些插桩`View`在运行时会被指定的View替换掉，不会对原来的view树结构产生任何影响，例如，如果你想要支持`TextView`的实时预览，你可以使用`cn.cricin.folivora.view.TextView`代替原来的`TextView`, 代码如下:
 ```xml
@@ -360,7 +376,7 @@ public class StubRecyclerView extends RecyclerView {
   app:shapeSolidColor="@color/black"
   app:shapeCornerRadius="10dp"/>
 ```
-可以看到，我们指定了`replacedBy`属性, 告诉Folivora需要把这个`StubRecyclerView`替换成`RecyclerView`，注意如果没有该属性，在运行时`StubRecyclerView`不会被替换，导致直接抛出异常。如果不想每次都写`replacedBy`，可以使用`ReplacedBySuper`这个接口, Folivora会自动的用父类替换它. 让我们修改一下我们的StubRecyclerView：
+可以看到，我们指定了`replacedBy`属性, 告诉Folivora需要把这个`StubRecyclerView`替换成`RecyclerView`，replacedBy也是支持自动提示的，注意如果没有该属性，在运行时`StubRecyclerView`不会被替换，导致直接抛出异常。如果不想每次都写`replacedBy`，可以使用`ReplacedBySuper`这个接口, Folivora会自动的用父类替换它. 让我们修改一下我们的StubRecyclerView：
 ```java
 public class StubRecyclerView extends RecyclerView implements ReplacedBySuper {
 ...
@@ -393,7 +409,7 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Folivra.installViewFactory(this);
+    Folivora.installViewFactory(this);
     setContentView(R.layout.your_layout_xml_name);
   }
 }
@@ -426,8 +442,8 @@ public class MainActivity extends AppCompatActivity {
 属性 | 取值| 描述
  ---|--- | --- |
 app:setAs|background(default) &#124; src &#124; foreground| 设置view背景或者ImageView的src或者view前景
-app:drawableType|shape &#124; layer_list &#124; selector &#124; ripple|drawable类型(必须设置)
-app:drawableName|string|自定义的drawable的class全名
+app:drawableType|shape &#124; layer_list &#124; selector &#124; ripple|drawable类型
+app:drawableName|string|自定义drawable的class全名
 app:replacedBy|string|需要替换当前view的view class全名
 
 ##### shape属性
