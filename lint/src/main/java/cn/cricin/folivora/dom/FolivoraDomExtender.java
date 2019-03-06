@@ -22,24 +22,32 @@ import com.intellij.util.xml.GenericAttributeValue;
 import com.intellij.util.xml.reflect.DomExtender;
 import com.intellij.util.xml.reflect.DomExtenderEP;
 import com.intellij.util.xml.reflect.DomExtensionsRegistrar;
+
 import org.jetbrains.android.dom.AndroidDomElement;
 import org.jetbrains.android.dom.AttributeProcessingUtil;
-import org.jetbrains.android.dom.attrs.AttributeFormat;
 import org.jetbrains.android.dom.resources.ResourceValue;
 import org.jetbrains.android.facet.AndroidFacet;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+@SuppressWarnings("unchecked")
 public final class FolivoraDomExtender extends DomExtender<AndroidDomElement> {
   private static Class sLegacyAttributeFormatClass;
+  private static HashMap<Object, Class> sValueClasses;
   private static Class sAttributeFormatClass;
 
   static {
     try {
       sLegacyAttributeFormatClass = Class.forName("org.jetbrains.android.dom.attrs.AttributeFormat");
+      sValueClasses = new HashMap<>();
+      sValueClasses.put(Enum.valueOf(sLegacyAttributeFormatClass, "Boolean"), boolean.class);
+      sValueClasses.put(Enum.valueOf(sLegacyAttributeFormatClass, "Reference"), ResourceValue.class);
+      sValueClasses.put(Enum.valueOf(sLegacyAttributeFormatClass, "Dimension"), ResourceValue.class);
+      sValueClasses.put(Enum.valueOf(sLegacyAttributeFormatClass, "Color"), ResourceValue.class);
     } catch (ClassNotFoundException ignore) {
     }
     try {
@@ -56,15 +64,11 @@ public final class FolivoraDomExtender extends DomExtender<AndroidDomElement> {
   private static Class getValueClass(Object format) {
     if (format == null) return String.class;
     if (sLegacyAttributeFormatClass != null && sLegacyAttributeFormatClass.isInstance(format)) {
-      if (AttributeFormat.Boolean == format) {
-        return boolean.class;
-      } else if (AttributeFormat.Reference == format
-        || AttributeFormat.Dimension == format
-        || AttributeFormat.Color == format) {
-        return ResourceValue.class;
-      } else {
-        return String.class;
+      Class cls = sValueClasses.get(format);
+      if (cls == null) {
+        cls = String.class;
       }
+      return cls;
     } else if (sAttributeFormatClass != null && sAttributeFormatClass.isInstance(format)) {
       if (com.android.ide.common.rendering.api.AttributeFormat.BOOLEAN == format) {
         return boolean.class;

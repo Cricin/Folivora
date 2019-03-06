@@ -16,7 +16,6 @@
 
 package cn.cricin.folivora.lint;
 
-import com.android.annotations.NonNull;
 import com.android.tools.lint.client.api.JavaEvaluator;
 import com.android.tools.lint.detector.api.Category;
 import com.android.tools.lint.detector.api.Detector;
@@ -63,9 +62,9 @@ public final class InstalledBeforeSuperDetector extends Detector implements Sour
   }
 
   @Override
-  public void visitMethod(@NonNull JavaContext context,
-                          @NonNull UCallExpression call,
-                          @NonNull PsiMethod method) {
+  public void visitMethod(JavaContext context,
+                          UCallExpression call,
+                          PsiMethod method) {
     JavaEvaluator evaluator = context.getEvaluator();
 
     //check Folivora.installViewFactory() call

@@ -64,7 +64,7 @@ public class AlphaBackgroundDrawable extends Drawable {
   void initPaint(int color0, int color1, int squareSize) {
     final int squareSizeX2 = squareSize * 2;
 
-    Bitmap temp = Bitmap.createBitmap(squareSizeX2, squareSizeX2, Bitmap.Config.RGB_565);
+    Bitmap temp = Bitmap.createBitmap(squareSizeX2, squareSizeX2, Bitmap.Config.ARGB_8888);
     Canvas canvas = new Canvas(temp);
     Paint paint = new Paint();
     paint.setColor(color0);
@@ -84,7 +84,7 @@ public class AlphaBackgroundDrawable extends Drawable {
   public void draw(@NonNull Canvas canvas) {
     canvas.save();
     canvas.clipRect(getBounds());
-    canvas.drawPaint(mPaint);
+    canvas.drawRect(getBounds(), mPaint);
     canvas.restore();
   }
 

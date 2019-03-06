@@ -56,13 +56,23 @@ final class FolivoraViewFactory implements LayoutInflater.Factory2 {
 
   @Override
   public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+    View view = onCreateView(parent, name, context, attrs, mFactory, mFactory2);
+    if (view != null) {
+      Folivora.applyDrawableToView(view, attrs);
+    }
+    return view;
+  }
+
+  static View onCreateView(View parent, String name, Context context,
+                           AttributeSet attrs, LayoutInflater.Factory factory,
+                           LayoutInflater.Factory2 factory2) {
     View result = null;
     name = replaceViewNameIfNeeded(name, context, attrs);
-    if (mFactory2 != null) {
-      result = mFactory2.onCreateView(parent, name, context, attrs);
+    if (factory2 != null) {
+      result = factory2.onCreateView(parent, name, context, attrs);
     }
-    if (result == null && mFactory != null) {
-      result = mFactory.onCreateView(name, context, attrs);
+    if (result == null && factory != null) {
+      result = factory.onCreateView(name, context, attrs);
     }
     if (result == null && name.endsWith("ViewStub")) return null;//fix NPE when creating ViewStub
 
@@ -82,14 +92,10 @@ final class FolivoraViewFactory implements LayoutInflater.Factory2 {
         }
       }
     }
-
-    if (result != null) {
-      Folivora.applyDrawableToView(result, attrs);
-    }
     return result;
   }
 
-  private View createCustomView(String name, Context ctx, AttributeSet attrs) {
+  private static View createCustomView(String name, Context ctx, AttributeSet attrs) {
     Constructor<? extends View> constructor = sConstructorMap.get(name);
 
     try {
@@ -114,7 +120,7 @@ final class FolivoraViewFactory implements LayoutInflater.Factory2 {
     }
   }
 
-  private String replaceViewNameIfNeeded(String name, Context ctx, AttributeSet attrs) {
+  private static String replaceViewNameIfNeeded(String name, Context ctx, AttributeSet attrs) {
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora);
     String viewName = a.getString(R.styleable.Folivora_replacedBy);
     a.recycle();
@@ -137,7 +143,7 @@ final class FolivoraViewFactory implements LayoutInflater.Factory2 {
     return name;
   }
 
-  private Class<?> loadClass(String name, Context ctx) {
+  private static Class<?> loadClass(String name, Context ctx) {
     Class<?> c = sLoadedClass.get(name);
     if(c == null){
       try {
@@ -150,7 +156,7 @@ final class FolivoraViewFactory implements LayoutInflater.Factory2 {
     return c;
   }
 
-  private LayoutInflater getLayoutInflater(Context context) {
+  private static LayoutInflater getLayoutInflater(Context context) {
     LayoutInflater inflater = LayoutInflater.from(context);
     if (inflater instanceof FolivoraInflater) {
       return ((FolivoraInflater) inflater).getBaseInflater();

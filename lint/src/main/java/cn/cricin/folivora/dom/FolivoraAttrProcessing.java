@@ -17,12 +17,10 @@
 package cn.cricin.folivora.dom;
 
 import com.android.SdkConstants;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.xml.Converter;
 import com.intellij.util.xml.DomElement;
-import com.intellij.util.xml.GenericAttributeValue;
 import com.intellij.util.xml.XmlName;
 import com.intellij.util.xml.reflect.DomExtension;
 
@@ -31,21 +29,17 @@ import org.jetbrains.android.dom.AndroidDomUtil;
 import org.jetbrains.android.dom.AttributeProcessingUtil;
 import org.jetbrains.android.dom.attrs.AttributeDefinition;
 import org.jetbrains.android.dom.attrs.AttributeDefinitions;
-import org.jetbrains.android.dom.attrs.AttributeFormat;
 import org.jetbrains.android.dom.attrs.StyleableDefinition;
 import org.jetbrains.android.dom.attrs.ToolsAttributeUtil;
 import org.jetbrains.android.dom.converters.CompositeConverter;
-import org.jetbrains.android.dom.converters.ManifestPlaceholderConverter;
 import org.jetbrains.android.dom.converters.PackageClassConverter;
 import org.jetbrains.android.dom.converters.ResourceReferenceConverter;
 import org.jetbrains.android.dom.converters.ViewClassConverter;
 import org.jetbrains.android.dom.layout.DataBindingElement;
 import org.jetbrains.android.dom.layout.LayoutElement;
-import org.jetbrains.android.dom.layout.LayoutViewElement;
 import org.jetbrains.android.dom.manifest.Manifest;
-import org.jetbrains.android.dom.resources.DeclareStyleable;
 import org.jetbrains.android.facet.AndroidFacet;
-import org.jetbrains.android.facet.AndroidFacetConfiguration;
+import org.jetbrains.android.resourceManagers.LocalResourceManager;
 import org.jetbrains.android.resourceManagers.ModuleResourceManagers;
 import org.jetbrains.android.resourceManagers.ResourceManager;
 
@@ -94,7 +88,7 @@ final class FolivoraAttrProcessing {
     List<String> styleableNames = getStyleablesToRegister(tag.getAttributes());
     for (String styleableName : styleableNames) {
       if (styleableName != null) {
-        registerAttributes(facet, element, styleableName, null, callback);
+        registerAttributes(facet, element, styleableName, callback);
       }
     }
   }
@@ -155,10 +149,9 @@ final class FolivoraAttrProcessing {
   private static void registerAttributes(/*NotNull*/ AndroidFacet facet,
     /*NotNull*/ DomElement element,
     /*NotNull*/ String styleableName,
-    /*Nullable*/ String resPackage,
     /*NotNull*/ AttributeProcessingUtil.AttributeProcessor callback) {
-    ResourceManager manager = ModuleResourceManagers.getInstance(facet).getResourceManager
-      (resPackage);
+
+    ResourceManager manager = getAppResourceManager(facet);
     if (manager == null) {
       return;
     }
@@ -168,7 +161,7 @@ final class FolivoraAttrProcessing {
       return;
     }
 
-    String namespace = getNamespaceUriByResourcePackage(facet, resPackage);
+    String namespace = getNamespaceUriByResourcePackage(facet, null);
     StyleableDefinition styleable = attrDefs.getStyleableByName(styleableName);
     if (styleable != null) {
       registerStyleableAttributes(element, styleable, namespace, callback);
@@ -179,6 +172,24 @@ final class FolivoraAttrProcessing {
     // class names)
     // TODO: add a warning when rest of the code of AndroidDomExtender is cleaned up
   }
+
+  private static boolean sModuleResourceManagerExists = true;
+
+  private static ResourceManager getAppResourceManager(AndroidFacet facet) {
+    ResourceManager manager = null;
+    if (sModuleResourceManagerExists) {
+      try {
+        manager =  ModuleResourceManagers.getInstance(facet).getResourceManager(null);
+      } catch (NoClassDefFoundError ignore) {
+        sModuleResourceManagerExists = false;
+      }
+    }
+    if (!sModuleResourceManagerExists) {
+      manager = LocalResourceManager.getInstance(facet.getModule());
+    }
+    return manager;
+  }
+
 
   /*Nullable*/
   private static String getNamespaceUriByResourcePackage(/*NotNull*/ AndroidFacet facet,
@@ -210,12 +221,11 @@ final class FolivoraAttrProcessing {
       }
     }
     try {
-      return facet.isAppProject();
+      return facet.getConfiguration().isAppProject();
     } catch (NoSuchMethodError nsme) {
-      AndroidFacetConfiguration conf = facet.getConfiguration();
       try {
-        sIsAppProjectMethod = conf.getClass().getDeclaredMethod("isAppProject", (Class<?>[]) null);
-        return (boolean) sIsAppProjectMethod.invoke(conf, (Object[]) null);
+        sIsAppProjectMethod = facet.getClass().getDeclaredMethod("isAppProject", (Class<?>[]) null);
+        return (boolean) sIsAppProjectMethod.invoke(facet, (Object[]) null);
       } catch (Exception ignore) {
       }
     }
@@ -267,7 +277,7 @@ final class FolivoraAttrProcessing {
     }
   }
 
-  private static boolean mustBeSoft(Converter converter, Collection<AttributeFormat> formats) {
+  private static boolean mustBeSoft(Converter converter, Collection formats) {
     if (!(converter instanceof CompositeConverter)
       && !(converter instanceof ResourceReferenceConverter)) {
       return formats.size() > 1;

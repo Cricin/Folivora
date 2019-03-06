@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-def ideInstallationDir = new File('/Applications/Android Studio 3.1 Preview.app/Contents/')
+def ideInstallationDir = new File('/Applications/Android Studio.app/Contents/')
 def androidPluginLibPath = 'plugins/android/lib'
 
 dependencies {

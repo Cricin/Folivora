@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-def ideInstallationDir = new File('/Applications/Android Studio 3.1 Preview.app/Contents/')
+def ideInstallationDir = new File('/Applications/Android Studio.app/Contents/')
 def androidPluginLibPath = 'plugins/android/lib'
 def lintVersion = '26.2.0-alpha06'
 
@@ -8,25 +8,28 @@ configurations {
   lintChecks
 }
 
+configurations.all {
+  transitive = false
+}
+
 dependencies {
   compileOnly "com.android.tools.lint:lint-api:$lintVersion"
   compileOnly "com.android.tools.lint:lint-checks:$lintVersion"
   compileOnly "com.android.tools.lint:lint:$lintVersion"
+  compileOnly "com.android.tools.external.org-jetbrains:uast:$lintVersion"
+  compileOnly "com.android.tools.external.com-intellij:intellij-core:$lintVersion"
   compileOnly 'com.android.tools:common:26.3.1'
   compileOnly 'com.android.tools.layoutlib:layoutlib-api:26.3.1'
   if (ideInstallationDir.exists() && ideInstallationDir.isDirectory()) {
-    ["${androidPluginLibPath}/layoutlib-loader.jar",
-     "${androidPluginLibPath}/layoutlib.jar",
-     "${androidPluginLibPath}/layoutlib-api.jar",
-     "${androidPluginLibPath}/sdklib.jar",
+     ["${androidPluginLibPath}/layoutlib.jar",
      "${androidPluginLibPath}/android.jar",
-     'lib/util.jar',
      'lib/openapi.jar',
      'lib/platform-api.jar',
-     'lib/extensions.jar',
      'lib/idea.jar'
     ].each { lib ->
-      compileOnly files(new File(ideInstallationDir, lib))
+       def file = new File(ideInstallationDir, lib)
+       if(!file.exists()) throw new Exception("file $file does not exist")
+      compileOnly files(file)
     }
   } else {
     throw new GradleException('Invalid ide installation dir')

@@ -16,23 +16,25 @@
 
 package cn.cricin.folivora.lint;
 
-import cn.cricin.folivora.dom.FolivoraDomExtender;
 import com.android.tools.lint.client.api.IssueRegistry;
 import com.android.tools.lint.detector.api.ApiKt;
 import com.android.tools.lint.detector.api.Issue;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
 
+import cn.cricin.folivora.dom.FolivoraDomExtender;
+import cn.cricin.folivora.preview.FolivoraPreview;
+
 @SuppressWarnings("unused")
 public final class FolivoraIssueRegistry extends IssueRegistry {
+  private static final boolean INSTALL_PREVIEW = false;
 
   static {
-    initDomExtender();
+    installStudioPlugins();
   }
 
-  private static void initDomExtender() {
+  private static void installStudioPlugins() {
     boolean lintInsideStudio;
     try {
       Class.forName("org.jetbrains.android.dom.AndroidDomElement");
@@ -44,16 +46,20 @@ public final class FolivoraIssueRegistry extends IssueRegistry {
       try {
         FolivoraDomExtender.install();
       } catch (Exception ignore) {}
+      if (INSTALL_PREVIEW) {
+        try {
+          FolivoraPreview.install();
+        } catch (Exception ignore) {}
+      }
     }
   }
 
-  @NotNull
   @Override
   public List<Issue> getIssues() {
     return Arrays.asList(
       InstalledBeforeSuperDetector.ISSUE,
-      InternalFolivoraApiDetector.ISSUE,
-      PreferStubViewDetector.ISSUE
+      InternalFolivoraApiDetector.ISSUE
+//      PreferStubViewDetector.ISSUE
     );
   }
 
