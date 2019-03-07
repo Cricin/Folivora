@@ -59,6 +59,7 @@ final class FolivoraViewFactory implements LayoutInflater.Factory2 {
     View view = onCreateView(parent, name, context, attrs, mFactory, mFactory2);
     if (view != null) {
       Folivora.applyDrawableToView(view, attrs);
+      Folivora.dispatchViewCreated(view, attrs);
     }
     return view;
   }

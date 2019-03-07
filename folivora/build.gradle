@@ -24,7 +24,9 @@ configurations {
 }
 
 configurations.all {
-  transitive false
+  if(name != 'lintChecks') {
+    transitive false
+  }
 }
 
 dependencies {

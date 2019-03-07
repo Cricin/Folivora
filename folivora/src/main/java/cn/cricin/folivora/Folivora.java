@@ -64,6 +64,7 @@ import java.util.Set;
  * @see #setRippleFallback(RippleFallback)
  * @see #addDrawableFactory(DrawableFactory)
  * @see #getDrawable(Context, TypedArray, AttributeSet, int)
+ * @see #addOnViewCreatedListener(OnViewCreatedListener)
  */
 public final class Folivora {
   static final String TAG = "Folivora";
@@ -150,9 +151,18 @@ public final class Folivora {
     Class<? extends Drawable> drawableClass();
   }
 
+  /**
+   * A listener notified when a view is been created. you can
+   * do some customization on the view based on the attrs. eg,
+   * change text or typeface of TextView or change src of ImageView
+   */
+  public interface OnViewCreatedListener {
+    void onViewCreated(View view, AttributeSet attrs);
+  }
 
   private static RippleFallback sRippleFallback;
   private static List<DrawableFactory> sDrawableFactories;
+  private static List<OnViewCreatedListener> sOnViewCreatedListeners;
 
   private static Class[] sConstructorSignature = {Context.class, AttributeSet.class};
   private static Object[] sConstructorArgs = new Object[2];
@@ -830,7 +840,7 @@ public final class Folivora {
     String drawableName = a.getString(R.styleable.Folivora_drawableName);
     int setAs = a.getInt(R.styleable.Folivora_setAs, SET_AS_BACKGROUND);
     a.recycle();
-    if ((drawableType < 0 && drawableName == null) || setAs < 0) return;
+    if ((drawableType < 0 && drawableName == null)) return;
 
     Drawable d = null;
     if (drawableType >= 0) {
@@ -931,6 +941,26 @@ public final class Folivora {
       sDrawableFactories = new ArrayList<>();
     }
     sDrawableFactories.add(factory);
+  }
+
+  /**
+   * Add a {@link OnViewCreatedListener} listener to folivora, folivora
+   * will notify these listeners when a view is created.
+   * @param l listener to register
+   */
+  public static void addOnViewCreatedListener(OnViewCreatedListener l) {
+    if (sOnViewCreatedListeners == null) {
+      sOnViewCreatedListeners = new ArrayList<>();
+    }
+    sOnViewCreatedListeners.add(l);
+  }
+
+  static void dispatchViewCreated(View view, AttributeSet attrs) {
+    if (sOnViewCreatedListeners != null) {
+      for (OnViewCreatedListener l : sOnViewCreatedListeners) {
+        l.onViewCreated(view, attrs);
+      }
+    }
   }
 
   private Folivora() {}

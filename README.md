@@ -22,7 +22,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 添加Gradle依赖，在项目的build.gradle中加入
 ```groovy
   dependencies {
-    implementation 'cn.cricin:folivora:0.0.5'
+    implementation 'cn.cricin:folivora:0.0.6'
   }
 ```
 
@@ -220,6 +220,9 @@ Folivora.setRippleFallback(new Folivora.RippleFallback()){
   app:animFrame9="@drawable/animation9"
   app:drawableType="animation"/>
 ```
+
+注: 如果你在layout文件中用Folivora为系统控件添加drawable，如`View`和`TextView`等，许多 IDE (Android Studio, IntelliJ) 会把这些Folivora提供的属性标注为错误，但是实际上是正确的。可以在这个View或者根ViewGroup上加上`tools:ignore="MissingPrefix"`来避免报错。为了使用 `ignore`属性，可以加上`xmlns:tools=" http://schemas.android.com/tools"`。关于这个问题，可以查看： https://code.google.com/p/android/issues/detail?id=65176.
+
 ### 使用嵌套的shape
 
 Folivora现在支持在drawable中嵌套shape了，除了animation以外，所有的drawable的子drawable除了可以使用`@drawable/xxx`和颜色之外，新增了shape/shape1/shape2/shape3/shape4这5个值，参考定义shape的例子，替换相应的前缀即可, 我们来定义嵌套了shape的selector试一试
@@ -334,10 +337,54 @@ Folivora.addDrawableFactory(new Folivora.DrawableFactory() {
 ```
 > 自定义Drawable请注意，如果你的drawable需要获取其他drawable，建议使用`Folivora.getDrawable(Context ctx, TypedArray a, AttributeSet attrs, int attrIndex)`方法获取，这样可以支持获取内嵌的`shape`，当然如果你不需要支持内嵌的`shape`，可以不用这样做。
 
-### 预览支持工具废弃
-Folivora现在对预览工具的支持已经停止，因为hook了IDE中的组件，工具本身并不是很稳定，兼容问题也比较大。在新版本中，不建议再使用该工具。
+ - **STEP3** :
+在Activity中启用Folivora, 有三种方法：
+1. 使用本方法需要support-appcompat最低版本为27.1.0或者使用androidx，如果你的Activity继承自AppCompatActivity，那么在Activity对应的主题中加入如下属性:
+```xml
+<style name="..." parent="Theme.AppCompat...">
+  <!-- 依赖support包用这个 -->
+  <item name="viewInflaterClass">cn.cricin.folivora.SupportViewInflater</item>
+  <!-- 依赖androidx包用这个 -->
+  <item name="viewInflaterClass">cn.cricin.folivora.AndroidxViewInflater</item>
+</style>
+```
+2.
+```java
+public class MainActivity extends Activity {
+  @Override
+  protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(Folivora.wrap(newBase));
+  }
+}
+```
+3.
+```java
+public class MainActivity extends Activity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Folivora.installViewFactory(this);
+    setContentView(R.layout.your_layout_xml_name);
+  }
+}
 
-对于在IDE中编辑时的预览效果，建议使用Folivora自带支持预览的插桩`View`，这些插桩`View`在运行时会被指定的View替换掉，不会对原来的view树结构产生任何影响，例如，如果你想要支持`TextView`的实时预览，你可以使用`cn.cricin.folivora.view.TextView`代替原来的`TextView`, 代码如下:
+```
+
+### 下载示例APK
+[点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/sample.apk)
+
+### 编辑layout文件时的预览
+
+#### 预览方法一 [Android Studio版本3.2.0以上]
+参考STEP3中的方法1配置即可实时预览
+
+> 预览效果
+
+<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.gif"></img>
+
+#### 预览方法二
+
+使用Folivora自带支持预览的插桩`View`，这些插桩`View`在运行时会被指定的View替换掉，不会对原来的view树结构产生任何影响，例如，如果你想要支持`TextView`的实时预览，你可以使用`cn.cricin.folivora.view.TextView`代替原来的`TextView`, 代码如下:
 ```xml
 <!-- this becomes android.widget.TextView at runtime -->
 <cn.cricin.folivora.view.TextView
@@ -381,58 +428,6 @@ public class StubRecyclerView extends RecyclerView {
 public class StubRecyclerView extends RecyclerView implements ReplacedBySuper {
 ...
 ```
-
-### 关于lint
-Folivora使用lint原本是为了内嵌的xml代码自动提示引入的，之后就顺便做了几个检查规则，为使用者做代码检查，主要检查以下几个问题点
-* 如果当前`Activity`是`AppCompatActivity`的子类，会检查`Folivora.installViewFactory()`是不是在`super.onCreate()`之后调用的(`AppCompatActivity`会为`LayoutInflater`设置创建AppCompat系列`View`的`Factory2`)
-* 检查`Folivora.applyDrawableToView()`调用是否在`XXView(Context ctx, AttributeSet attrs)`构造方法中
-* 检查Folivora的属性是否被设置在了不支持在IDE中预览的`View`上，如果是的话，使用alt+enter会提供替换为支持预览的插桩`View`的快捷修复(需要IDE支持)
-
-Folivora在0.0.4版本之后，把xml属性自动提示的代码移入到了lint中，如果当前lint运行在IDE中，Folivora会尝试为IDE安装xml属性自动提示的功能
-
-注: 如果你坚持在layout文件中使用系统控件，如`View`和`TextView`等，除了不支持预览以外，在运行时是OK的，但是许多 IDE (Android Studio, IntelliJ) 会把这些Folivora提供的属性标注为错误，但是实际上是正确的。可以在这个View或者根ViewGroup上加上`tools:ignore="MissingPrefix"`来避免报错。为了使用 `ignore`属性，可以加上`xmlns:tools=" http://schemas.android.com/tools"`。关于这个问题，可以查看： https://code.google.com/p/android/issues/detail?id=65176.
-
- - **STEP3** :
-在Activity中注入Folivora, Folivora可以通过两种方法注入：
-```java
-public class MainActivity extends AppCompatActivity {
-  @Override
-  protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(Folivora.wrap(newBase));
-  }
-}
-```
-或者
-```java
-public class MainActivity extends AppCompatActivity {
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    Folivora.installViewFactory(this);
-    setContentView(R.layout.your_layout_xml_name);
-  }
-}
-
-```
-
-### 下载示例APK
-[点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/sample.apk)
-
-### Android Studio预览支持 (已废弃)
-在Android Studio中提供了实时预览编辑layout文件，但是IDE不识别自定义的属性，预览窗口渲染不出自定义的View背景，也无法使用属性提示
-
-为了解决这个问题，Folivora提供了支持工具，按下面的方式使用：
-
-1. 下载jar包 [点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/android-folivora-support.jar)。
-2. 拷贝下载的文件到Android Studio安装目录下的plugins/android/lib/下
-3. 重启IDE，如果你的项目依赖中有Folivora，打开layout文件即可实时预览
-
-注: 支持工具依赖java的classloader加载类的顺序，所以下载的jar包请不要重命名，直接拷贝即可
-
-> 预览效果
-
-<img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.gif"></img>
-
 
 ### Folivora支持的属性列表
 

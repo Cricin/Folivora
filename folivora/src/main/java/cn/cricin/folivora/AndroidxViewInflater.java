@@ -138,6 +138,7 @@ public class AndroidxViewInflater extends AppCompatViewInflater {
   private static <V extends View> V apply(View view, AttributeSet attrs) {
     if (view != null) {
       Folivora.applyDrawableToView(view, attrs);
+      Folivora.dispatchViewCreated(view, attrs);
     }
     return (V) view;
   }
