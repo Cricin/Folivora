@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 public final class PreferStubViewDetector extends Detector implements Detector.XmlScanner, XmlScanner {
   static final Issue ISSUE = Issue.create(
     "PreferUseStubView",

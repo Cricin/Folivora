@@ -64,7 +64,7 @@ final class FolivoraViewFactory implements LayoutInflater.Factory2 {
     return view;
   }
 
-  static View onCreateView(View parent, String name, Context context,
+  private static View onCreateView(View parent, String name, Context context,
                            AttributeSet attrs, LayoutInflater.Factory factory,
                            LayoutInflater.Factory2 factory2) {
     View result = null;

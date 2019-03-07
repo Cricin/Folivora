@@ -28,7 +28,6 @@ import cn.cricin.folivora.preview.FolivoraPreview;
 
 @SuppressWarnings("unused")
 public final class FolivoraIssueRegistry extends IssueRegistry {
-  private static final boolean INSTALL_PREVIEW = false;
 
   static {
     installStudioPlugins();
@@ -46,11 +45,9 @@ public final class FolivoraIssueRegistry extends IssueRegistry {
       try {
         FolivoraDomExtender.install();
       } catch (Exception ignore) {}
-      if (INSTALL_PREVIEW) {
-        try {
-          FolivoraPreview.install();
-        } catch (Exception ignore) {}
-      }
+      try {
+        FolivoraPreview.install();
+      } catch (Exception ignore) {}
     }
   }
 
@@ -59,7 +56,6 @@ public final class FolivoraIssueRegistry extends IssueRegistry {
     return Arrays.asList(
       InstalledBeforeSuperDetector.ISSUE,
       InternalFolivoraApiDetector.ISSUE
-//      PreferStubViewDetector.ISSUE
     );
   }
 

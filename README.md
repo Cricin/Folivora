@@ -338,17 +338,8 @@ Folivora.addDrawableFactory(new Folivora.DrawableFactory() {
 > 自定义Drawable请注意，如果你的drawable需要获取其他drawable，建议使用`Folivora.getDrawable(Context ctx, TypedArray a, AttributeSet attrs, int attrIndex)`方法获取，这样可以支持获取内嵌的`shape`，当然如果你不需要支持内嵌的`shape`，可以不用这样做。
 
  - **STEP3** :
-在Activity中启用Folivora, 有三种方法：
-1. 使用本方法需要support-appcompat最低版本为27.1.0或者使用androidx，如果你的Activity继承自AppCompatActivity，那么在Activity对应的主题中加入如下属性:
-```xml
-<style name="..." parent="Theme.AppCompat...">
-  <!-- 依赖support包用这个 -->
-  <item name="viewInflaterClass">cn.cricin.folivora.SupportViewInflater</item>
-  <!-- 依赖androidx包用这个 -->
-  <item name="viewInflaterClass">cn.cricin.folivora.AndroidxViewInflater</item>
-</style>
-```
-2.
+在Activity中启用Folivora, 有两种方法：
+1.
 ```java
 public class MainActivity extends Activity {
   @Override
@@ -357,7 +348,7 @@ public class MainActivity extends Activity {
   }
 }
 ```
-3.
+2.
 ```java
 public class MainActivity extends Activity {
   @Override
@@ -375,16 +366,11 @@ public class MainActivity extends Activity {
 
 ### 编辑layout文件时的预览
 
-#### 预览方法一 [Android Studio版本3.2.0以上]
-参考STEP3中的方法1配置即可实时预览
-
 > 预览效果
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.gif"></img>
 
-#### 预览方法二
-
-使用Folivora自带支持预览的插桩`View`，这些插桩`View`在运行时会被指定的View替换掉，不会对原来的view树结构产生任何影响，例如，如果你想要支持`TextView`的实时预览，你可以使用`cn.cricin.folivora.view.TextView`代替原来的`TextView`, 代码如下:
+依赖了Folivora之后，默认是可以直接预览的，如果没有效果，尝试build一下你的项目，如果还是没有效果，可以使用Folivora自带支持预览的插桩`View`，这些插桩`View`在运行时会被指定的View替换掉，不会对原来的view树结构产生任何影响，例如，如果你想要支持`TextView`的实时预览，你可以使用`cn.cricin.folivora.view.TextView`代替原来的`TextView`, 代码如下:
 ```xml
 <!-- this becomes android.widget.TextView at runtime -->
 <cn.cricin.folivora.view.TextView

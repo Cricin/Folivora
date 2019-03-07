@@ -46,15 +46,21 @@ final class ViewFactory implements LayoutInflater.Factory2 {
   private Set<String> mFailedAppCompatViews = new HashSet<>();
   private static final Class<?>[] sConstructorSignature = {Context.class, AttributeSet.class};
   private static final Object[] sConstructorArgs = new Object[2];
+  private static final String sLegacyAppCompatViewPrefix = "android.support.v7.widget.AppCompat";
+  private static final String sAndroidxViewPrefix = "androidx.appcompat.widget.AppCompat";
 
   private LayoutInflater mDelegate;
   private boolean mLoadAppCompatViews;
   private LayoutlibCallback mLayoutLibCallback;
+  private boolean mUseAndroidx;
 
   ViewFactory(LayoutInflater inflater, LayoutlibCallback layoutlibCallback) {
     this.mDelegate = inflater;
     this.mLayoutLibCallback = layoutlibCallback;
     this.mLoadAppCompatViews = getContext().isAppCompatTheme();
+    try {
+      this.mUseAndroidx = layoutlibCallback.hasAndroidXAppCompat();
+    } catch (Throwable ignored) {}
   }
 
   private BridgeContext getContext() {
@@ -65,7 +71,7 @@ final class ViewFactory implements LayoutInflater.Factory2 {
   public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
     View result = null;
     if (this.mLoadAppCompatViews && APPCOMPAT_VIEWS.contains(name) && !this.mFailedAppCompatViews.contains(name)) {
-      result = this.loadCustomView("android.support.v7.widget.AppCompat" + name, attrs);
+      result = this.loadCustomView((mUseAndroidx ? sAndroidxViewPrefix : sLegacyAppCompatViewPrefix) + name, attrs);
       if (result == null) {
         this.mFailedAppCompatViews.add(name);
       }
