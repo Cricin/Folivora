@@ -1,4 +1,4 @@
-English | [中文](https://github.com/Cricin/Folivora/master/README-zh.md)
+English | [中文](https://github.com/Cricin/Folivora/blob/master/README-zh.md)
 
 ### Why Folivora
 For most android develpers, it is usual to set `View`s background or `ImageView`s `src` by reference a drawable, which required to define a drawable.xml under drawable folder, but some drawable files may be only referenced once, or only to used as a round corner backgrond. more and more drawables may lead to develop and maintain hardly, is there a way to create and use drawables in layout.xml? yeah, Folivora can do this work for you.

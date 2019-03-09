@@ -1,5 +1,3 @@
-[English](https://github.com/Cricin/Folivora/master/README.md) | 中文
-
 ### 为什么需要Folivora
 对于android开发者来说，在layout文件中引用drawable来设置`View`的背景或者`ImageView`的`src`是很常见的事情，需要我们在drawable文件夹下写好xml文件就可以应用了，但是有许多drawable文件可能只被使用了一次，也有可能我们只是为了实现一个简单的圆角背景的功能。越来越多的drawable文件导致开发和维护成本的增加，有没有什么方法可以直接在layout文件中去创建drawable呢，Folivora为你提供了这样的功能。
 
