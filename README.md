@@ -1,8 +1,10 @@
-### 为什么需要Folivora
-对于android开发者来说，在layout文件中引用drawable来设置`View`的背景或者`ImageView`的`src`是很常见的事情，需要我们在drawable文件夹下写好xml文件就可以应用了，但是有许多drawable文件可能只被使用了一次，也有可能我们只是为了实现一个简单的圆角背景的功能。越来越多的drawable文件导致开发和维护成本的增加，有没有什么方法可以直接在layout文件中去创建drawable呢，Folivora为你提供了这样的功能。
+English | [中文](https://github.com/Cricin/Folivora/master/README-zh.md)
 
-### Folivora能做什么
-Folivora可以为你的View设置一个背景或者ImageView的src,当前支持的drawable类型有
+### Why Folivora
+For most android develpers, it is usual to set `View`s background or `ImageView`s `src` by reference a drawable, which required to define a drawable.xml under drawable folder, but some drawable files may be only referenced once, or only to used as a round corner backgrond. more and more drawables may lead to develop and maintain hardly, is there a way to create and use drawables in layout.xml? yeah, Folivora can do this work for you.
+
+### What does Folivora can do?
+Folivora sets a View's background, foreground or ImageView's src in your layout.xml files, currently supported drawables are:
 
 * shape (GradientDrawable)
 * selector (StateListDrawable)
@@ -13,13 +15,13 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 * clip (ClipDrawable)
 * scale (ScaleDrawable)
 * animation (AnimationDrawable)
-* 自定义的Drawable **(新增)**
+* custom drawable **(newly supported)**
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview.gif" width="50%" height="50%"></img>
 
-### 使用方法
+### Usage
  - **STEP1** :
-添加Gradle依赖，在项目的build.gradle中加入
+gradle dependency, add below in your project's build.gradle
 ```groovy
   dependencies {
     implementation 'cn.cricin:folivora:0.0.6'
@@ -27,7 +29,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 ```
 
  - **STEP2** :
-在layout.xml中加入自定义的属性, 告诉Folivora如何创建drawable，Folivora提供的内置drawable属性前缀如下
+write down the attribute provided by folivora, tell folivora how to create drawable, prefix of drawables folivora builtin supported are:
 
 * shape       -> shape
 * selectror   -> selector
@@ -39,14 +41,13 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 * ripple      -> ripple
 * animation   -> anim
 
-例如所有的shape属性设置的前缀都是shape, 如`shapeSolidColor`, `shapeCornerRadius`等, 在设置了`drawableType`
-之后，敲出指定的前缀，IDE会自动的给出所有该drawableType可用的属性
+for example, all attributes prefix of a GradientDrawable is shape, like `shapeSolidColor`, `shapeCornerRadius`, IDE will gives you all available attributes after you write down `drawableType` and typed the drawable prefix.
 
 > shape
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_shape.png"></img>
 
-我们来试着在xml中书写Folivora为我们提供的属性来实现上图中第一个的圆角shape效果
+let's try to write down some code to introduce how folivora works with the first view above
 
 ```xml
 <TextView
@@ -59,6 +60,8 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
   app:shapeCornerRadius="6dp"
   app:shapeSolidColor="@color/blue_light"/>
 ```
+
+here are some other supported drawable usages:
 
 > layerlist
 
@@ -131,9 +134,9 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
   app:rippleContent="@color/blue_light"/>
 ```
 
-使用ripple的确是酷炫多了，但是ripple效果是5.0之后引入的，那5.0之前的设备怎么办呢，Folivora为你提供了`RippleFallback`接口，用来创建一个替换`RippleDrawable`的`Drawable`实例，让我们试着用一个selector来代替ripple:
+much cooler after used ripple drawable, but ripple effect is introduced in lollipop, if the device platform version is lower than lolipop, folivora provided a `RippleFallback` for you, you can provide a substitude drawable if ripple is unavailable, let's try a create a `selector` instead of `ripple`:
 ```java
-Folivora.setRippleFallback(new Folivora.RippleFallback()){
+Folivora.setRippleFallback(new RippleFallback()){
   @Override
   public Drawable onFallback(ColorStateList ripple, Drawable content, Drawable mask, Context ctx){
     StateListDrawable sld = new StateListDrawable();
@@ -221,11 +224,13 @@ Folivora.setRippleFallback(new Folivora.RippleFallback()){
   app:drawableType="animation"/>
 ```
 
-注: 如果你在layout文件中用Folivora为系统控件添加drawable，如`View`和`TextView`等，许多 IDE (Android Studio, IntelliJ) 会把这些Folivora提供的属性标注为错误，但是实际上是正确的。可以在这个View或者根ViewGroup上加上`tools:ignore="MissingPrefix"`来避免报错。为了使用 `ignore`属性，可以加上`xmlns:tools=" http://schemas.android.com/tools"`。关于这个问题，可以查看： https://code.google.com/p/android/issues/detail?id=65176.
+_Note: Popular IDE's (Android Studio, IntelliJ) will likely mark this as an error despite being correct. You may want to add `tools:ignore="MissingPrefix"` to either the View itself or its parent ViewGroup to avoid this. You'll need to add the tools namespace to have access to this "ignore" attribute. `xmlns:tools="
+http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues/detail?id=65176._
 
-### 使用嵌套的shape
 
-Folivora现在支持在drawable中嵌套shape了，除了animation以外，所有的drawable的子drawable除了可以使用`@drawable/xxx`和颜色之外，新增了shape/shape1/shape2/shape3/shape4这5个值，参考定义shape的例子，替换相应的前缀即可, 我们来定义嵌套了shape的selector试一试
+#### Use nested shape
+
+Folivora now support nest shape in drawable, except `animation`, all drawable's child drawable can use `@drawable/xxx`, a color, or one of shape/shape1/shape2/shape3/shape4, you can use this prefix combine with the shape attrs, let's define two round corner shape nested in selector:
 
 ```xml
 <TextView
@@ -243,31 +248,30 @@ Folivora现在支持在drawable中嵌套shape了，除了animation以外，所�
   app:shape1CornerRadius="10dp"/>
 ```
 
-效果是这样的
+effect is:
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_shape_nested.gif"></img>
 
-### 使用自定义Drawable
+### Use custom drawable
 
-从0.0.4版本开始，Folivora除了支持自带的drawable以外，还支持使用自定的drawable类型了，让你使用自定义drawable就和使用自定义view一样轻松。这里我们以自定义一个绘制纸风车的`WindmillDrawable`为例，来让Folivora为我们提供支持：
+since 0.0.4，Folivora support use custom drawable, makes it easyly to use custom drawables just like custom views，for example, let's write a `WindmillDrawable` which draws a paper windmill：
 
-1. 首先我们和自定义`View`一样，为`WindmillDrawable`提供自定义的属性：
+1. first, write down some attrs we needed for `WindmillDrawable`, just like the way of custom view:
 ```xml
-<!-- 和自定义view相同，这里declare-styleable的name最好和自定义drawable的名字一样 -->
 <declare-styleable name="WindmillDrawable">
-    <attr name="wdSize" format="dimension"/> <!-- 纸风车的默认大小 -->
-    <attr name="wdColor0" format="color"/> <!-- 纸风车第一个叶子的颜色 -->
-    <attr name="wdColor1" format="color"/> <!-- 纸风车第二个叶子的颜色 -->
-    <attr name="wdColor2" format="color"/> <!-- 纸风车第三个叶子的颜色 -->
-    <attr name="wdColor3" format="color"/> <!-- 纸风车第四个叶子的颜色 -->
-    <attr name="wdCenterDotRadius" format="dimension"/> <!-- 中心圆的半径 -->
-    <attr name="wdCenterDotColor" format="color"/> <!-- 中心圆的填充色 -->
-    <attr name="wdRotateDegrees" format="integer"/> <!-- 纸风车旋转角度 -->
+    <attr name="wdSize" format="dimension"/> <!-- default size -->
+    <attr name="wdColor0" format="color"/> <!-- first leaf color -->
+    <attr name="wdColor1" format="color"/> <!-- second leaf color -->
+    <attr name="wdColor2" format="color"/> <!-- third leaf color -->
+    <attr name="wdColor3" format="color"/> <!-- forth leaf color -->
+    <attr name="wdCenterDotRadius" format="dimension"/> <!-- center dot radius -->
+    <attr name="wdCenterDotColor" format="color"/> <!-- center dot color -->
+    <attr name="wdRotateDegrees" format="integer"/> <!-- rotation degrees -->
   </declare-styleable>
 ```
-可以看到，自定义属性这部分和普通的`View`自定义属性是一样的。name和自定义drawable的类名相同就行了，Folivora就可以在layout文件中为这些drawable的自定义属性提供属性的自动提示了
+Note: declare-styleable name must equals with the drawable's simple class name, so folivora will support code completion about the custom attrs.
 
-2. 创建自定义的`WindmillDrawable`，继承自`Drawable`, 提供一个`public WindmillDrawable(Context ctx, AttributeSet attrs)`的构造方法，在这个构造方法里就可以获取自定义的属性, 代码如下：
+2. Create a `WindmillDrawable`，extends `Drawable`, provide a `public WindmillDrawable(Context ctx, AttributeSet attrs)` constructor，you can retrieve custom attrs here, like this：
 ```java
 public WindmillDrawable(Context ctx, AttributeSet attrs) {
   TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.WindmillDrawable);
@@ -292,9 +296,9 @@ public WindmillDrawable(Context ctx, AttributeSet attrs) {
   a.recycle();
 }
 ```
-这部分代码其实和自定义`View`的属性获取没有什么区别，主要就是给drawable添加一个构造方法，具体绘制代码就不贴了，如果想要查看具体细节，可以点击[这里](https://github.com/Cricin/Folivora/blob/master/sample/src/main/java/cn/cricin/folivora/sample/drawable/WindmillDrawable.java)查看源码
+this is samilar to costom `View`，the main purpose is to add a constructor that takes a `Context` and `AttributeSet` as parameter, other code is emitted here, for more details，[click](https://github.com/Cricin/Folivora/blob/master/sample/src/main/java/cn/cricin/folivora/sample/drawable/WindmillDrawable.java) to view source code
 
-3. 在layout文件中使用自定义drawable，Folivora提供了`drawableName`属性，使用该属性指定需要使用的drawable：
+3. use `WindmillDrawable` in your layout files，Folivora provided a `drawableName` attr，you can declare the drawable name here：
 ```xml
 <View
   andorid:layout_width="120dp"
@@ -306,16 +310,15 @@ public WindmillDrawable(Context ctx, AttributeSet attrs) {
   app:wdColor3="@color/purple"
   app:wdRotateDegrees="45"/>
 ```
-运行之后的效果：
+at runtime, the drawable is created by folivora and get worked：
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/preview_custom_drawable.png"></img>
 
+you may ask, the drawable's name is to long to remember, it's difficult to write down，don't worry at it，folivora will gives the candidate of custom drawables if you typed down drawableName attr, attrs about the specific drawable is also will have code completion support.
 
-到这里，Folivora就会为该`View`设置我们指定的drawable了，有人可能就会问了，drawable名字这么长，写起来会不会太复杂了，不用担心，当你敲出drawableName的时候，Folivora会为你自动提示可用的drawable名字的，并且该drawable的自定义属性也会有自动提示。
+> Support of custom drawables do not have the constructor which recieves `Context` and `AttributeSet` as parameter
 
-> 如果我的自定义drawable没有上面指定的构造方法，并且我没办法直接修改该drawable的源码来添加这个构造方法该怎么办呢？
-
-Folivora考虑到了这一点，有些drawable的源码我们没法修改，但是它总会有向外提供设置属性的方法吧？所以，我们提供了一个`DrawableFactory`接口，假设`WindmillDrawable`只有一个无参的构造方法，但是提供了设置各种属性的方法，我们需要让Folivora支持`WindmillDrawable`，可以这样做：
+Folivora take concerned it, source code of some drawables is not permited to modify, so，we provided a `DrawableFactory` interface，assume `WindmillDrawable` only have a constructor takes no parameter，but provided some methods to modify it, to support `WindmillDrawable`，we can do this：
 ```java
 Folivora.addDrawableFactory(new Folivora.DrawableFactory() {
   @Override
@@ -335,11 +338,12 @@ Folivora.addDrawableFactory(new Folivora.DrawableFactory() {
   }
 });
 ```
-> 自定义Drawable请注意，如果你的drawable需要获取其他drawable，建议使用`Folivora.getDrawable(Context ctx, TypedArray a, AttributeSet attrs, int attrIndex)`方法获取，这样可以支持获取内嵌的`shape`，当然如果你不需要支持内嵌的`shape`，可以不用这样做。
+> If you are using custom drawable，and your drawable contains other drawables, it is recommended to use `Folivora.getDrawable(Context ctx, TypedArray a, AttributeSet attrs, int attrIndex)` to get a drawable, this method will take care about nested shape creation, also you can do not follow this tip if you do not need nested shape support。
+
 
  - **STEP3** :
-在Activity中启用Folivora, 有两种方法：
-1.
+enable folivora in your app, there are two ways:
+
 ```java
 public class MainActivity extends Activity {
   @Override
@@ -348,29 +352,30 @@ public class MainActivity extends Activity {
   }
 }
 ```
-2.
+or
 ```java
 public class MainActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Folivora.installViewFactory(this);
+    Folivra.installViewFactory(this);
     setContentView(R.layout.your_layout_xml_name);
   }
 }
 
 ```
 
-### 下载示例APK
-[点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/sample.apk)
+### Download Sample APK
+[Click to download](https://raw.githubusercontent.com/Cricin/Folivora/master/sample.apk)
 
-### 编辑layout文件时的预览
 
-> 预览效果
+### Design time preview
+
+> preview result
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.gif"></img>
 
-依赖了Folivora之后，默认是可以直接预览的，如果没有效果，尝试build一下你的项目，如果还是没有效果，可以使用Folivora自带支持预览的插桩`View`，这些插桩`View`在运行时会被指定的View替换掉，不会对原来的view树结构产生任何影响，例如，如果你想要支持`TextView`的实时预览，你可以使用`cn.cricin.folivora.view.TextView`代替原来的`TextView`, 代码如下:
+after you added folivora in gradle and sync project，preview would been enabled by default, if unavailable, try to build your project，if still have no effect, you can use the preview supported stub `View` provided by folivora to get worked, these `View` will be replaced at runtime, no influence about the view tree hirachy, for example if you want to preview the `TextView`，you can use `cn.cricin.folivora.view.TextView` instead of `TextView`, sample code is:
 ```xml
 <!-- this becomes android.widget.TextView at runtime -->
 <cn.cricin.folivora.view.TextView
@@ -383,11 +388,11 @@ public class MainActivity extends Activity {
   app:shapeCornerRadius="10dp"
   app:shapeSolidColor="@color/blue_light"/>
 ```
-Folivora对系统常用的控件的预览提供了支持，如`Button`，`TextView`，`ImageView`等，使用这些控件即可实时预览。
+Folivora has stubbed a lot of frequently used widgets provided by android framework, such as `Button`，`TextView`，`ImageView`, design time preview is available if you using these widgets.
 
-> 对于你自己或者第三方的控件，如何提供预览支持呢?
+> How to support previews on views folivora not stubbed?
 
-Folivora也是支持的，例如RecyclerView在预览时是不支持Folivora的，让它支持预览可以这样做：
+for example, RecyclerView preview is not supported by folivora，to support it, you can do this：
 ```java
 public class StubRecyclerView extends RecyclerView {
   public StubRecyclerView(Context ctx, AttributeSet attrs){
@@ -399,7 +404,7 @@ public class StubRecyclerView extends RecyclerView {
   }
 }
 ```
-在xml代码中就可以使用了：
+than use this `StubRecyclerView` in your layout.xml,
 ```xml
 <your.package.name.StubRecyclerView
   android:layout_width="120dp"
@@ -409,146 +414,144 @@ public class StubRecyclerView extends RecyclerView {
   app:shapeSolidColor="@color/black"
   app:shapeCornerRadius="10dp"/>
 ```
-可以看到，我们指定了`replacedBy`属性, 告诉Folivora需要把这个`StubRecyclerView`替换成`RecyclerView`，replacedBy也是支持自动提示的，注意如果没有该属性，在运行时`StubRecyclerView`不会被替换，导致直接抛出异常。如果不想每次都写`replacedBy`，可以使用`ReplacedBySuper`这个接口, Folivora会自动的用父类替换它. 让我们修改一下我们的StubRecyclerView：
+as you can see, we used a `replacedBy` attribute, this tells folivora to replace this `StubRecyclerView` with `RecyclerView`, if you do not declare this attribute, a error is thrown at runtime, if you do not want to write down this attribute everytime, you can implements `ReplacedBySuper` interface, folivora will use it's super class replace it automatically:
+
 ```java
 public class StubRecyclerView extends RecyclerView implements ReplacedBySuper {
 ...
 ```
 
-### Folivora支持的属性列表
+### Attrs Reference
 
-##### 通用属性
+##### Common Attrs
 
-属性 | 取值| 描述
+attr | value| desc
  ---|--- | --- |
-app:setAs|background(default) &#124; src &#124; foreground| 设置view背景或者ImageView的src或者view前景
-app:drawableType|shape &#124; layer_list &#124; selector &#124; ripple|drawable类型
-app:drawableName|string|自定义drawable的class全名
-app:replacedBy|string|需要替换当前view的view class全名
+app:setAs|background(default) &#124; src &#124; foreground| set drawable as backgrond or src or foreground
+app:drawableType|shape &#124; layer_list &#124; selector &#124; ripple &#124; clip &#124; scale &#124; animation &#124; level_list|drawable type
+app:drawableName|string|fq class name of custom drawable
+app:replacedBy|string|fq class name of replacement view
 
-##### shape属性
+##### Shape Attrs
 
-属性 | 取值| 描述
+attr | value
  ---|--- | --- |
-app:shapeType|rectangle(default)&#124;oval&#124;line&#124;ring|形状
-app:shapeSolidSize|dimension|宽高
-app:shapeSolidWidth|dimension|宽
-app:shapeSolidHeight|dimension|高
-app:shapeSolidColor|color|填充色
-app:shapeSolidColor|color|边框填充色
-app:shapeStokeWidth|dimension|边框厚度
-app:shapeStokeDashWidth|dimension|边框线宽
-app:shapeStokeDashGap|dimension|边框线间距
-app:shapeCornerRadius|dimension|角半径
-app:shapeCornerRadiusTopLeft|dimension|左上角半径
-app:shapeCornerRadiusTopRight|dimension|右上角半径
-app:shapeCornerRadiusBottomLeft|dimension|坐下角半径
-app:shapeCornerRadiusBottomRight|dimension|右下角半径
-app:shapeGradientType|linear &#124; radial &#124; sweep|渐变类型
-app:shapeGradientAngle|tb &#124; tr_bl &#124; rl &#124; br_tl &#124; bt &#124; bl_tr &#124; lr &#124; tl_br|渐变角度
-app:shapeGradientStartColor|color|渐变起始颜色
-app:shapeGradientCenterColor|color|渐变中间颜色
-app:shapeGradientEndColor|color|渐变结束颜色
-app:shapeGradientRadius|dimension|渐变半径
-app:shapeGradientCenterX|dimension|渐变中点x轴位置
-app:shapeGradientCenterY|dimension|渐变中点y轴位置
+app:shapeType|rectangle(default)&#124;oval&#124;line&#124;ring|shape
+app:shapeSolidSize|dimension|
+app:shapeSolidWidth|dimension|
+app:shapeSolidHeight|dimension|
+app:shapeSolidColor|color|
+app:shapeStokeWidth|dimension|
+app:shapeStokeDashWidth|dimension|
+app:shapeStokeDashGap|dimension|
+app:shapeCornerRadius|dimension|
+app:shapeCornerRadiusTopLeft|dimension|
+app:shapeCornerRadiusTopRight|dimension|
+app:shapeCornerRadiusBottomLeft|dimension|
+app:shapeCornerRadiusBottomRight|dimension|
+app:shapeGradientType|linear &#124; radial &#124; sweep|
+app:shapeGradientAngle|tb &#124; tr_bl &#124; rl &#124; br_tl &#124; bt &#124; bl_tr &#124; lr &#124; tl_br|
+app:shapeGradientStartColor|color|
+app:shapeGradientCenterColor|color|
+app:shapeGradientEndColor|color|
+app:shapeGradientRadius|dimension|
+app:shapeGradientCenterX|dimension|
+app:shapeGradientCenterY|dimension|
 
-##### selector属性
+##### Selector Attrs
 
-属性 | 取值| 描述
+attr | value| desc
  ---|--- | --- |
-app:selectorStateFirst|reference &#124; color|selector状态：第一个
-app:selectorStateMiddle|reference &#124; color|selector状态：中间
-app:selectorStateLast|reference &#124; color|selector状态：最后一个
-app:selectorStateActive|reference &#124; color|selector状态：活动
-app:selectorStateActivated|reference &#124; color|selector状态：激活的
-app:selectorStateAccelerate|reference &#124; color|selector状态：加速的
-app:selectorStateChecked|reference &#124; color|selector状态：勾选的
-app:selectorStateCheckable|reference &#124; color|selector状态：可勾选的
-app:selectorStateEnabled|reference &#124; color|selector状态：启用的
-app:selectorStateFocused|reference &#124; color|selector状态：获得焦点
-app:selectorStatePressed|reference &#124; color|selector状态：点击
-app:selectorStateNormal|reference &#124; color|selector状态：正常状态
+app:selectorStateFirst|reference &#124; color|
+app:selectorStateMiddle|reference &#124; color|
+app:selectorStateLast|reference &#124; color|
+app:selectorStateActive|reference &#124; color|
+app:selectorStateActivated|reference &#124; color|
+app:selectorStateAccelerate|reference &#124; color|
+app:selectorStateChecked|reference &#124; color|
+app:selectorStateCheckable|reference &#124; color|
+app:selectorStateEnabled|reference &#124; color|
+app:selectorStateFocused|reference &#124; color|
+app:selectorStatePressed|reference &#124; color|
+app:selectorStateNormal|reference &#124; color|
 
-##### layerlist属性
+##### LayerList Attrs
 
-属性 | 取值| 描述
+attr | value| desc
  ---|--- | --- |
-app:layerItem0Drawable| reference &#124; color| 最底层的drawable
-app:layerItem0Insets|dimension|该drawable的margin
-app:layerItem0Left|dimension| 该drawable的左margin
-app:layerItem0Right|dimension|该drawable的右margin
-app:layerItem0Top|dimension|该drawable的上margin
-app:layerItem0Bottom|dimension|该drawable的下margin
+app:layerItem0Drawable| reference &#124; color| drawable innermost
+app:layerItem0Insets|dimension|margin for drawable
+app:layerItem0Left|dimension| left margin
+app:layerItem0Right|dimension|right margin
+app:layerItem0Top|dimension|top margin
+app:layerItem0Bottom|dimension|bottom margin
 
 ...
 
-layerlist支持最多5个drawable，替换相应的数字即可
+layerlist supports at most 5 children drawables, just substitute the digit
 
-##### ripple属性
+##### Ripple Attrs
 
-属性 | 取值| 描述
+attr | value| desc
  ---|--- | --- |
-app:rippleColor|color|ripple点击时的涟漪色
-app:rippleMask|reference &#124; color|ripple涟漪色的遮罩
-app:rippleContent|reference &#124; color|ripple的内容背景
+app:rippleColor|color|ripple color when touched
+app:rippleMask|reference &#124; color|mask for ripple
+app:rippleContent|reference &#124; color|content for ripple
 
-如果设备不支持Ripple效果(<Api21)，可以给Folivora设置一个`RippleFallback`, 用来创建替代RippleDrawable的Drawable
+##### LevelList Attrs
 
-##### levellist属性
-
-属性 | 取值| 描述
+attr | value| desc
  ---|--- | --- |
-app:levelCurrentLevel|integer|当前的level
-app:levelItem0Drawable|reference &#124; color|第一个item的drawable
-app:levelItem1MinLevel|integer|该drawable的最小level
-app:levelItem1MaxLevel|integer|该drawable的最大level
+app:levelCurrentLevel|integer|current level
+app:levelItem0Drawable|reference &#124; color|drawable for item0
+app:levelItem1MinLevel|integer|min level for item0
+app:levelItem1MaxLevel|integer|max level for item0
 
 ...
 
-levellist支持最多5个drawable，替换相应的数字即可
+levellist supports at most 5 children drawables, just substitute the digit
 
-##### clip属性
+##### Clip Attrs
 
-属性 | 取值| 描述
+attr | value| desc
  ---|--- | --- |
-app:clipDrawable|reference &#124; color|需要裁剪的drawable
-app:clipGravity|同View的layout_gravity|裁剪位置
-app:clipOrientation|vertical &#124; horizontal|裁剪的方向
-app:clipLevel|integer|当前level
+app:clipDrawable|reference &#124; color|drawable to be clipped
+app:clipGravity|same as View's layout_gravity|gravity to clip
+app:clipOrientation|vertical &#124; horizontal|clip orientation
+app:clipLevel|integer|current level(used to clip the drawable)
 
-##### scale属性
+##### Scale Attrs
 
-属性 | 取值| 描述
+attr | value| desc
  ---|--- | --- |
-app:scaleDrawable|reference &#124; color|需要缩放的drawable
-app:scaleGravity|同View的layout_gravity|缩放位置
-app:scaleWidth|float[0,1] or -1()|宽度缩放比例
-app:scaleHeight|float[0,1] or -1()|高度缩放比例
-app:scaleLevel|integer[0,10000]|当前的level
+app:scaleDrawable|reference &#124; color|drawable to be scaled
+app:scaleGravity|same as View's layout_gravity|gravity to scale
+app:scaleWidth|float[0,1] or -1()|scale ratio for width
+app:scaleHeight|float[0,1] or -1()|scale ratio for height
+app:scaleLevel|integer[0,10000]|current level(used to scale the drawable)
 
-##### inset属性
+##### Inset Attrs
 
-属性 | 取值| 描述
+attr | value| desc
  ---|--- | --- |
-app:insetDrawable|reference &#124; color|需要插入边距的drawable
-app:insetAll|dimension|所有方向的边距
-app:insetLeft|dimension|左边距
-app:insetTop|dimension|上边距
-app:insetRight|dimension|右边距
-app:insetBottom|dimension|下边距
+app:insetDrawable|reference &#124; color|drawable to be inseted
+app:insetAll|dimension|all inset
+app:insetLeft|dimension|inset of left
+app:insetTop|dimension|inset of top
+app:insetRight|dimension|inset of right
+app:insetBottom|dimension|inset of bottom
 
-##### animation属性
+##### Animation Attrs
 
-属性 | 取值| 描述
+attr | value| desc
  ---|--- | --- |
-app:animAutoPlay|boolean|是否自动开始动画
-app:animDuration|int(millisecond)|每一帧的持续时间
-app:animOneShot|boolean|是否只播放一次
-app:animFrame0|reference &#124; color|第0帧
-app:animDuration0|int(millisecond)|第0帧持续时间
+app:animAutoPlay|boolean|play animation automaticly
+app:animDuration|int(millisecond)|displayed duration per frame
+app:animOneShot|boolean|play just once
+app:animFrame0|reference &#124; color|first frame's drawable
+app:animDuration0|int(millisecond)|first frame displayed duration
 
-animation支持最多10帧，替换相应的数字即可
+animation supports at most 10 frames, just substitute the digit
 
 
 ## License
