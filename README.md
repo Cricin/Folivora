@@ -434,29 +434,29 @@ app:replacedBy|string|fq class name of replacement view
 
 ##### Shape Attrs
 
-attr | value
+attr | value | desc
  ---|--- | --- |
-app:shapeType|rectangle(default)&#124;oval&#124;line&#124;ring|shape
-app:shapeSolidSize|dimension|
-app:shapeSolidWidth|dimension|
-app:shapeSolidHeight|dimension|
-app:shapeSolidColor|color|
-app:shapeStokeWidth|dimension|
-app:shapeStokeDashWidth|dimension|
-app:shapeStokeDashGap|dimension|
-app:shapeCornerRadius|dimension|
-app:shapeCornerRadiusTopLeft|dimension|
-app:shapeCornerRadiusTopRight|dimension|
-app:shapeCornerRadiusBottomLeft|dimension|
-app:shapeCornerRadiusBottomRight|dimension|
-app:shapeGradientType|linear &#124; radial &#124; sweep|
+app:shapeType|rectangle(default)&#124;oval&#124;line&#124;ring
+app:shapeSolidSize|dimension
+app:shapeSolidWidth|dimension
+app:shapeSolidHeight|dimension
+app:shapeSolidColor|color
+app:shapeStokeWidth|dimension
+app:shapeStokeDashWidth|dimension
+app:shapeStokeDashGap|dimension
+app:shapeCornerRadius|dimension
+app:shapeCornerRadiusTopLeft|dimension
+app:shapeCornerRadiusTopRight|dimension
+app:shapeCornerRadiusBottomLeft|dimension
+app:shapeCornerRadiusBottomRight|dimension
+app:shapeGradientType|linear &#124; radial &#124; sweep
 app:shapeGradientAngle|tb &#124; tr_bl &#124; rl &#124; br_tl &#124; bt &#124; bl_tr &#124; lr &#124; tl_br|
-app:shapeGradientStartColor|color|
-app:shapeGradientCenterColor|color|
-app:shapeGradientEndColor|color|
-app:shapeGradientRadius|dimension|
-app:shapeGradientCenterX|dimension|
-app:shapeGradientCenterY|dimension|
+app:shapeGradientStartColor|color
+app:shapeGradientCenterColor|color
+app:shapeGradientEndColor|color
+app:shapeGradientRadius|dimension
+app:shapeGradientCenterX|dimension
+app:shapeGradientCenterY|dimension
 
 ##### Selector Attrs
 
