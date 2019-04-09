@@ -25,6 +25,7 @@ import cn.cricin.folivora.Folivora;
  * Stub GradView to support previewing, will be replaced by android.widget.GridView
  * at runtime
  */
+@Deprecated // Preview is automatically supported
 public final class GridView extends android.widget.GridView {
   public GridView(Context context, AttributeSet attrs) {
     super(context, attrs);

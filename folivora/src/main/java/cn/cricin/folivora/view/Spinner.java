@@ -25,6 +25,7 @@ import cn.cricin.folivora.Folivora;
  * Stub Spinner to support previewing, will be replaced by android.widget.Spinner
  * at runtime
  */
+@Deprecated // Preview is automatically supported
 public final class Spinner extends android.widget.Spinner {
   public Spinner(Context context, AttributeSet attrs) {
     super(context, attrs);

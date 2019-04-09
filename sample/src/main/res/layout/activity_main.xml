@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   * Copyright (C) 2019 Cricin
   *
   * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,7 @@
   * limitations under the License.
 -->
 
-<android.support.v4.widget.NestedScrollView
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
@@ -25,9 +23,9 @@
   tools:ignore="MissingPrefix,Rtlhardcoded, HardcodedText">
 
   <LinearLayout
-    android:layout_marginLeft="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
     android:orientation="vertical">
 
     <TextView
@@ -35,7 +33,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="10dp"
       android:text="Drawables builtin supported:"
-      android:textColor="@color/colorPrimary"/>
+      android:textColor="@color/colorPrimary" />
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -51,7 +49,7 @@
         android:textColor="@color/white"
         app:drawableType="shape"
         app:shapeCornerRadius="10dp"
-        app:shapeSolidColor="@color/blue_light"/>
+        app:shapeSolidColor="@color/blue_light" />
 
       <TextView
         android:layout_width="50dp"
@@ -62,7 +60,7 @@
         android:textColor="@color/white"
         app:drawableType="shape"
         app:shapeCornerRadius="40dp"
-        app:shapeSolidColor="@color/blue_light"/>
+        app:shapeSolidColor="@color/blue_light" />
 
       <TextView
         android:layout_width="100dp"
@@ -75,7 +73,7 @@
         app:shapeGradientAngle="lr"
         app:shapeGradientCenterColor="@color/blue_light"
         app:shapeGradientEndColor="@color/red"
-        app:shapeGradientStartColor="@color/purple"/>
+        app:shapeGradientStartColor="@color/purple" />
 
     </LinearLayout>
 
@@ -96,7 +94,7 @@
         app:layerItem1Drawable="@color/purple"
         app:layerItem1Insets="4dp"
         app:layerItem2Drawable="@color/blue_dark"
-        app:layerItem2Insets="8dp"/>
+        app:layerItem2Insets="8dp" />
 
       <TextView
         android:layout_width="100dp"
@@ -109,7 +107,7 @@
         android:textColor="@color/white"
         app:drawableType="selector"
         app:selectorStateNormal="@color/blue_light"
-        app:selectorStatePressed="@color/blue_dark"/>
+        app:selectorStatePressed="@color/blue_dark" />
 
       <TextView
         android:layout_width="100dp"
@@ -125,7 +123,7 @@
         app:levelItem0Drawable="@color/green_dark"
         app:levelItem1Drawable="@color/blue_light"
         app:levelItem1MaxLevel="100"
-        app:levelItem1MinLevel="90"/>
+        app:levelItem1MinLevel="90" />
 
     </LinearLayout>
 
@@ -145,7 +143,7 @@
         android:textColor="@color/white"
         app:drawableType="ripple"
         app:rippleColor="@color/white"
-        app:rippleContent="@color/blue_light"/>
+        app:rippleContent="@color/blue_light" />
 
       <FrameLayout
         android:layout_width="wrap_content"
@@ -163,7 +161,7 @@
           android:textColor="@color/white"
           app:clipDrawable="@color/blue_light"
           app:clipLevel="6000"
-          app:drawableType="clip"/>
+          app:drawableType="clip" />
 
       </FrameLayout>
 
@@ -183,7 +181,7 @@
           android:textColor="@color/white"
           app:drawableType="inset"
           app:insetAll="4dp"
-          app:insetDrawable="@color/blue_light"/>
+          app:insetDrawable="@color/blue_light" />
 
       </FrameLayout>
 
@@ -212,7 +210,7 @@
           app:scaleDrawable="@color/blue_light"
           app:scaleGravity="center"
           app:scaleHeight="0.3"
-          app:scaleWidth="0.3"/>
+          app:scaleWidth="0.3" />
 
       </FrameLayout>
 
@@ -235,7 +233,7 @@
         app:animFrame7="@drawable/animation7"
         app:animFrame8="@drawable/animation8"
         app:animFrame9="@drawable/animation9"
-        app:drawableType="animation"/>
+        app:drawableType="animation" />
 
       <TextView
         android:layout_width="100dp"
@@ -252,7 +250,28 @@
         app:shape1CornerRadius="10dp"
         app:shape1SolidColor="@color/blue_dark"
         app:shapeCornerRadius="10dp"
-        app:shapeSolidColor="@color/blue_light"/>
+        app:shapeSolidColor="@color/blue_light" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:orientation="horizontal">
+
+      <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="new selector"
+        android:textColor="@color/white"
+        app:drawableType="selector"
+        app:selectorItem0Drawable="@color/blue_dark"
+        app:selectorItem0States="pressed"
+        app:selectorStateNormal="@color/blue_light" />
 
     </LinearLayout>
 
@@ -261,7 +280,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="10dp"
       android:text="Custom drawables loaded by it's constructor:"
-      android:textColor="@color/colorPrimary"/>
+      android:textColor="@color/colorPrimary" />
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -272,21 +291,21 @@
       <View
         android:layout_width="120dp"
         android:layout_height="120dp"
+        app:drawableName="cn.cricin.folivora.sample.drawable.WindmillDrawable"
         app:wdColor0="@color/blue_light"
         app:wdColor1="@color/green_dark"
         app:wdColor2="@color/green_light"
         app:wdColor3="@color/purple"
-        app:drawableName="cn.cricin.folivora.sample.drawable.WindmillDrawable"
-        app:wdRotateDegrees="45"/>
+        app:wdRotateDegrees="45" />
 
       <View
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginLeft="10dp"
-        app:drawableName="cn.cricin.folivora.sample.drawable.AlphaBackgroundDrawable"
         app:abdSquareColor0="@color/gray"
         app:abdSquareColor1="@color/gray_light"
-        app:abdSquareSize="5dp"/>
+        app:abdSquareSize="5dp"
+        app:drawableName="cn.cricin.folivora.sample.drawable.AlphaBackgroundDrawable" />
 
     </LinearLayout>
 
@@ -295,7 +314,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="10dp"
       android:text="Custom drawables loaded by DrawableFactory:"
-      android:textColor="@color/colorPrimary"/>
+      android:textColor="@color/colorPrimary" />
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -309,7 +328,7 @@
         app:drawableName="cn.cricin.folivora.sample.drawable.UmbrellaDrawable"
         app:udBackgroundColor="@color/black"
         app:udColor1="@color/red"
-        app:udColor2="@color/white"/>
+        app:udColor2="@color/white" />
 
       <View
         android:layout_width="120dp"
@@ -318,7 +337,7 @@
         app:drawableName="cn.cricin.folivora.sample.drawable.UmbrellaDrawable"
         app:udBackgroundColor="@color/black"
         app:udColor1="@color/green_dark"
-        app:udColor2="@color/white"/>
+        app:udColor2="@color/white" />
 
     </LinearLayout>
 

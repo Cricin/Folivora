@@ -25,6 +25,7 @@ import cn.cricin.folivora.Folivora;
  * Stub ImageView to support previewing, will be replaced by android.widget.ImageView
  * at runtime
  */
+@Deprecated // Preview is automatically supported
 public final class ImageView extends android.widget.ImageView {
   public ImageView(Context context, AttributeSet attrs) {
     super(context, attrs);

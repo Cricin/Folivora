@@ -52,5 +52,6 @@ import android.util.AttributeSet;
  *
  * @see cn.cricin.folivora.FolivoraViewFactory#replaceViewNameIfNeeded(String, Context, AttributeSet)
  */
+@Deprecated // Preview is automatically supported
 public interface ReplacedBySuper {
 }

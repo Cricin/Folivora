@@ -25,6 +25,7 @@ import cn.cricin.folivora.Folivora;
  * Stub Button to support previewing, will be replaced by android.widget.Button
  * at runtime
  */
+@Deprecated // Preview is automatically supported
 public final class Button extends android.widget.Button {
   public Button(Context context, AttributeSet attrs) {
     super(context, attrs);

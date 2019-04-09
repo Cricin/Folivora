@@ -25,6 +25,7 @@ import cn.cricin.folivora.Folivora;
  * Stub ProgressBar to support previewing, will be replaced by android.widget.ProgressBar
  * at runtime
  */
+@Deprecated // Preview is automatically supported
 public final class ProgressBar extends android.widget.ProgressBar {
   public ProgressBar(Context context, AttributeSet attrs) {
     super(context, attrs);

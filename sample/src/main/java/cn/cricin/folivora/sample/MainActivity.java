@@ -19,12 +19,15 @@ package cn.cricin.folivora.sample;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.TextView;
 
 import cn.cricin.folivora.Folivora;
 import cn.cricin.folivora.sample.drawable.UmbrellaDrawable;
@@ -69,6 +72,17 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public Class<? extends Drawable> drawableClass() {
         return UmbrellaDrawable.class;
+      }
+    });
+
+    // If you want to do some further customization, this will be helpful
+    Folivora.addOnViewCreatedListener(new Folivora.OnViewCreatedListener() {
+      @Override
+      public void onViewCreated(View view, AttributeSet attrs) {
+        //we change text color to red here
+        if (view instanceof TextView) {
+          ((TextView) view).setTextColor(Color.GREEN);
+        }
       }
     });
 

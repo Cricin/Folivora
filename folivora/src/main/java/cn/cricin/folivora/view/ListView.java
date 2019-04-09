@@ -25,6 +25,7 @@ import cn.cricin.folivora.Folivora;
  * Stub ListView to support previewing, will be replaced by android.widget.ListView
  * at runtime
  */
+@Deprecated // Preview is automatically supported
 public final class ListView extends android.widget.ListView {
   public ListView(Context context, AttributeSet attrs) {
     super(context, attrs);

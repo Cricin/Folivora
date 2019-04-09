@@ -40,6 +40,7 @@ import org.jetbrains.uast.UastUtils;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public final class InternalFolivoraApiDetector extends Detector
   implements SourceCodeScanner, Detector.UastScanner {
 

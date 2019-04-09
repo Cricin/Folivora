@@ -29,6 +29,7 @@ import cn.cricin.folivora.ReplacedBySuper;
  * ViewPager is not capable with Folivora at design time, so we stubbed it
  * to make Folivora get worked with ViewPager.
  */
+@Deprecated // Preview is automatically supported
 @SuppressWarnings("unused")
 public class StubViewPager extends ViewPager implements ReplacedBySuper {
   public StubViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {

@@ -17,30 +17,27 @@
 package cn.cricin.folivora;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-
-import org.xmlpull.v1.XmlPullParser;
 
 /**
- * A LayoutInflater implementation which delegate all inflation
- * to another LayoutInflater. expect setFactoryXX() methods.
+ * A LayoutInflater implementation which delegate all view creation
+ * to {@link FolivoraViewFactory}.
  */
 final class FolivoraInflater extends LayoutInflater {
-  private LayoutInflater mInflater;
+  private static final String[] sClassPrefixList = {
+    "android.widget.",
+    "android.webkit.",
+    "android.app."
+  };
 
-  FolivoraInflater(Context context, LayoutInflater delegate) {
-    super(context);
-    if (delegate instanceof FolivoraInflater) {
-      this.mInflater = ((FolivoraInflater) delegate).mInflater.cloneInContext(context);
-    } else {
-      this.mInflater = delegate;
-    }
-    Factory2 factory2 = mInflater.getFactory2();
+  FolivoraInflater(Context newContext, LayoutInflater original) {
+    super(original, newContext);
+    Factory2 factory2 = original.getFactory2();
     if (factory2 == null) {
-      mInflater.setFactory2(new FolivoraViewFactory());
+      super.setFactory2(new FolivoraViewFactory());
     } else {
       if (!(factory2 instanceof FolivoraViewFactory))
         Log.i(Folivora.TAG, "The Activity's LayoutInflater already has a Factory installed"
@@ -55,47 +52,34 @@ final class FolivoraInflater extends LayoutInflater {
 
   @Override
   public void setFactory(Factory factory) {
-    FolivoraViewFactory f = (FolivoraViewFactory) mInflater.getFactory2();
-    f.mFactory = factory;
+    FolivoraViewFactory f = (FolivoraViewFactory) getFactory2();
+    if (f != null) {
+      f.mFactory = factory;
+    }
   }
 
   @Override
   public void setFactory2(Factory2 factory2) {
-    FolivoraViewFactory f = (FolivoraViewFactory) mInflater.getFactory2();
-    f.mFactory2 = factory2;
+    FolivoraViewFactory f = (FolivoraViewFactory) getFactory2();
+    if (f != null) {
+      f.mFactory2 = factory2;
+    }
   }
 
+  /** fallback if FolivoraViewFactory could not create views properly */
   @Override
-  public Filter getFilter() {
-    return mInflater.getFilter();
-  }
-
-  @Override
-  public void setFilter(Filter filter) {
-    mInflater.setFilter(filter);
-  }
-
-  @Override
-  public View inflate(int resource, ViewGroup root) {
-    return mInflater.inflate(resource, root);
-  }
-
-  @Override
-  public View inflate(XmlPullParser parser, ViewGroup root) {
-    return mInflater.inflate(parser, root);
-  }
-
-  @Override
-  public View inflate(int resource, ViewGroup root, boolean attachToRoot) {
-    return mInflater.inflate(resource, root, attachToRoot);
-  }
-
-  @Override
-  public View inflate(XmlPullParser parser, ViewGroup root, boolean attachToRoot) {
-    return mInflater.inflate(parser, root, attachToRoot);
-  }
-
-  LayoutInflater getBaseInflater() {
-    return mInflater;
+  protected View onCreateView(String name, AttributeSet attrs) throws ClassNotFoundException {
+    for (String prefix : sClassPrefixList) {
+      try {
+        View view = createView(name, prefix, attrs);
+        if (view != null) {
+          return view;
+        }
+      } catch (ClassNotFoundException e) {
+        // In this case we want to let the base class take a crack
+        // at it.
+      }
+    }
+    return super.onCreateView(name, attrs);
   }
 }

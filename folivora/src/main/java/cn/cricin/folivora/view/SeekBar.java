@@ -25,6 +25,7 @@ import cn.cricin.folivora.Folivora;
  * Stub SeekBar to support previewing, will be replaced by android.widget.SeekBar
  * at runtime
  */
+@Deprecated // Preview is automatically supported
 public final class SeekBar extends android.widget.SeekBar {
   public SeekBar(Context context, AttributeSet attrs) {
     super(context, attrs);

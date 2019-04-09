@@ -35,6 +35,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.StateSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,6 +102,30 @@ public final class Folivora {
   private static final int[] STATE_FOCUSED = {android.R.attr.state_focused};
   private static final int[] STATE_PRESSED = {android.R.attr.state_pressed};
   private static final int[] STATE_NORMAL = {};
+
+  private static final int FIRST = 1;
+  private static final int FIRST_NOT = 1 << 1;
+  private static final int MIDDLE = 1 << 2;
+  private static final int MIDDLE_NOT = 1 << 3;
+  private static final int LAST = 1 << 4;
+  private static final int LAST_NOT = 1 << 5;
+  private static final int ACTIVE = 1 << 6;
+  private static final int ACTIVE_NOT = 1 << 7;
+  private static final int ACTIVATED = 1 << 8;
+  private static final int ACTIVATED_NOT = 1 << 9;
+  private static final int ACCELERATE = 1 << 10;
+  private static final int ACCELERATE_NOT = 1 << 11;
+  private static final int CHECKED = 1 << 12;
+  private static final int CHECKED_NOT = 1 << 13;
+  private static final int CHECKABLE = 1 << 14;
+  private static final int CHECKABLE_NOT = 1 << 15;
+  private static final int ENABLED = 1 << 16;
+  private static final int ENABLED_NOT = 1 << 17;
+  private static final int FOCUSED = 1 << 18;
+  private static final int FOCUSED_NOT = 1 << 19;
+  private static final int PRESSED = 1 << 20;
+  private static final int PRESSED_NOT = 1 << 21;
+  private static final int[] TEMP_STATE_SET = new int[11];
 
   /**
    * This class is designed for device platform lowers than
@@ -261,11 +286,40 @@ public final class Folivora {
    * app:selectorStateFocused     drawable
    * app:selectorStatePressed     drawable
    * app:selectorStateNormal      drawable
+   *
+   * note that if you want use more complicated state combination, use
+   * <p>
+   * selectorItemXXX instead.
+   * app:selectorItem0States      flags
+   * app:selectorItem0Drawable    drawable
+   * ...
    */
   private static StateListDrawable newSelector(Context ctx, AttributeSet attrs) {
     StateListDrawable d = new StateListDrawable();
+    Drawable temp;
+    int[] states;
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Selector);
-    Drawable temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateFirst);
+    states = parseStateSet(a.getInt(R.styleable.Folivora_Selector_selectorItem0States, 0));
+    if (states != null && (temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorItem0Drawable)) != null) {
+      d.addState(states, temp);
+    }
+    states = parseStateSet(a.getInt(R.styleable.Folivora_Selector_selectorItem1States, 0));
+    if (states != null && (temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorItem1Drawable)) != null) {
+      d.addState(states, temp);
+    }
+    states = parseStateSet(a.getInt(R.styleable.Folivora_Selector_selectorItem2States, 0));
+    if (states != null && (temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorItem2Drawable)) != null) {
+      d.addState(states, temp);
+    }
+    states = parseStateSet(a.getInt(R.styleable.Folivora_Selector_selectorItem3States, 0));
+    if (states != null && (temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorItem3Drawable)) != null) {
+      d.addState(states, temp);
+    }
+    states = parseStateSet(a.getInt(R.styleable.Folivora_Selector_selectorItem4States, 0));
+    if (states != null && (temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorItem4Drawable)) != null) {
+      d.addState(states, temp);
+    }
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateFirst);
     if (temp != null) d.addState(STATE_FIRST, temp);
     temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateMiddle);
     if (temp != null) d.addState(STATE_MIDDLE, temp);
@@ -291,6 +345,85 @@ public final class Folivora {
     if (temp != null) d.addState(STATE_NORMAL, temp);
     a.recycle();
     return d;
+  }
+
+  /**
+   * Parse state sets from the stateFlags
+   *
+   * @param stateFlags the flags which states combined
+   * @return state set or null if absent
+   */
+  private static int[] parseStateSet(int stateFlags) {
+    if (stateFlags == 0) return null;
+    int index = 0;
+    if ((stateFlags & FIRST) == FIRST) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_first;
+    }
+    if ((stateFlags & FIRST_NOT) == FIRST_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_first;
+    }
+    if ((stateFlags & MIDDLE) == MIDDLE) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_middle;
+    }
+    if ((stateFlags & MIDDLE_NOT) == MIDDLE_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_middle;
+    }
+    if ((stateFlags & LAST) == LAST) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_last;
+    }
+    if ((stateFlags & LAST_NOT) == LAST_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_last;
+    }
+    if ((stateFlags & ACTIVE) == ACTIVE) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_active;
+    }
+    if ((stateFlags & ACTIVE_NOT) == ACTIVE_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_active;
+    }
+    if ((stateFlags & ACTIVATED) == ACTIVATED) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_activated;
+    }
+    if ((stateFlags & ACTIVATED_NOT) == ACTIVATED_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_activated;
+    }
+    if ((stateFlags & ACCELERATE) == ACCELERATE) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_accelerated;
+    }
+    if ((stateFlags & ACCELERATE_NOT) == ACCELERATE_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_accelerated;
+    }
+    if ((stateFlags & CHECKED) == CHECKED) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_checked;
+    }
+    if ((stateFlags & CHECKED_NOT) == CHECKED_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_checked;
+    }
+    if ((stateFlags & CHECKABLE) == CHECKABLE) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_checkable;
+    }
+    if ((stateFlags & CHECKABLE_NOT) == CHECKABLE_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_checkable;
+    }
+    if ((stateFlags & ENABLED) == ENABLED) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_enabled;
+    }
+    if ((stateFlags & ENABLED_NOT) == ENABLED_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_enabled;
+    }
+    if ((stateFlags & FOCUSED) == FOCUSED) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_focused;
+    }
+    if ((stateFlags & FOCUSED_NOT) == FOCUSED_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_focused;
+    }
+    if ((stateFlags & PRESSED) == PRESSED) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_pressed;
+    }
+    if ((stateFlags & PRESSED_NOT) == PRESSED_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_pressed;
+    }
+    if (index == 0) return null;
+    return StateSet.trimStateSet(TEMP_STATE_SET, index);
   }
 
   /**
@@ -825,9 +958,6 @@ public final class Folivora {
    * Create a drawable to the specific view with attrs, this method is
    * used by folivora internally, but in order to support preview for
    * the views folivora not stubbed, this method becomes publicly
-   * <p>
-   * note:
-   * this method should only be use to support preview, simple usage is:
    *
    * @param view  view of drawable attached
    * @param attrs attributes from view tag
@@ -945,7 +1075,9 @@ public final class Folivora {
 
   /**
    * Add a {@link OnViewCreatedListener} listener to folivora, folivora
-   * will notify these listeners when a view is created.
+   * will notify these listeners when a view is created. this listener
+   * allows you do some extra customization about the inflated views.
+   *
    * @param l listener to register
    */
   public static void addOnViewCreatedListener(OnViewCreatedListener l) {

@@ -25,6 +25,7 @@ import cn.cricin.folivora.Folivora;
  * Stub View to support previewing, will be replaced by android.view.View
  * at runtime
  */
+@Deprecated // Preview is automatically supported
 public final class View extends android.view.View {
   public View(Context context, AttributeSet attrs) {
     super(context, attrs);

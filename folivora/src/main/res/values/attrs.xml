@@ -358,6 +358,161 @@
       <enum name="shape3" value="3"/>
       <enum name="shape4" value="4"/>
     </attr>
+    <attr name="selectorItem0States" format="flags">
+      <flag name="first" value="0x1"/>
+      <flag name="firstNot" value="0x2"/>
+      <flag name="middle" value="0x4"/>
+      <flag name="middleNot" value="0x8"/>
+      <flag name="last" value="0x10"/>
+      <flag name="lastNot" value="0x20"/>
+      <flag name="active" value="0x40"/>
+      <flag name="activeNot" value="0x80"/>
+      <flag name="activated" value="0x100"/>
+      <flag name="activatedNot" value="0x200"/>
+      <flag name="accelerate" value="0x400"/>
+      <flag name="accelerateNot" value="0x800"/>
+      <flag name="checked" value="0x1000"/>
+      <flag name="checkedNot" value="0x2000"/>
+      <flag name="checkable" value="0x4000"/>
+      <flag name="checkableNot" value="0x8000"/>
+      <flag name="enabled" value="0x10000"/>
+      <flag name="enableNot" value="0x20000"/>
+      <flag name="focused" value="0x40000"/>
+      <flag name="focusedNot" value="0x80000"/>
+      <flag name="pressed" value="0x100000"/>
+      <flag name="pressedNot" value="0x200000"/>
+    </attr>
+    <attr name="selectorItem0Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorItem1States" format="flags">
+      <flag name="first" value="0x1"/>
+      <flag name="firstNot" value="0x2"/>
+      <flag name="middle" value="0x4"/>
+      <flag name="middleNot" value="0x8"/>
+      <flag name="last" value="0x10"/>
+      <flag name="lastNot" value="0x20"/>
+      <flag name="active" value="0x40"/>
+      <flag name="activeNot" value="0x80"/>
+      <flag name="activated" value="0x100"/>
+      <flag name="activatedNot" value="0x200"/>
+      <flag name="accelerate" value="0x400"/>
+      <flag name="accelerateNot" value="0x800"/>
+      <flag name="checked" value="0x1000"/>
+      <flag name="checkedNot" value="0x2000"/>
+      <flag name="checkable" value="0x4000"/>
+      <flag name="checkableNot" value="0x8000"/>
+      <flag name="enabled" value="0x10000"/>
+      <flag name="enableNot" value="0x20000"/>
+      <flag name="focused" value="0x40000"/>
+      <flag name="focusedNot" value="0x80000"/>
+      <flag name="pressed" value="0x100000"/>
+      <flag name="pressedNot" value="0x200000"/>
+    </attr>
+    <attr name="selectorItem1Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorItem2States" format="flags">
+      <flag name="first" value="0x1"/>
+      <flag name="firstNot" value="0x2"/>
+      <flag name="middle" value="0x4"/>
+      <flag name="middleNot" value="0x8"/>
+      <flag name="last" value="0x10"/>
+      <flag name="lastNot" value="0x20"/>
+      <flag name="active" value="0x40"/>
+      <flag name="activeNot" value="0x80"/>
+      <flag name="activated" value="0x100"/>
+      <flag name="activatedNot" value="0x200"/>
+      <flag name="accelerate" value="0x400"/>
+      <flag name="accelerateNot" value="0x800"/>
+      <flag name="checked" value="0x1000"/>
+      <flag name="checkedNot" value="0x2000"/>
+      <flag name="checkable" value="0x4000"/>
+      <flag name="checkableNot" value="0x8000"/>
+      <flag name="enabled" value="0x10000"/>
+      <flag name="enableNot" value="0x20000"/>
+      <flag name="focused" value="0x40000"/>
+      <flag name="focusedNot" value="0x80000"/>
+      <flag name="pressed" value="0x100000"/>
+      <flag name="pressedNot" value="0x200000"/>
+    </attr>
+    <attr name="selectorItem2Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorItem3States" format="flags">
+      <flag name="first" value="0x1"/>
+      <flag name="firstNot" value="0x2"/>
+      <flag name="middle" value="0x4"/>
+      <flag name="middleNot" value="0x8"/>
+      <flag name="last" value="0x10"/>
+      <flag name="lastNot" value="0x20"/>
+      <flag name="active" value="0x40"/>
+      <flag name="activeNot" value="0x80"/>
+      <flag name="activated" value="0x100"/>
+      <flag name="activatedNot" value="0x200"/>
+      <flag name="accelerate" value="0x400"/>
+      <flag name="accelerateNot" value="0x800"/>
+      <flag name="checked" value="0x1000"/>
+      <flag name="checkedNot" value="0x2000"/>
+      <flag name="checkable" value="0x4000"/>
+      <flag name="checkableNot" value="0x8000"/>
+      <flag name="enabled" value="0x10000"/>
+      <flag name="enableNot" value="0x20000"/>
+      <flag name="focused" value="0x40000"/>
+      <flag name="focusedNot" value="0x80000"/>
+      <flag name="pressed" value="0x100000"/>
+      <flag name="pressedNot" value="0x200000"/>
+    </attr>
+    <attr name="selectorItem3Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorItem4States" format="flags">
+      <flag name="first" value="0x1"/>
+      <flag name="firstNot" value="0x2"/>
+      <flag name="middle" value="0x4"/>
+      <flag name="middleNot" value="0x8"/>
+      <flag name="last" value="0x10"/>
+      <flag name="lastNot" value="0x20"/>
+      <flag name="active" value="0x40"/>
+      <flag name="activeNot" value="0x80"/>
+      <flag name="activated" value="0x100"/>
+      <flag name="activatedNot" value="0x200"/>
+      <flag name="accelerate" value="0x400"/>
+      <flag name="accelerateNot" value="0x800"/>
+      <flag name="checked" value="0x1000"/>
+      <flag name="checkedNot" value="0x2000"/>
+      <flag name="checkable" value="0x4000"/>
+      <flag name="checkableNot" value="0x8000"/>
+      <flag name="enabled" value="0x10000"/>
+      <flag name="enableNot" value="0x20000"/>
+      <flag name="focused" value="0x40000"/>
+      <flag name="focusedNot" value="0x80000"/>
+      <flag name="pressed" value="0x100000"/>
+      <flag name="pressedNot" value="0x200000"/>
+    </attr>
+    <attr name="selectorItem4Drawable" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
     <!--selector结束-->
   </declare-styleable>
 
