@@ -158,12 +158,7 @@ final class FolivoraViewFactory implements LayoutInflater.Factory2 {
   }
 
   private static LayoutInflater getLayoutInflater(Context context) {
-    LayoutInflater inflater = LayoutInflater.from(context);
-    if (inflater instanceof FolivoraInflater) {
-      return ((FolivoraInflater) inflater).getBaseInflater();
-    } else {
-      return inflater;
-    }
+    return LayoutInflater.from(context);
   }
 
   private static boolean sCheckedField;
