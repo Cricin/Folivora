@@ -66,7 +66,6 @@
     <attr name="shapeGradientCenterY" format="dimension"/>
 
   </declare-styleable>
-  <!--shape结束-->
 
   <!--shape1-->
   <declare-styleable name="Folivora_Shape1">
@@ -117,7 +116,6 @@
     <attr name="shape1GradientCenterY" format="dimension"/>
 
   </declare-styleable>
-  <!--shape1结束-->
 
   <!--shape2-->
   <declare-styleable name="Folivora_Shape2">
@@ -168,7 +166,6 @@
     <attr name="shape2GradientCenterY" format="dimension"/>
 
   </declare-styleable>
-  <!--shape2结束-->
 
   <!--shape3-->
   <declare-styleable name="Folivora_Shape3">
@@ -219,7 +216,6 @@
     <attr name="shape3GradientCenterY" format="dimension"/>
 
   </declare-styleable>
-  <!--shape3结束-->
 
   <!--shape4-->
   <declare-styleable name="Folivora_Shape4">
@@ -270,7 +266,6 @@
     <attr name="shape4GradientCenterY" format="dimension"/>
 
   </declare-styleable>
-  <!--shape4结束-->
 
   <!--selector-->
   <declare-styleable name="Folivora_Selector">
@@ -513,7 +508,6 @@
       <enum name="shape3" value="3"/>
       <enum name="shape4" value="4"/>
     </attr>
-    <!--selector结束-->
   </declare-styleable>
 
   <!--layer-list-->
@@ -583,7 +577,6 @@
       <enum name="shape4" value="4"/>
     </attr>
   </declare-styleable>
-  <!--layer-list结束-->
 
   <!--ripple only worked on Lollipop or higher-->
   <declare-styleable name="Folivora_Ripple">
@@ -603,7 +596,6 @@
       <enum name="shape4" value="4"/>
     </attr>
   </declare-styleable>
-  <!--ripple结束-->
 
   <declare-styleable name="Folivora">
     <attr name="setAs" format="enum">
@@ -640,6 +632,7 @@
       <enum name="shape4" value="4"/>
     </attr>
     <attr name="clipLevel" format="integer"/>
+    <!-- Keep sync with android.view.Gravity -->
     <attr name="clipGravity" format="flags">
       <!-- Push object to the top of its container, not changing its size. -->
       <flag name="top" value="0x30" />
@@ -677,7 +670,6 @@
       <flag name="end" value="0x00800005" />
     </attr>
   </declare-styleable>
-  <!--clip结束-->
 
   <!--inset-->
   <declare-styleable name="Folivora_Inset">
@@ -694,7 +686,6 @@
     <attr name="insetRight" format="dimension|fraction"/>
     <attr name="insetBottom" format="dimension|fraction"/>
   </declare-styleable>
-  <!--inset结束-->
 
   <!--scale-->
   <declare-styleable name="Folivora_Scale">
@@ -706,6 +697,7 @@
       <enum name="shape3" value="3"/>
       <enum name="shape4" value="4"/>
     </attr>
+    <!-- Keep sync with android.view.Gravity -->
     <attr name="scaleGravity" format="flags">
 
       <!-- Push object to the top of its container, not changing its size. -->
@@ -747,7 +739,6 @@
     <attr name="scaleWidth" format="float"/>
     <attr name="scaleHeight" format="float"/>
   </declare-styleable>
-  <!--scale结束-->
 
   <!--animation-->
   <declare-styleable name="Folivora_Animation">
@@ -827,7 +818,6 @@
     <attr name="levelItem4MinLevel" format="integer"/>
     <attr name="levelItem4MaxLevel" format="integer"/>
   </declare-styleable>
-  <!--level结束-->
 
 
 </resources>
