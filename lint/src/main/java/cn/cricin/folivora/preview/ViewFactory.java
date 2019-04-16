@@ -96,7 +96,7 @@ final class ViewFactory implements LayoutInflater.Factory2 {
       result = loadCustomView(name, attrs);
     }
 
-    if (result != null && !FolivoraAccess.shouldSkipApplyDrawable(name, result)) {
+    if (result != null) {
       FolivoraAccess.applyDrawableToView(result, attrs);
     }
 

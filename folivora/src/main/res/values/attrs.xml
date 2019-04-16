@@ -603,7 +603,6 @@
       <enum name="src" value="1"/>
       <enum name="foreground" value="2"/>
     </attr>
-    <attr name="replacedBy" format="string"/>
     <attr name="drawableType" format="enum">
       <enum name="shape" value="0"/>
       <enum name="selector" value="1"/>
