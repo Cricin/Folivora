@@ -35,6 +35,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.LruCache;
 import android.util.StateSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -70,6 +71,7 @@ import java.util.Set;
 public final class Folivora {
   static final String TAG = "Folivora";
 
+  // Drawable type enums, keep sync with app:drawableType
   private static final int DRAWABLE_TYPE_SHAPE = 0;
   private static final int DRAWABLE_TYPE_SELECTOR = 1;
   private static final int DRAWABLE_TYPE_LAYER = 2;
@@ -80,16 +82,19 @@ public final class Folivora {
   private static final int DRAWABLE_TYPE_SCALE = 7;
   private static final int DRAWABLE_TYPE_ANIMATION = 8;
 
+  // Set as enums, keep sync with app:setAs
   private static final int SET_AS_BACKGROUND = 0;
   private static final int SET_AS_SRC = 1;
   private static final int SET_AS_FOREGROUND = 2;
 
+  // Nested shape enums
   private static final int SHAPE_INDEX_0 = 0;
   private static final int SHAPE_INDEX_1 = 1;
   private static final int SHAPE_INDEX_2 = 2;
   private static final int SHAPE_INDEX_3 = 3;
   private static final int SHAPE_INDEX_4 = 4;
 
+  // Single state constants of view, keep sync with Folivora_Selector attrs
   private static final int[] STATE_FIRST = {android.R.attr.state_first};
   private static final int[] STATE_MIDDLE = {android.R.attr.state_middle};
   private static final int[] STATE_LAST = {android.R.attr.state_last};
@@ -101,8 +106,16 @@ public final class Folivora {
   private static final int[] STATE_ENABLED = {android.R.attr.state_enabled};
   private static final int[] STATE_FOCUSED = {android.R.attr.state_focused};
   private static final int[] STATE_PRESSED = {android.R.attr.state_pressed};
+  private static final int[] STATE_SELECTED = {android.R.attr.state_selected};
+  private static final int[] STATE_SINGLE = {android.R.attr.state_single};
+  private static final int[] STATE_HOVERED = {android.R.attr.state_hovered};
+  private static final int[] STATE_WINDOW_FOCUSED = {android.R.attr.state_window_focused};
+  // Should we support these state?
+  //private static final int[] STATE_DRAG_HOVERED = {android.R.attr.state_drag_hovered};
+  //private static final int[] STATE_DRAG_CAN_ACCEPT = {android.R.attr.state_drag_can_accept};
   private static final int[] STATE_NORMAL = {};
 
+  // State flags
   private static final int FIRST = 1;
   private static final int FIRST_NOT = 1 << 1;
   private static final int MIDDLE = 1 << 2;
@@ -125,7 +138,15 @@ public final class Folivora {
   private static final int FOCUSED_NOT = 1 << 19;
   private static final int PRESSED = 1 << 20;
   private static final int PRESSED_NOT = 1 << 21;
-  private static final int[] TEMP_STATE_SET = new int[11];
+  private static final int SELECTED = 1 << 22;
+  private static final int SELECTED_NOT = 1 << 23;
+  private static final int SINGLE = 1 << 24;
+  private static final int SINGLE_NOT = 1 << 25;
+  private static final int HOVERED = 1 << 26;
+  private static final int HOVERED_NOT = 1 << 27;
+  private static final int WINDOW_FOCUSED = 1 << 28;
+  private static final int WINDOW_FOCUSED_NOT = 1 << 29;
+  private static final int[] TEMP_STATE_SET = new int[15];
 
   /**
    * This class is designed for device platform lowers than
@@ -185,10 +206,18 @@ public final class Folivora {
     void onViewCreated(View view, AttributeSet attrs);
   }
 
+  // Exposed apis
   private static RippleFallback sRippleFallback;
   private static List<DrawableFactory> sDrawableFactories;
   private static List<OnViewCreatedListener> sOnViewCreatedListeners;
 
+  // Cached drawables with it's ids
+  private static LruCache<String, Drawable> sDrawableCache = new LruCache<>(128);
+  // Cache is enabled at runtime, but at design time, this should be disabled for work properly
+  @SuppressWarnings("FieldCanBeLocal") // This is accessed by preview
+  private static boolean sDrawableCacheEnabled = true;
+
+  // Stuffs for create custom drawable reflectively
   private static Class[] sConstructorSignature = {Context.class, AttributeSet.class};
   private static Object[] sConstructorArgs = new Object[2];
   private static Map<String, Constructor<? extends Drawable>> sConstructorCache = new HashMap<>();
@@ -274,24 +303,28 @@ public final class Folivora {
    * Create a new StateListDrawable, only support single state match.
    * attrs:
    * <p>
-   * app:selectorStateFirst       drawable
-   * app:selectorStateMiddle      drawable
-   * app:selectorStateLast        drawable
-   * app:selectorStateActive      drawable
-   * app:selectorStateActivate    drawable
-   * app:selectorStateAccelerate  drawable
-   * app:selectorStateChecked     drawable
-   * app:selectorStateCheckable   drawable
-   * app:selectorStateEnabled     drawable
-   * app:selectorStateFocused     drawable
-   * app:selectorStatePressed     drawable
-   * app:selectorStateNormal      drawable
+   * app:selectorStateFirst          drawable
+   * app:selectorStateMiddle         drawable
+   * app:selectorStateLast           drawable
+   * app:selectorStateActive         drawable
+   * app:selectorStateActivate       drawable
+   * app:selectorStateAccelerate     drawable
+   * app:selectorStateChecked        drawable
+   * app:selectorStateCheckable      drawable
+   * app:selectorStateEnabled        drawable
+   * app:selectorStateFocused        drawable
+   * app:selectorStatePressed        drawable
+   * app:selectorStateNormal         drawable
+   * app:selectorStateSelected       drawable
+   * app:selectorStateSingle         drawable
+   * app:selectorStateHovered        drawable
+   * app:selectorStateWindowFocused  drawable
    *
    * note that if you want use more complicated state combination, use
    * <p>
    * selectorItemXXX instead.
-   * app:selectorItem0States      flags
-   * app:selectorItem0Drawable    drawable
+   * app:selectorItemXStates         flags
+   * app:selectorItemXDrawable       drawable
    * ...
    */
   private static StateListDrawable newSelector(Context ctx, AttributeSet attrs) {
@@ -341,6 +374,14 @@ public final class Folivora {
     if (temp != null) d.addState(STATE_FOCUSED, temp);
     temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStatePressed);
     if (temp != null) d.addState(STATE_PRESSED, temp);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateSelected);
+    if (temp != null) d.addState(STATE_SELECTED, temp);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateSingle);
+    if (temp != null) d.addState(STATE_SINGLE, temp);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateHovered);
+    if (temp != null) d.addState(STATE_HOVERED, temp);
+    temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateWindowFocused);
+    if (temp != null) d.addState(STATE_WINDOW_FOCUSED, temp);
     temp = getDrawable(ctx, a, attrs, R.styleable.Folivora_Selector_selectorStateNormal);
     if (temp != null) d.addState(STATE_NORMAL, temp);
     a.recycle();
@@ -421,6 +462,30 @@ public final class Folivora {
     }
     if ((stateFlags & PRESSED_NOT) == PRESSED_NOT) {
       TEMP_STATE_SET[index++] = -android.R.attr.state_pressed;
+    }
+    if ((stateFlags & SELECTED) == SELECTED) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_selected;
+    }
+    if ((stateFlags & SELECTED_NOT) == SELECTED_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_selected;
+    }
+    if ((stateFlags & SINGLE) == SINGLE) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_single;
+    }
+    if ((stateFlags & SINGLE_NOT) == SINGLE_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_single;
+    }
+    if ((stateFlags & HOVERED) == HOVERED) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_hovered;
+    }
+    if ((stateFlags & HOVERED_NOT) == HOVERED_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_hovered;
+    }
+    if ((stateFlags & WINDOW_FOCUSED) == WINDOW_FOCUSED) {
+      TEMP_STATE_SET[index++] = android.R.attr.state_window_focused;
+    }
+    if ((stateFlags & WINDOW_FOCUSED_NOT) == WINDOW_FOCUSED_NOT) {
+      TEMP_STATE_SET[index++] = -android.R.attr.state_window_focused;
     }
     if (index == 0) return null;
     return StateSet.trimStateSet(TEMP_STATE_SET, index);
@@ -736,11 +801,29 @@ public final class Folivora {
    */
   @SuppressWarnings("ConstantConditions")
   private static AnimationDrawable newAnimation(Context ctx, AttributeSet attrs) {
-    AnimationDrawable ad = new AnimationDrawable();
+    AnimationDrawable ad;
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora_Animation);
     final boolean autoPlay = a.getBoolean(R.styleable.Folivora_Animation_animAutoPlay, false);
-    final int frameDuration = a.getInt(R.styleable.Folivora_Animation_animDuration, -1);
+    if (autoPlay) {
+      ad = new AnimationDrawable() {
+        boolean autoPlayed;
+        @Override
+        protected void onBoundsChange(Rect bounds) {
+          super.onBoundsChange(bounds);
+          if (!autoPlayed) {
+            if (isOneShot()) {
+              Log.i(TAG, "Auto play and oneshot both enabled, you could not see the animation");
+            }
+            this.start();
+            autoPlayed = true;
+          }
+        }
+      };
+    } else {
+      ad = new AnimationDrawable();
+    }
     ad.setOneShot(a.getBoolean(R.styleable.Folivora_Animation_animOneShot, false));
+    final int frameDuration = a.getInt(R.styleable.Folivora_Animation_animDuration, -1);
 
     if (a.hasValue(R.styleable.Folivora_Animation_animFrame0)) {
       ad.addFrame(a.getDrawable(R.styleable.Folivora_Animation_animFrame0),
@@ -783,12 +866,6 @@ public final class Folivora {
         a.getInt(R.styleable.Folivora_Animation_animDuration9, frameDuration));
     }
     a.recycle();
-    if (autoPlay) {
-      if (ad.isOneShot()) {
-        Log.i(TAG, "Auto play and oneshot both enabled, you could not see the animation");
-      }
-      ad.start();
-    }
     return ad;
   }
 
@@ -843,7 +920,7 @@ public final class Folivora {
    * @param attrs        attributes from view tag
    * @return a newly created drawable, or null
    */
-  private static Drawable newDrawable(int drawableType, Context ctx, AttributeSet attrs) {
+  private static Drawable newDrawableByType(int drawableType, Context ctx, AttributeSet attrs) {
     Drawable result = null;
     switch (drawableType) {
       case -1://not used
@@ -962,28 +1039,46 @@ public final class Folivora {
    * @param view  view of drawable attached
    * @param attrs attributes from view tag
    */
-  public static void applyDrawableToView(View view, AttributeSet attrs) {
+  static void applyDrawableToView(View view, AttributeSet attrs) {
     final Context ctx = view.getContext();
+    // Step1 extract attrs
     TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.Folivora);
-
     int drawableType = a.getInt(R.styleable.Folivora_drawableType, -1);
+    String drawableId = a.getString(R.styleable.Folivora_drawableId);
     String drawableName = a.getString(R.styleable.Folivora_drawableName);
     int setAs = a.getInt(R.styleable.Folivora_setAs, SET_AS_BACKGROUND);
     a.recycle();
-    if ((drawableType < 0 && drawableName == null)) return;
-
+    if (drawableType < 0 && drawableId == null && drawableName == null) return;
+    // Step2 lookup cached if available
+    Drawable cached = null;
     Drawable d = null;
-    if (drawableType >= 0) {
-      d = newDrawable(drawableType, ctx, attrs);
-    }
-    if (d == null && drawableName != null) {
-      d = newDrawableFromFactory(drawableName, ctx, attrs);
-      if (d == null) {
-        d = newCustomDrawable(drawableName, ctx, attrs);
+    if (drawableId != null) {
+      cached = sDrawableCache.get(drawableId);
+      if (cached != null && cached.getConstantState() != null) {
+        cached = cached.getConstantState().newDrawable();
       }
     }
+    // Step3 try to create a new drawable and cached it
+    if (!sDrawableCacheEnabled || cached == null) {
+      if (drawableType >= 0) {
+        d = newDrawableByType(drawableType, ctx, attrs);
+      }
+      if (d == null && drawableName != null) {
+        d = newDrawableFromFactory(drawableName, ctx, attrs);
+      }
+      if (d == null && drawableName != null) {
+        d = newCustomDrawable(drawableName, ctx, attrs);
+      }
+      if (d != null && d.getConstantState() != null && drawableId != null) {
+        sDrawableCache.put(drawableId, d);
+      }
+    }
+    d = d == null ? cached : d;
     if (d == null) return;
-    if (setAs == SET_AS_SRC && view instanceof ImageView) {
+    // Step4 set drawable to view
+    if(setAs == SET_AS_BACKGROUND){
+      view.setBackground(d);
+    } else if (setAs == SET_AS_SRC && view instanceof ImageView) {
       ((ImageView) view).setImageDrawable(d);
     } else if (setAs == SET_AS_FOREGROUND) {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -995,8 +1090,6 @@ public final class Folivora {
         Log.w(TAG, "Folivora can not set foreground to [" + view.getClass()
           + "], Current device platform is lower than MarshMallow");
       }
-    } else {
-      view.setBackground(d);
     }
   }
 

@@ -21,6 +21,7 @@ import android.view.View;
 
 import com.android.ide.common.rendering.api.LayoutlibCallback;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import static cn.cricin.folivora.preview.FolivoraPreview.sDebug;
@@ -52,6 +53,9 @@ final class FolivoraAccess {
       Class<?> c = callback.findClass("cn.cricin.folivora.Folivora");
       sMethod = c.getDeclaredMethod("applyDrawableToView", View.class, AttributeSet.class);
       sMethod.setAccessible(true);
+      Field field = c.getDeclaredField("sDrawableCacheEnabled");
+      field.setAccessible(true);
+      field.set(null, false);
       if (sDebug) sLogger.info("FolivoraAccess: Folivora class loaded");
     } catch (Exception ex) {
       if (sDebug) sLogger.warn("FolivoraAccess: Folivora class load failed", ex);

@@ -22,7 +22,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 添加Gradle依赖，在项目的build.gradle中加入
 ```groovy
   dependencies {
-    implementation 'cn.cricin:folivora:0.0.6'
+    implementation 'cn.cricin:folivora:0.0.7'
   }
 ```
 
@@ -116,6 +116,23 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
   app:selectorStateNormal="@color/blue_light"
   app:selectorStatePressed="@color/blue_dark"/>
 ```
+
+在0.0.7版本中，Folivora加入了对创建复杂state的selector支持，使用app:selectorItemXStates指定需要的state flags，使用app:selectorItemXDrawable指定对应states的drawable(X可以是0，1，2，3，4)，现在可以用新的方式实现上面的drawable。
+
+```xml
+<TextView
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:textColor="@android:color/white"
+  android:gravity="center"
+  android:text="selector"
+  app:drawableType="selector"
+  app:selectorItem0States="pressed"
+  app:selectorItem0Drawable="@color/blue_dark"
+  app:selectorStateNormal="@color/blue_light"/>
+```
+
+注：两种selector写法最好不要混用，推荐使用新的selector写法，这种方式的selector顺序是严格按照item定义的顺序添加进selector的，唯一的限制是只能定义5个states和drawables，不过对于一般的selector应该够用了
 
 > ripple
 
@@ -224,6 +241,30 @@ Folivora.setRippleFallback(new Folivora.RippleFallback()){
 ```
 
 注: 如果你在layout文件中用Folivora为系统控件添加drawable，如`View`和`TextView`等，许多 IDE (Android Studio, IntelliJ) 会把这些Folivora提供的属性标注为错误，但是实际上是正确的。可以在这个View或者根ViewGroup上加上`tools:ignore="MissingPrefix"`来避免报错。为了使用 `ignore`属性，可以加上`xmlns:tools=" http://schemas.android.com/tools"`。关于这个问题，可以查看： https://code.google.com/p/android/issues/detail?id=65176.
+
+ - **STEP3** :
+在Activity中启用Folivora, 有两种方法：
+1.
+```java
+public class MainActivity extends Activity {
+  @Override
+  protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(Folivora.wrap(newBase));
+  }
+}
+```
+2.
+```java
+public class MainActivity extends Activity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Folivora.installViewFactory(this);
+    setContentView(R.layout.your_layout_xml_name);
+  }
+}
+
+```
 
 ### 使用嵌套的shape
 
@@ -339,29 +380,32 @@ Folivora.addDrawableFactory(new Folivora.DrawableFactory() {
 ```
 > 自定义Drawable请注意，如果你的drawable需要获取其他drawable，建议使用`Folivora.getDrawable(Context ctx, TypedArray a, AttributeSet attrs, int attrIndex)`方法获取，这样可以支持获取内嵌的`shape`，当然如果你不需要支持内嵌的`shape`，可以不用这样做。
 
- - **STEP3** :
-在Activity中启用Folivora, 有两种方法：
-1.
-```java
-public class MainActivity extends Activity {
-  @Override
-  protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(Folivora.wrap(newBase));
-  }
-}
-```
-2.
-```java
-public class MainActivity extends Activity {
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    Folivora.installViewFactory(this);
-    setContentView(R.layout.your_layout_xml_name);
-  }
-}
+### 使用Drawable缓存
 
+在之前的版本中，Folivora会根据view tag中的属性创建drawable，每次都会创建一个新的drawable实例，很浪费资源，现在Folivora支持了drawable的缓存功能(LruCache，大小为128), 使用缓存非常简单，只需要添加`app:drawableId`属性，为drawable指定一个id(string类型，不是android的id类型)即可。Folivora在为view设置drawable的时候，如果drawable在缓存中，会直接从缓存中取。这就带来了一个便利，如果在一个layout文件中，一个drawable被多次使用，只需要在第一次使用的地方编写drawable定义就行了，其他的地方可以直接使用drawableId引用该drawable。
+
+```xml
+<LinearLayout
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+
+    <View
+      android:layout_width="100dp"
+      android:layout_height="40dp"
+      app:drawableId="shape_rounded_6dp"
+      app:drawableType="shape"
+      app:shapeCornerRadius="6dp"
+      app:shapeSolidColor="@color/blue_light"/>
+
+    <View
+      android:layout_width="100dp"
+      android:layout_height="40dp"
+      app:drawableId="shape_rounded_6dp"/>
+
+</LinearLayout>
 ```
+
+建议为需要复用的drawable和经常使用的layout文件中的drawable设置`drawableId`, 以提升性能。
 
 ### 下载示例APK
 [点击下载](https://raw.githubusercontent.com/Cricin/Folivora/master/sample.apk)
@@ -372,50 +416,7 @@ public class MainActivity extends Activity {
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.gif"></img>
 
-依赖了Folivora之后，默认是可以直接预览的，如果没有效果，尝试build一下你的项目，如果还是没有效果，可以使用Folivora自带支持预览的插桩`View`，这些插桩`View`在运行时会被指定的View替换掉，不会对原来的view树结构产生任何影响，例如，如果你想要支持`TextView`的实时预览，你可以使用`cn.cricin.folivora.view.TextView`代替原来的`TextView`, 代码如下:
-```xml
-<!-- this becomes android.widget.TextView at runtime -->
-<cn.cricin.folivora.view.TextView
-  android:layout_width="100dp"
-  android:layout_height="40dp"
-  android:gravity="center"
-  android:text="Stubbed TextView"
-  android:textColor="@color/white"
-  app:drawableType="shape"
-  app:shapeCornerRadius="10dp"
-  app:shapeSolidColor="@color/blue_light"/>
-```
-Folivora对系统常用的控件的预览提供了支持，如`Button`，`TextView`，`ImageView`等，使用这些控件即可实时预览。
-
-> 对于你自己或者第三方的控件，如何提供预览支持呢?
-
-Folivora也是支持的，例如RecyclerView在预览时是不支持Folivora的，让它支持预览可以这样做：
-```java
-public class StubRecyclerView extends RecyclerView {
-  public StubRecyclerView(Context ctx, AttributeSet attrs){
-    super(ctx, attrs);
-    if (!isInEditMode()) {
-      throw new IllegalStateException("this view only available at design time");
-    }
-    Folivora.applyDrawableToView(this, attrs);
-  }
-}
-```
-在xml代码中就可以使用了：
-```xml
-<your.package.name.StubRecyclerView
-  android:layout_width="120dp"
-  android:layout_height="120dp"
-  app:replacedBy="android.support.v7.widget.RecyclerView"
-  app:drawableType="shape"
-  app:shapeSolidColor="@color/black"
-  app:shapeCornerRadius="10dp"/>
-```
-可以看到，我们指定了`replacedBy`属性, 告诉Folivora需要把这个`StubRecyclerView`替换成`RecyclerView`，replacedBy也是支持自动提示的，注意如果没有该属性，在运行时`StubRecyclerView`不会被替换，导致直接抛出异常。如果不想每次都写`replacedBy`，可以使用`ReplacedBySuper`这个接口, Folivora会自动的用父类替换它. 让我们修改一下我们的StubRecyclerView：
-```java
-public class StubRecyclerView extends RecyclerView implements ReplacedBySuper {
-...
-```
+依赖了Folivora之后，默认是可以直接预览的，如果没有效果，尝试build一下你的项目。
 
 ### Folivora支持的属性列表
 
@@ -426,7 +427,7 @@ public class StubRecyclerView extends RecyclerView implements ReplacedBySuper {
 app:setAs|background(default) &#124; src &#124; foreground| 设置view背景或者ImageView的src或者view前景
 app:drawableType|shape &#124; layer_list &#124; selector &#124; ripple &#124; clip &#124; scale &#124; animation &#124; level_list|drawable类型
 app:drawableName|string|自定义drawable的class全名
-app:replacedBy|string|需要替换当前view的view class全名
+app:drawableId|string|用于缓存的drawable唯一id
 
 ##### shape属性
 

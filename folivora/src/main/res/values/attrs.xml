@@ -346,6 +346,34 @@
       <enum name="shape3" value="3"/>
       <enum name="shape4" value="4"/>
     </attr>
+    <attr name="selectorStateSelected" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateSingle" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateHovered" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
+    <attr name="selectorStateWindowFocused" format="reference|color|enum">
+      <enum name="shape" value="0"/>
+      <enum name="shape1" value="1"/>
+      <enum name="shape2" value="2"/>
+      <enum name="shape3" value="3"/>
+      <enum name="shape4" value="4"/>
+    </attr>
     <attr name="selectorStateNormal" format="reference|color|enum">
       <enum name="shape" value="0"/>
       <enum name="shape1" value="1"/>
@@ -376,6 +404,14 @@
       <flag name="focusedNot" value="0x80000"/>
       <flag name="pressed" value="0x100000"/>
       <flag name="pressedNot" value="0x200000"/>
+      <flag name="selected" value="0x400000"/>
+      <flag name="selectedNot" value="0x800000"/>
+      <flag name="single" value="0x1000000"/>
+      <flag name="singleNot" value="0x2000000"/>
+      <flag name="hovered" value="0x4000000"/>
+      <flag name="hoveredNot" value="0x8000000"/>
+      <flag name="windowFocused" value="0x10000000"/>
+      <flag name="windowFocusedNot" value="0x20000000"/>
     </attr>
     <attr name="selectorItem0Drawable" format="reference|color|enum">
       <enum name="shape" value="0"/>
@@ -407,6 +443,14 @@
       <flag name="focusedNot" value="0x80000"/>
       <flag name="pressed" value="0x100000"/>
       <flag name="pressedNot" value="0x200000"/>
+      <flag name="selected" value="0x400000"/>
+      <flag name="selectedNot" value="0x800000"/>
+      <flag name="single" value="0x1000000"/>
+      <flag name="singleNot" value="0x2000000"/>
+      <flag name="hovered" value="0x4000000"/>
+      <flag name="hoveredNot" value="0x8000000"/>
+      <flag name="windowFocused" value="0x10000000"/>
+      <flag name="windowFocusedNot" value="0x20000000"/>
     </attr>
     <attr name="selectorItem1Drawable" format="reference|color|enum">
       <enum name="shape" value="0"/>
@@ -438,6 +482,14 @@
       <flag name="focusedNot" value="0x80000"/>
       <flag name="pressed" value="0x100000"/>
       <flag name="pressedNot" value="0x200000"/>
+      <flag name="selected" value="0x400000"/>
+      <flag name="selectedNot" value="0x800000"/>
+      <flag name="single" value="0x1000000"/>
+      <flag name="singleNot" value="0x2000000"/>
+      <flag name="hovered" value="0x4000000"/>
+      <flag name="hoveredNot" value="0x8000000"/>
+      <flag name="windowFocused" value="0x10000000"/>
+      <flag name="windowFocusedNot" value="0x20000000"/>
     </attr>
     <attr name="selectorItem2Drawable" format="reference|color|enum">
       <enum name="shape" value="0"/>
@@ -469,6 +521,14 @@
       <flag name="focusedNot" value="0x80000"/>
       <flag name="pressed" value="0x100000"/>
       <flag name="pressedNot" value="0x200000"/>
+      <flag name="selected" value="0x400000"/>
+      <flag name="selectedNot" value="0x800000"/>
+      <flag name="single" value="0x1000000"/>
+      <flag name="singleNot" value="0x2000000"/>
+      <flag name="hovered" value="0x4000000"/>
+      <flag name="hoveredNot" value="0x8000000"/>
+      <flag name="windowFocused" value="0x10000000"/>
+      <flag name="windowFocusedNot" value="0x20000000"/>
     </attr>
     <attr name="selectorItem3Drawable" format="reference|color|enum">
       <enum name="shape" value="0"/>
@@ -500,6 +560,14 @@
       <flag name="focusedNot" value="0x80000"/>
       <flag name="pressed" value="0x100000"/>
       <flag name="pressedNot" value="0x200000"/>
+      <flag name="selected" value="0x400000"/>
+      <flag name="selectedNot" value="0x800000"/>
+      <flag name="single" value="0x1000000"/>
+      <flag name="singleNot" value="0x2000000"/>
+      <flag name="hovered" value="0x4000000"/>
+      <flag name="hoveredNot" value="0x8000000"/>
+      <flag name="windowFocused" value="0x10000000"/>
+      <flag name="windowFocusedNot" value="0x20000000"/>
     </attr>
     <attr name="selectorItem4Drawable" format="reference|color|enum">
       <enum name="shape" value="0"/>
@@ -615,6 +683,7 @@
       <enum name="animation" value="8"/>
     </attr>
     <attr name="drawableName" format="string"/>
+    <attr name="drawableId" format="string"/>
   </declare-styleable>
 
   <!--clip-->

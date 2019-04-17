@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     Folivora.addOnViewCreatedListener(new Folivora.OnViewCreatedListener() {
       @Override
       public void onViewCreated(View view, AttributeSet attrs) {
-        //we change text color to red here
+        //we change text color to green here
         if (view instanceof TextView) {
           ((TextView) view).setTextColor(Color.GREEN);
         }

@@ -45,6 +45,7 @@ import org.jetbrains.android.resourceManagers.ResourceManager;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -53,10 +54,17 @@ import java.util.List;
  * Process folivora attr's to the current dom element
  */
 final class FolivoraAttrProcessing {
+  /**
+   * If this attr name exists in xml tag, it's value is treated as
+   * declare styleables, folivora will also register these attributes
+   * to current xml tag.
+   */
+  private static final String EXTRA_STYLEABLE_ATTR_NAME = "extraStyleables";
+  /**
+   * This converter is used to find custom drawable classes in current project
+   */
   private static final PackageClassConverter DRAWABLE_CLASS_CONVERTER =
     new PackageClassConverter("android.graphics.drawable.Drawable");
-  private static final ViewClassConverter VIEW_CLASS_CONVERTER =
-    new ViewClassConverter();
   private static final HashMap<String, String> TYPE_TO_STYLEABLE = new HashMap<>();
   private static final HashMap<String, String> SHAPE_TO_STYLEABLE = new HashMap<>();
 
@@ -87,7 +95,7 @@ final class FolivoraAttrProcessing {
     if (isInvalidTagName(tag.getName())) return;
     List<String> styleableNames = getStyleablesToRegister(tag.getAttributes());
     for (String styleableName : styleableNames) {
-      if (styleableName != null) {
+      if (styleableName != null && styleableName.length() > 0) {
         registerAttributes(facet, element, styleableName, callback);
       }
     }
@@ -105,13 +113,19 @@ final class FolivoraAttrProcessing {
         drawableType = attrValue;
       } else if ("drawableName".equals(attrName)) {
         drawableName = attrValue;
+      } else if (EXTRA_STYLEABLE_ATTR_NAME.equals(attrName) && attrValue != null) {
+        if (attrValue.indexOf(',') != -1) {
+          styleableNames.addAll(Arrays.asList(attrValue.split(",")));
+        } else {
+          styleableNames.add(attrValue);
+        }
       }
     }
     if (drawableType == null && drawableName == null) return styleableNames;
     if (drawableType != null) styleableNames.add(TYPE_TO_STYLEABLE.get(drawableType));
     if (drawableName != null) styleableNames.add(getSimpleClassName(drawableName));
 
-    //process nested shapes
+    // process nested shapes
     String styleable;
     for (XmlAttribute attr : attrs) {
       String attrName = attr.getLocalName();
@@ -124,7 +138,9 @@ final class FolivoraAttrProcessing {
       if (styleable == null) continue;
       if (drawableType != null && attrName.startsWith(drawableType)) {
         styleableNames.add(styleable);
-      } else if (drawableName != null) {//if is custom drawable, register nested shape
+      } else if (drawableName != null) {
+        // if is custom drawable, we don't know whether this drawable
+        // need nested shapes, so register nested shape anyway
         styleableNames.add(styleable);
       }
     }
@@ -260,8 +276,6 @@ final class FolivoraAttrProcessing {
       Converter converter = AndroidDomUtil.getSpecificConverter(xmlName, element);
       if ("drawableName".equals(name)) {
         converter = DRAWABLE_CLASS_CONVERTER;
-      } else if ("replacedBy".equals(name)) {
-        converter = VIEW_CLASS_CONVERTER;
       }
       if (converter == null) {
         if (SdkConstants.TOOLS_URI.equals(namespaceKey)) {

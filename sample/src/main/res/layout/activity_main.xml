@@ -268,10 +268,22 @@
         android:gravity="center"
         android:text="new selector"
         android:textColor="@color/white"
+        app:drawableId="selector_pressed"
         app:drawableType="selector"
         app:selectorItem0Drawable="@color/blue_dark"
         app:selectorItem0States="pressed"
         app:selectorStateNormal="@color/blue_light" />
+
+      <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="new selector"
+        android:textColor="@color/white"
+        app:drawableId="selector_pressed" />
 
     </LinearLayout>
 

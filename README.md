@@ -24,7 +24,7 @@ Folivora sets a View's background, foreground or ImageView's src in your layout.
 gradle dependency, add below in your project's build.gradle
 ```groovy
   dependencies {
-    implementation 'cn.cricin:folivora:0.0.6'
+    implementation 'cn.cricin:folivora:0.0.7'
   }
 ```
 
@@ -117,6 +117,23 @@ here are some other supported drawable usages:
   app:selectorStateNormal="@color/blue_light"
   app:selectorStatePressed="@color/blue_dark"/>
 ```
+
+since 0.0.7，Folivora added support about complicated state selector，use `app:selectorItemXStates` to set state flags，and use `app:selectorItemXDrawable` set corresponding drawable to the states(X can be 0，1，2，3，4)，now we can use the new way to describe drawable above。
+
+```xml
+<TextView
+  android:layout_width="100dp"
+  android:layout_height="40dp"
+  android:textColor="@android:color/white"
+  android:gravity="center"
+  android:text="selector"
+  app:drawableType="selector"
+  app:selectorItem0States="pressed"
+  app:selectorItem0Drawable="@color/blue_dark"
+  app:selectorStateNormal="@color/blue_light"/>
+```
+
+Note：it is recommended to not mixed two selector definitions，just use the new way is better，which is ordered when add in selector by item index, constraint is only support 5 items for now, which is enough for usual selectors.
 
 > ripple
 
@@ -227,6 +244,29 @@ Folivora.setRippleFallback(new RippleFallback()){
 _Note: Popular IDE's (Android Studio, IntelliJ) will likely mark this as an error despite being correct. You may want to add `tools:ignore="MissingPrefix"` to either the View itself or its parent ViewGroup to avoid this. You'll need to add the tools namespace to have access to this "ignore" attribute. `xmlns:tools="
 http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues/detail?id=65176._
 
+ - **STEP3** :
+enable folivora in your app, there are two ways:
+
+```java
+public class MainActivity extends Activity {
+  @Override
+  protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(Folivora.wrap(newBase));
+  }
+}
+```
+or
+```java
+public class MainActivity extends Activity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Folivra.installViewFactory(this);
+    setContentView(R.layout.your_layout_xml_name);
+  }
+}
+
+```
 
 #### Use nested shape
 
@@ -340,30 +380,38 @@ Folivora.addDrawableFactory(new Folivora.DrawableFactory() {
 ```
 > If you are using custom drawable，and your drawable contains other drawables, it is recommended to use `Folivora.getDrawable(Context ctx, TypedArray a, AttributeSet attrs, int attrIndex)` to get a drawable, this method will take care about nested shape creation, also you can do not follow this tip if you do not need nested shape support。
 
+### Drawable caches
 
- - **STEP3** :
-enable folivora in your app, there are two ways:
+In previous releases，Folivora will create drawables according to attrs from view tag, a new instance is created for per view, which is waste resources, now Folivora supported drawable caching(LruCache，max = 128), usage is very simple，just add `app:drawableId` attr，set a id(string type，not android's id type) to drawable is ok。Folivora will lookup cache to find a cached drawable, which means，if in a layout.xml，a drawable should be referenced multi places, define it at first occurrence, then at other place, use the same `drawableId` to reference this drawable.
 
-```java
-public class MainActivity extends Activity {
-  @Override
-  protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(Folivora.wrap(newBase));
-  }
-}
+```xml
+<LinearLayout
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+
+    <TextView
+      android:layout_width="100dp"
+      android:layout_height="40dp"
+      android:text="shape1"
+      android:gravity="center"
+      android:textColor="@android:color/white"
+      app:drawableId="shape_rounded_6dp"
+      app:drawableType="shape"
+      app:shapeCornerRadius="6dp"
+      app:shapeSolidColor="@color/blue_light"/>
+
+    <TextView
+      android:layout_width="100dp"
+      android:layout_height="40dp"
+      android:text="shape2"
+      android:gravity="center"
+      android:textColor="@android:color/white"
+      app:drawableId="shape_rounded_6dp"/>
+
+</LinearLayout>
 ```
-or
-```java
-public class MainActivity extends Activity {
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    Folivra.installViewFactory(this);
-    setContentView(R.layout.your_layout_xml_name);
-  }
-}
 
-```
+It is recommended to set `drawableId` to drawable which is reusable or inside a frequently used layout files, which makes a better performance.
 
 ### Download Sample APK
 [Click to download](https://raw.githubusercontent.com/Cricin/Folivora/master/sample.apk)
@@ -375,51 +423,7 @@ public class MainActivity extends Activity {
 
 <img src="https://raw.githubusercontent.com/Cricin/Folivora/master/pics/studio_preview.gif"></img>
 
-after you added folivora in gradle and sync project，preview would been enabled by default, if unavailable, try to build your project，if still have no effect, you can use the preview supported stub `View` provided by folivora to get worked, these `View` will be replaced at runtime, no influence about the view tree hirachy, for example if you want to preview the `TextView`，you can use `cn.cricin.folivora.view.TextView` instead of `TextView`, sample code is:
-```xml
-<!-- this becomes android.widget.TextView at runtime -->
-<cn.cricin.folivora.view.TextView
-  android:layout_width="100dp"
-  android:layout_height="40dp"
-  android:gravity="center"
-  android:text="Stubbed TextView"
-  android:textColor="@color/white"
-  app:drawableType="shape"
-  app:shapeCornerRadius="10dp"
-  app:shapeSolidColor="@color/blue_light"/>
-```
-Folivora has stubbed a lot of frequently used widgets provided by android framework, such as `Button`，`TextView`，`ImageView`, design time preview is available if you using these widgets.
-
-> How to support previews on views folivora not stubbed?
-
-for example, RecyclerView preview is not supported by folivora，to support it, you can do this：
-```java
-public class StubRecyclerView extends RecyclerView {
-  public StubRecyclerView(Context ctx, AttributeSet attrs){
-    super(ctx, attrs);
-    if (!isInEditMode()) {
-      throw new IllegalStateException("this view only available at design time");
-    }
-    Folivora.applyDrawableToView(this, attrs);
-  }
-}
-```
-than use this `StubRecyclerView` in your layout.xml,
-```xml
-<your.package.name.StubRecyclerView
-  android:layout_width="120dp"
-  android:layout_height="120dp"
-  app:replacedBy="android.support.v7.widget.RecyclerView"
-  app:drawableType="shape"
-  app:shapeSolidColor="@color/black"
-  app:shapeCornerRadius="10dp"/>
-```
-as you can see, we used a `replacedBy` attribute, this tells folivora to replace this `StubRecyclerView` with `RecyclerView`, if you do not declare this attribute, a error is thrown at runtime, if you do not want to write down this attribute everytime, you can implements `ReplacedBySuper` interface, folivora will use it's super class replace it automatically:
-
-```java
-public class StubRecyclerView extends RecyclerView implements ReplacedBySuper {
-...
-```
+after you added folivora in gradle and sync project，preview would been enabled by default, if unavailable, try to build your project.
 
 ### Attrs Reference
 
@@ -430,7 +434,7 @@ attr | value| desc
 app:setAs|background(default) &#124; src &#124; foreground| set drawable as backgrond or src or foreground
 app:drawableType|shape &#124; layer_list &#124; selector &#124; ripple &#124; clip &#124; scale &#124; animation &#124; level_list|drawable type
 app:drawableName|string|fq class name of custom drawable
-app:replacedBy|string|fq class name of replacement view
+app:drawableId|string|drawable unique id for cache use
 
 ##### Shape Attrs
 
