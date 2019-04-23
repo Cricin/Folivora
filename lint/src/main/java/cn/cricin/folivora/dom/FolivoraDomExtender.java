@@ -36,12 +36,11 @@ import javax.annotation.Nonnull;
 
 @SuppressWarnings("unchecked")
 public final class FolivoraDomExtender extends DomExtender<AndroidDomElement> {
-  private static HashMap<Object, Class> sValueClasses;
+  private static HashMap<Object, Class> sValueClasses = new HashMap<>();
 
   static {
     try {
       Class legacyAttributeFormatClass = Class.forName("org.jetbrains.android.dom.attrs.AttributeFormat");
-      sValueClasses = new HashMap<>();
       sValueClasses.put(Enum.valueOf(legacyAttributeFormatClass, "Boolean"), boolean.class);
       sValueClasses.put(Enum.valueOf(legacyAttributeFormatClass, "Reference"), ResourceValue.class);
       sValueClasses.put(Enum.valueOf(legacyAttributeFormatClass, "Dimension"), ResourceValue.class);
@@ -95,12 +94,15 @@ public final class FolivoraDomExtender extends DomExtender<AndroidDomElement> {
   public static void install() {
     ExtensionPoint<DomExtenderEP> point = Extensions.getRootArea().getExtensionPoint
       (DomExtenderEP.EP_NAME);
+    String clazzName = FolivoraDomExtender.class.getCanonicalName();
     DomExtenderEP androidDomExtenderEp = null;
     DomExtenderEP[] eps = point.getExtensions();
     for (DomExtenderEP ep : eps) {
+      if (clazzName.equals(ep.extenderClassName)) {
+        return;// already registered
+      }
       if (ep.extenderClassName.endsWith("AndroidDomExtender")) {
         androidDomExtenderEp = ep;
-        break;
       }
     }
     if (androidDomExtenderEp != null) {
