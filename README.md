@@ -24,7 +24,7 @@ Folivora sets a View's background, foreground or ImageView's src in your layout.
 gradle dependency, add below in your project's build.gradle
 ```groovy
   dependencies {
-    implementation 'cn.cricin:folivora:0.0.7'
+    implementation 'cn.cricin:folivora:0.0.8'
   }
 ```
 
