@@ -37,8 +37,8 @@ import java.util.WeakHashMap;
  */
 @SuppressWarnings("unchecked")
 public final class FolivoraPreview {
-  static final Logger sLogger = Logger.getInstance(FolivoraPreview.class);
-  static final boolean sDebug = false;
+  private static final Logger sLogger = Logger.getInstance(FolivoraPreview.class);
+  private static boolean sLogged = false;
 
   private static Field sContextField;
   private static WeakHashMap<Resources, BridgeContext> sContextMap;
@@ -48,15 +48,21 @@ public final class FolivoraPreview {
       Field field = Resources_Delegate.class.getDeclaredField("sContexts");
       field.setAccessible(true);
       sContextMap = (WeakHashMap<Resources, BridgeContext>) field.get(null);
-    } catch (Exception ignore) {}
+    } catch (Throwable t) {
+      log("FolivoraPreview", "Unable to find static field sContexts in" +
+        " Resource_Delegate, current AS version may lower than 3.0", t);
+    }
     if (sContextMap == null) {
       try {
         sContextField = Resources.class.getDeclaredField("mContext");
         sContextField.setAccessible(true);
-      } catch (Exception ignored) {}
+      } catch (Throwable t) {
+        log("FolivoraPreview", "Unable to find static field mContext in" +
+          " Resource_Delegate, current AS version may higher than 3.0", t);
+      }
     }
     if (sContextField == null && sContextMap == null) {
-      if (sDebug) sLogger.info("Unable to install preview");
+      log("FolivoraPreview", "FolivoraPreview not installed, AS version not supported", null);
       return;
     }
     try {
@@ -75,7 +81,7 @@ public final class FolivoraPreview {
       };
       field.set(null, map);
     } catch (Exception ex) {
-      if (sDebug) sLogger.error(ex);
+      log("FolivoraPreview", "FolivoraPreview not installed", ex);
     }
   }
 
@@ -101,4 +107,15 @@ public final class FolivoraPreview {
     return Collections.emptyList();
   }
 
+  static void logOnlyOnce(String tag, String msg, Throwable t){
+    // if error occurred in layout inflation, we should only log
+    // once, so IDE log file will not be massed up.
+    if(sLogged) return;
+    sLogger.info("[" + tag + "] ->" + msg , t);
+    sLogged = true;
+  }
+
+  static void log(String tag, String msg, Throwable t) {
+    sLogger.info("[" + tag + "] ->" + msg , t);
+  }
 }

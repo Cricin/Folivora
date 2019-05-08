@@ -24,9 +24,6 @@ import com.android.ide.common.rendering.api.LayoutlibCallback;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import static cn.cricin.folivora.preview.FolivoraPreview.sDebug;
-import static cn.cricin.folivora.preview.FolivoraPreview.sLogger;
-
 /**
  * This class is an mediator between layoutlib inside IDE and
  * Folivora inside current project's dependencies, this class
@@ -43,7 +40,8 @@ final class FolivoraAccess {
     try {
       sMethod.invoke(null, view, attrs);
     } catch (Exception ex) {
-      if (sDebug) sLogger.warn("FolivoraAccess: Folivora.applyDrawableToView() invoke failed", ex);
+      FolivoraPreview.logOnlyOnce("FolivoraAccess",
+        "Folivora.applyDrawableToView() invoke failed", ex);
     }
   }
 
@@ -56,9 +54,9 @@ final class FolivoraAccess {
       Field field = c.getDeclaredField("sDrawableCacheEnabled");
       field.setAccessible(true);
       field.set(null, false);
-      if (sDebug) sLogger.info("FolivoraAccess: Folivora class loaded");
-    } catch (Exception ex) {
-      if (sDebug) sLogger.warn("FolivoraAccess: Folivora class load failed", ex);
+      FolivoraPreview.log("FolivoraAccess", "Folivora class loaded", null);
+    } catch (Throwable ex) {
+      FolivoraPreview.logOnlyOnce("FolivoraAccess", "Folivora class load failed", ex);
     }
   }
 }

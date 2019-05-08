@@ -34,7 +34,6 @@ import org.jetbrains.android.dom.attrs.ToolsAttributeUtil;
 import org.jetbrains.android.dom.converters.CompositeConverter;
 import org.jetbrains.android.dom.converters.PackageClassConverter;
 import org.jetbrains.android.dom.converters.ResourceReferenceConverter;
-import org.jetbrains.android.dom.converters.ViewClassConverter;
 import org.jetbrains.android.dom.layout.DataBindingElement;
 import org.jetbrains.android.dom.layout.LayoutElement;
 import org.jetbrains.android.dom.manifest.Manifest;
@@ -65,6 +64,7 @@ final class FolivoraAttrProcessing {
    */
   private static final PackageClassConverter DRAWABLE_CLASS_CONVERTER =
     new PackageClassConverter("android.graphics.drawable.Drawable");
+  private static final DrawableIdConverter DRAWABLE_ID_CONVERTER = new DrawableIdConverter();
   private static final HashMap<String, String> TYPE_TO_STYLEABLE = new HashMap<>();
   private static final HashMap<String, String> SHAPE_TO_STYLEABLE = new HashMap<>();
 
@@ -113,6 +113,10 @@ final class FolivoraAttrProcessing {
         drawableType = attrValue;
       } else if ("drawableName".equals(attrName)) {
         drawableName = attrValue;
+      } else if ("drawableId".equals(attrName)){
+        if (attrValue != null && attrValue.length() > 0) {
+          DrawableIdConverter.drawableIds.add(attrValue);
+        }
       } else if (EXTRA_STYLEABLE_ATTR_NAME.equals(attrName) && attrValue != null) {
         if (attrValue.indexOf(',') != -1) {
           styleableNames.addAll(Arrays.asList(attrValue.split(",")));
@@ -276,6 +280,9 @@ final class FolivoraAttrProcessing {
       Converter converter = AndroidDomUtil.getSpecificConverter(xmlName, element);
       if ("drawableName".equals(name)) {
         converter = DRAWABLE_CLASS_CONVERTER;
+      }
+      if ("drawableId".equals(name)) {
+        converter = DRAWABLE_ID_CONVERTER;
       }
       if (converter == null) {
         if (SdkConstants.TOOLS_URI.equals(namespaceKey)) {
