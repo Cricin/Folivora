@@ -45,15 +45,20 @@ final class FolivoraShapeFactory {
     gd.setSize(a.getDimensionPixelSize(R.styleable.Folivora_Shape1_shape1SolidWidth, size),
       a.getDimensionPixelSize(R.styleable.Folivora_Shape1_shape1SolidHeight, size));
 
-    gd.setGradientType(a.getInt(R.styleable.Folivora_Shape1_shape1GradientType, 0));
+    gd.setGradientType(a.getInt(R.styleable.Folivora_Shape1_shape1GradientType, GradientDrawable.LINEAR_GRADIENT));
     gd.setGradientRadius(a.getDimension(R.styleable.Folivora_Shape1_shape1GradientRadius, 0));
-    gd.setGradientCenter(a.getDimension(R.styleable.Folivora_Shape1_shape1GradientCenterX, 0),
-      a.getDimension(R.styleable.Folivora_Shape1_shape1GradientCenterY, 0));
-    gd.setColors(new int[]{
-      a.getColor(R.styleable.Folivora_Shape1_shape1GradientStartColor, 0),
-      a.getColor(R.styleable.Folivora_Shape1_shape1GradientCenterColor, 0),
-      a.getColor(R.styleable.Folivora_Shape1_shape1GradientEndColor, 0)
-    });
+    gd.setGradientCenter(a.getFloat(R.styleable.Folivora_Shape1_shape1GradientCenterX, 0.5F),
+      a.getFloat(R.styleable.Folivora_Shape1_shape1GradientCenterY, 0.5F));
+    int[] gradientColors;
+    final int gradientStartColor = a.getColor(R.styleable.Folivora_Shape1_shape1GradientStartColor, 0);
+    final int gradientEndColor = a.getColor(R.styleable.Folivora_Shape1_shape1GradientEndColor, 0);
+    final int gradientCenterColor = a.getColor(R.styleable.Folivora_Shape1_shape1GradientCenterColor, 0);
+    if (a.hasValue(R.styleable.Folivora_Shape1_shape1GradientCenterColor)) {
+      gradientColors = new int[]{gradientStartColor, gradientCenterColor, gradientEndColor};
+    } else {
+      gradientColors = new int[]{gradientStartColor, gradientEndColor};
+    }
+    gd.setColors(gradientColors);
     final int orientationIndex = a.getInt(R.styleable.Folivora_Shape1_shape1GradientAngle, 0);
     gd.setOrientation(GradientDrawable.Orientation.values()[orientationIndex]);
 
@@ -96,15 +101,20 @@ final class FolivoraShapeFactory {
     gd.setSize(a.getDimensionPixelSize(R.styleable.Folivora_Shape2_shape2SolidWidth, size),
       a.getDimensionPixelSize(R.styleable.Folivora_Shape2_shape2SolidHeight, size));
 
-    gd.setGradientType(a.getInt(R.styleable.Folivora_Shape2_shape2GradientType, 0));
+    gd.setGradientType(a.getInt(R.styleable.Folivora_Shape2_shape2GradientType, GradientDrawable.LINEAR_GRADIENT));
     gd.setGradientRadius(a.getDimension(R.styleable.Folivora_Shape2_shape2GradientRadius, 0));
-    gd.setGradientCenter(a.getDimension(R.styleable.Folivora_Shape2_shape2GradientCenterX, 0),
-      a.getDimension(R.styleable.Folivora_Shape2_shape2GradientCenterY, 0));
-    gd.setColors(new int[]{
-      a.getColor(R.styleable.Folivora_Shape2_shape2GradientStartColor, 0),
-      a.getColor(R.styleable.Folivora_Shape2_shape2GradientCenterColor, 0),
-      a.getColor(R.styleable.Folivora_Shape2_shape2GradientEndColor, 0)
-    });
+    gd.setGradientCenter(a.getFloat(R.styleable.Folivora_Shape2_shape2GradientCenterX, 0.5F),
+      a.getFloat(R.styleable.Folivora_Shape2_shape2GradientCenterY, 0.5F));
+    int[] gradientColors;
+    final int gradientStartColor = a.getColor(R.styleable.Folivora_Shape2_shape2GradientStartColor, 0);
+    final int gradientEndColor = a.getColor(R.styleable.Folivora_Shape2_shape2GradientEndColor, 0);
+    final int gradientCenterColor = a.getColor(R.styleable.Folivora_Shape2_shape2GradientCenterColor, 0);
+    if (a.hasValue(R.styleable.Folivora_Shape2_shape2GradientCenterColor)) {
+      gradientColors = new int[]{gradientStartColor, gradientCenterColor, gradientEndColor};
+    } else {
+      gradientColors = new int[]{gradientStartColor, gradientEndColor};
+    }
+    gd.setColors(gradientColors);
     final int orientationIndex = a.getInt(R.styleable.Folivora_Shape2_shape2GradientAngle, 0);
     gd.setOrientation(GradientDrawable.Orientation.values()[orientationIndex]);
 
@@ -147,15 +157,20 @@ final class FolivoraShapeFactory {
     gd.setSize(a.getDimensionPixelSize(R.styleable.Folivora_Shape3_shape3SolidWidth, size),
       a.getDimensionPixelSize(R.styleable.Folivora_Shape3_shape3SolidHeight, size));
 
-    gd.setGradientType(a.getInt(R.styleable.Folivora_Shape3_shape3GradientType, 0));
+    gd.setGradientType(a.getInt(R.styleable.Folivora_Shape3_shape3GradientType, GradientDrawable.LINEAR_GRADIENT));
     gd.setGradientRadius(a.getDimension(R.styleable.Folivora_Shape3_shape3GradientRadius, 0));
-    gd.setGradientCenter(a.getDimension(R.styleable.Folivora_Shape3_shape3GradientCenterX, 0),
-      a.getDimension(R.styleable.Folivora_Shape3_shape3GradientCenterY, 0));
-    gd.setColors(new int[]{
-      a.getColor(R.styleable.Folivora_Shape3_shape3GradientStartColor, 0),
-      a.getColor(R.styleable.Folivora_Shape3_shape3GradientCenterColor, 0),
-      a.getColor(R.styleable.Folivora_Shape3_shape3GradientEndColor, 0)
-    });
+    gd.setGradientCenter(a.getFloat(R.styleable.Folivora_Shape3_shape3GradientCenterX, 0.5F),
+      a.getFloat(R.styleable.Folivora_Shape3_shape3GradientCenterY, 0.5F));
+    int[] gradientColors;
+    final int gradientStartColor = a.getColor(R.styleable.Folivora_Shape3_shape3GradientStartColor, 0);
+    final int gradientEndColor = a.getColor(R.styleable.Folivora_Shape3_shape3GradientEndColor, 0);
+    final int gradientCenterColor = a.getColor(R.styleable.Folivora_Shape3_shape3GradientCenterColor, 0);
+    if (a.hasValue(R.styleable.Folivora_Shape3_shape3GradientCenterColor)) {
+      gradientColors = new int[]{gradientStartColor, gradientCenterColor, gradientEndColor};
+    } else {
+      gradientColors = new int[]{gradientStartColor, gradientEndColor};
+    }
+    gd.setColors(gradientColors);
     final int orientationIndex = a.getInt(R.styleable.Folivora_Shape3_shape3GradientAngle, 0);
     gd.setOrientation(GradientDrawable.Orientation.values()[orientationIndex]);
 
@@ -198,15 +213,20 @@ final class FolivoraShapeFactory {
     gd.setSize(a.getDimensionPixelSize(R.styleable.Folivora_Shape4_shape4SolidWidth, size),
       a.getDimensionPixelSize(R.styleable.Folivora_Shape4_shape4SolidHeight, size));
 
-    gd.setGradientType(a.getInt(R.styleable.Folivora_Shape4_shape4GradientType, 0));
+    gd.setGradientType(a.getInt(R.styleable.Folivora_Shape4_shape4GradientType, GradientDrawable.LINEAR_GRADIENT));
     gd.setGradientRadius(a.getDimension(R.styleable.Folivora_Shape4_shape4GradientRadius, 0));
-    gd.setGradientCenter(a.getDimension(R.styleable.Folivora_Shape4_shape4GradientCenterX, 0),
-      a.getDimension(R.styleable.Folivora_Shape4_shape4GradientCenterY, 0));
-    gd.setColors(new int[]{
-      a.getColor(R.styleable.Folivora_Shape4_shape4GradientStartColor, 0),
-      a.getColor(R.styleable.Folivora_Shape4_shape4GradientCenterColor, 0),
-      a.getColor(R.styleable.Folivora_Shape4_shape4GradientEndColor, 0)
-    });
+    gd.setGradientCenter(a.getFloat(R.styleable.Folivora_Shape4_shape4GradientCenterX, 0.5F),
+      a.getFloat(R.styleable.Folivora_Shape4_shape4GradientCenterY, 0.5F));
+    int[] gradientColors;
+    final int gradientStartColor = a.getColor(R.styleable.Folivora_Shape4_shape4GradientStartColor, 0);
+    final int gradientEndColor = a.getColor(R.styleable.Folivora_Shape4_shape4GradientEndColor, 0);
+    final int gradientCenterColor = a.getColor(R.styleable.Folivora_Shape4_shape4GradientCenterColor, 0);
+    if (a.hasValue(R.styleable.Folivora_Shape4_shape4GradientCenterColor)) {
+      gradientColors = new int[]{gradientStartColor, gradientCenterColor, gradientEndColor};
+    } else {
+      gradientColors = new int[]{gradientStartColor, gradientEndColor};
+    }
+    gd.setColors(gradientColors);
     final int orientationIndex = a.getInt(R.styleable.Folivora_Shape4_shape4GradientAngle, 0);
     gd.setOrientation(GradientDrawable.Orientation.values()[orientationIndex]);
 

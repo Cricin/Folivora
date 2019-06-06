@@ -62,8 +62,8 @@
     <attr name="shapeGradientCenterColor" format="color"/>
     <attr name="shapeGradientEndColor" format="color"/>
     <attr name="shapeGradientRadius" format="dimension"/>
-    <attr name="shapeGradientCenterX" format="dimension"/>
-    <attr name="shapeGradientCenterY" format="dimension"/>
+    <attr name="shapeGradientCenterX" format="float"/>
+    <attr name="shapeGradientCenterY" format="float"/>
 
   </declare-styleable>
 
@@ -112,8 +112,8 @@
     <attr name="shape1GradientCenterColor" format="color"/>
     <attr name="shape1GradientEndColor" format="color"/>
     <attr name="shape1GradientRadius" format="dimension"/>
-    <attr name="shape1GradientCenterX" format="dimension"/>
-    <attr name="shape1GradientCenterY" format="dimension"/>
+    <attr name="shape1GradientCenterX" format="float"/>
+    <attr name="shape1GradientCenterY" format="float"/>
 
   </declare-styleable>
 
@@ -162,8 +162,8 @@
     <attr name="shape2GradientCenterColor" format="color"/>
     <attr name="shape2GradientEndColor" format="color"/>
     <attr name="shape2GradientRadius" format="dimension"/>
-    <attr name="shape2GradientCenterX" format="dimension"/>
-    <attr name="shape2GradientCenterY" format="dimension"/>
+    <attr name="shape2GradientCenterX" format="float"/>
+    <attr name="shape2GradientCenterY" format="float"/>
 
   </declare-styleable>
 
@@ -212,8 +212,8 @@
     <attr name="shape3GradientCenterColor" format="color"/>
     <attr name="shape3GradientEndColor" format="color"/>
     <attr name="shape3GradientRadius" format="dimension"/>
-    <attr name="shape3GradientCenterX" format="dimension"/>
-    <attr name="shape3GradientCenterY" format="dimension"/>
+    <attr name="shape3GradientCenterX" format="float"/>
+    <attr name="shape3GradientCenterY" format="float"/>
 
   </declare-styleable>
 
@@ -262,8 +262,8 @@
     <attr name="shape4GradientCenterColor" format="color"/>
     <attr name="shape4GradientEndColor" format="color"/>
     <attr name="shape4GradientRadius" format="dimension"/>
-    <attr name="shape4GradientCenterX" format="dimension"/>
-    <attr name="shape4GradientCenterY" format="dimension"/>
+    <attr name="shape4GradientCenterX" format="float"/>
+    <attr name="shape4GradientCenterY" format="float"/>
 
   </declare-styleable>
 
