@@ -908,7 +908,6 @@ public final class Folivora {
       case SHAPE_INDEX_4:
         result = FolivoraShapeFactory.newShape4(ctx, attrs);
       default:
-        Log.w(TAG, "Unexpected shape index" + shapeIndex);
         break;
     }
     if (result == null) {

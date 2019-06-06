@@ -18,9 +18,11 @@ package cn.cricin.folivora;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
+import org.xmlpull.v1.XmlPullParser;
 
 /**
  * A LayoutInflater implementation which delegate all view creation
@@ -35,14 +37,6 @@ final class FolivoraInflater extends LayoutInflater {
 
   FolivoraInflater(Context newContext, LayoutInflater original) {
     super(original, newContext);
-    Factory2 factory2 = original.getFactory2();
-    if (factory2 == null) {
-      super.setFactory2(new FolivoraViewFactory());
-    } else {
-      if (!(factory2 instanceof FolivoraViewFactory))
-        Log.i(Folivora.TAG, "The Activity's LayoutInflater already has a Factory installed"
-          + " so we can not install Folivora's");
-    }
   }
 
   @Override
@@ -53,17 +47,28 @@ final class FolivoraInflater extends LayoutInflater {
   @Override
   public void setFactory(Factory factory) {
     FolivoraViewFactory f = (FolivoraViewFactory) getFactory2();
-    if (f != null) {
-      f.mFactory = factory;
+    if (f == null) {
+      super.setFactory2(f = new FolivoraViewFactory());
     }
+    f.mFactory = factory;
   }
 
   @Override
   public void setFactory2(Factory2 factory2) {
     FolivoraViewFactory f = (FolivoraViewFactory) getFactory2();
-    if (f != null) {
-      f.mFactory2 = factory2;
+    if (f == null) {
+      super.setFactory2(f = new FolivoraViewFactory());
     }
+    f.mFactory2 = factory2;
+  }
+
+  @Override
+  public View inflate(XmlPullParser parser, ViewGroup root, boolean attachToRoot) {
+    Factory2 factory2 = getFactory2();
+    if (factory2 == null) {
+      super.setFactory2(new FolivoraViewFactory());
+    }
+    return super.inflate(parser, root, attachToRoot);
   }
 
   /** fallback if FolivoraViewFactory could not create views properly */

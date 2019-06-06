@@ -22,8 +22,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.android.ide.common.rendering.api.LayoutlibCallback;
+import com.android.layoutlib.bridge.Bridge;
 import com.android.layoutlib.bridge.android.BridgeContext;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,6 +47,8 @@ final class ViewFactory implements LayoutInflater.Factory2 {
     "TextView", "ImageView", "Button", "EditText", "Spinner", "ImageButton",
     "CheckBox", "RadioButton", "CheckedTextView", "AutoCompleteTextView",
     "MultiAutoCompleteTextView", "RatingBar", "SeekBar"));
+  private static final String sAutoNs = "http://schemas.android.com/apk/res-auto";
+  private static boolean sExceptionCaught = false; //only log exception once, don't mess up log file
   private Set<String> mFailedAppCompatViews = new HashSet<>();
   private static final Class<?>[] sConstructorSignature = {Context.class, AttributeSet.class};
   private static final Object[] sConstructorArgs = new Object[2];
@@ -97,10 +103,38 @@ final class ViewFactory implements LayoutInflater.Factory2 {
     }
 
     if (result != null) {
-      FolivoraAccess.applyDrawableToView(result, attrs);
+      String drawableType = attrs.getAttributeValue(sAutoNs, "drawableType");
+      String drawableName = attrs.getAttributeValue(sAutoNs, "drawableName");
+      String drawableId = attrs.getAttributeValue(sAutoNs, "drawableId");
+      if (drawableType != null || drawableName != null || drawableId != null) {
+        applyDrawableToView(result, attrs);
+      }
     }
-
     return result;
+  }
+
+  private void applyDrawableToView(View view, AttributeSet attrs) {
+    try {
+      Class<?> c = mLayoutLibCallback.findClass("cn.cricin.folivora.Folivora");
+      Method method = c.getDeclaredMethod("applyDrawableToView", View.class, AttributeSet.class);
+      method.setAccessible(true);
+      Field field = c.getDeclaredField("sDrawableCacheEnabled");
+      field.setAccessible(true);
+      field.set(null, false);
+      method.invoke(null, view, attrs);
+    } catch (Throwable e) {
+      if (e instanceof InvocationTargetException) {
+        Throwable ex = ((InvocationTargetException) e).getTargetException();
+        if (ex instanceof NoClassDefFoundError && ex.getMessage().contains("folivora/R$styleable")) {
+          Bridge.getLog().warning("build-needed", "folivora not worked due to missing R.class, try assemble project to refresh", null, null);
+        }
+      } else {
+        if (!sExceptionCaught) {
+          sExceptionCaught = true;
+          FolivoraPreview.sLogger.info(e);
+        }
+      }
+    }
   }
 
   private View loadCustomView(String name, AttributeSet attrs) {

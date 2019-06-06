@@ -32,13 +32,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import sun.misc.Unsafe;
+
 /**
  * Preview support entry point for Folivora.
  */
 @SuppressWarnings("unchecked")
 public final class FolivoraPreview {
-  private static final Logger sLogger = Logger.getInstance(FolivoraPreview.class);
-  private static boolean sLogged = false;
+  static final Logger sLogger = Logger.getInstance(FolivoraPreview.class);
 
   private static Field sContextField;
   private static WeakHashMap<Resources, BridgeContext> sContextMap;
@@ -49,7 +50,7 @@ public final class FolivoraPreview {
       field.setAccessible(true);
       sContextMap = (WeakHashMap<Resources, BridgeContext>) field.get(null);
     } catch (Throwable t) {
-      log("FolivoraPreview", "Unable to find static field sContexts in" +
+      sLogger.info("Unable to find static field sContexts in" +
         " Resource_Delegate, current AS version may lower than 3.0", t);
     }
     if (sContextMap == null) {
@@ -57,32 +58,69 @@ public final class FolivoraPreview {
         sContextField = Resources.class.getDeclaredField("mContext");
         sContextField.setAccessible(true);
       } catch (Throwable t) {
-        log("FolivoraPreview", "Unable to find static field mContext in" +
+        sLogger.info("Unable to find static field mContext in" +
           " Resource_Delegate, current AS version may higher than 3.0", t);
       }
     }
     if (sContextField == null && sContextMap == null) {
-      log("FolivoraPreview", "FolivoraPreview not installed, AS version not supported", null);
+      sLogger.info("Preview install failed, AS version not supported");
       return;
     }
+    tryHookConstructorMap();
+  }
+
+  private static void tryHookConstructorMap() {
+    Field field = null;
+    HashMap<String, Constructor<?>> origin = null;
+    boolean needHookWithUnsafe = false;
     try {
-      Field field = LayoutInflater.class.getDeclaredField("sConstructorMap");
+      field = LayoutInflater.class.getDeclaredField("sConstructorMap");
       field.setAccessible(true);
       Field modifiers = Field.class.getDeclaredField("modifiers");
       modifiers.setAccessible(true);
       modifiers.set(field, field.getModifiers() & ~Modifier.FINAL);
-      Map<String, Constructor<?>> origin = (Map<String, Constructor<?>>) field.get(null);
-      Map<String, Constructor<?>> map = new HashMap<String, Constructor<?>>(origin) {
-        @Override
-        public Constructor<?> get(Object o) {
-          installViewFactoryIfNeeded();
-          return super.get(o);
-        }
-      };
-      field.set(null, map);
+      origin = (HashMap<String, Constructor<?>>) field.get(null);
+      if (origin.getClass().getCanonicalName().endsWith("MyHashMap")) return;// already hooked
+      field.set(null, new MyHashMap<>(origin));
     } catch (Exception ex) {
-      log("FolivoraPreview", "FolivoraPreview not installed", ex);
+      needHookWithUnsafe = true;
     }
+    if(field == null || origin == null) {
+      sLogger.info("Preview install failed, Unable to find field LayoutInflater.sConstructorMap");
+      return;
+    }
+    // if failed, hook using unsafe
+    if (needHookWithUnsafe) {
+      Unsafe unsafe = getUnsafe();
+      if(unsafe == null) return;
+      Object fieldBase = unsafe.staticFieldBase(field);
+      long offset = unsafe.staticFieldOffset(field);
+      unsafe.putObjectVolatile(fieldBase, offset, new MyHashMap<>(origin));
+    }
+    try {
+      Object o = field.get(null);
+      if (o != null && o.getClass().getCanonicalName().endsWith("MyHashMap")) {
+        sLogger.info("Preview installed successfully");
+      } else {
+        sLogger.info("Preview install failed");
+      }
+    } catch (Exception e) {
+      sLogger.info("Preview install failed");
+    }
+  }
+
+  private static Unsafe getUnsafe(){
+    Unsafe unsafe = null;
+    try {
+      unsafe = Unsafe.getUnsafe();
+    } catch (SecurityException e){
+      try {
+        Field field = Unsafe.class.getDeclaredField("theUnsafe");
+        field.setAccessible(true);
+        unsafe = (Unsafe) field.get(null);
+      } catch (Exception ignore) {}
+    }
+    return unsafe;
   }
 
   private static void installViewFactoryIfNeeded() {
@@ -90,7 +128,6 @@ public final class FolivoraPreview {
     for (BridgeContext context : contexts) {
       LayoutInflater inflater = LayoutInflater.from(context);
       if (inflater.getFactory2() == null) {
-        FolivoraAccess.initIfNeeded(context.getLayoutlibCallback());
         inflater.setFactory2(new ViewFactory(inflater, context.getLayoutlibCallback()));
       }
     }
@@ -107,15 +144,16 @@ public final class FolivoraPreview {
     return Collections.emptyList();
   }
 
-  static void logOnlyOnce(String tag, String msg, Throwable t){
-    // if error occurred in layout inflation, we should only log
-    // once, so IDE log file will not be massed up.
-    if(sLogged) return;
-    sLogger.info("[" + tag + "] ->" + msg , t);
-    sLogged = true;
+  static class MyHashMap<K,V> extends HashMap<K,V>{
+    MyHashMap(Map<? extends K, ? extends V> map) {
+      super(map);
+    }
+
+    @Override
+    public V get(Object o) {
+      installViewFactoryIfNeeded();
+      return super.get(o);
+    }
   }
 
-  static void log(String tag, String msg, Throwable t) {
-    sLogger.info("[" + tag + "] ->" + msg , t);
-  }
 }
