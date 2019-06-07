@@ -22,7 +22,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 添加Gradle依赖，在项目的build.gradle中加入
 ```groovy
   dependencies {
-    implementation 'cn.cricin:folivora:0.0.8'
+    implementation 'cn.cricin:folivora:0.0.9'
   }
 ```
 
@@ -453,8 +453,8 @@ app:shapeGradientStartColor|color|渐变起始颜色
 app:shapeGradientCenterColor|color|渐变中间颜色
 app:shapeGradientEndColor|color|渐变结束颜色
 app:shapeGradientRadius|dimension|渐变半径
-app:shapeGradientCenterX|dimension|渐变中点x轴位置
-app:shapeGradientCenterY|dimension|渐变中点y轴位置
+app:shapeGradientCenterX|float|渐变中点x轴位置
+app:shapeGradientCenterY|float|渐变中点y轴位置
 
 ##### selector属性
 

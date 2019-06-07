@@ -24,7 +24,7 @@ Folivora sets a View's background, foreground or ImageView's src in your layout.
 gradle dependency, add below in your project's build.gradle
 ```groovy
   dependencies {
-    implementation 'cn.cricin:folivora:0.0.8'
+    implementation 'cn.cricin:folivora:0.0.9'
   }
 ```
 
@@ -459,8 +459,8 @@ app:shapeGradientStartColor|color
 app:shapeGradientCenterColor|color
 app:shapeGradientEndColor|color
 app:shapeGradientRadius|dimension
-app:shapeGradientCenterX|dimension
-app:shapeGradientCenterY|dimension
+app:shapeGradientCenterX|float(default 0.5)
+app:shapeGradientCenterY|float(default 0.5)
 
 ##### Selector Attrs
 
