@@ -38,11 +38,8 @@ import org.jetbrains.android.dom.layout.DataBindingElement;
 import org.jetbrains.android.dom.layout.LayoutElement;
 import org.jetbrains.android.dom.manifest.Manifest;
 import org.jetbrains.android.facet.AndroidFacet;
-import org.jetbrains.android.resourceManagers.LocalResourceManager;
-import org.jetbrains.android.resourceManagers.ModuleResourceManagers;
 import org.jetbrains.android.resourceManagers.ResourceManager;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -171,7 +168,7 @@ final class FolivoraAttrProcessing {
     /*NotNull*/ String styleableName,
     /*NotNull*/ AttributeProcessingUtil.AttributeProcessor callback) {
 
-    ResourceManager manager = getAppResourceManager(facet);
+    ResourceManager manager = AndroidFacetCompat.getAppResourceManager(facet);
     if (manager == null) {
       return;
     }
@@ -193,32 +190,14 @@ final class FolivoraAttrProcessing {
     // TODO: add a warning when rest of the code of AndroidDomExtender is cleaned up
   }
 
-  private static boolean sModuleResourceManagerExists = true;
-
-  private static ResourceManager getAppResourceManager(AndroidFacet facet) {
-    ResourceManager manager = null;
-    if (sModuleResourceManagerExists) {
-      try {
-        manager =  ModuleResourceManagers.getInstance(facet).getResourceManager(null);
-      } catch (NoClassDefFoundError ignore) {
-        sModuleResourceManagerExists = false;
-      }
-    }
-    if (!sModuleResourceManagerExists) {
-      manager = LocalResourceManager.getInstance(facet.getModule());
-    }
-    return manager;
-  }
-
-
   /*Nullable*/
   private static String getNamespaceUriByResourcePackage(/*NotNull*/ AndroidFacet facet,
     /*Nullable*/ String resPackage) {
     if (resPackage == null) {
-      if (!isAppProject(facet) || facet.requiresAndroidModel()) {
+      if (!AndroidFacetCompat.isAppProject(facet) || AndroidFacetCompat.isAndroidModelRequired(facet)) {
         return SdkConstants.AUTO_URI;
       }
-      Manifest manifest = facet.getManifest();
+      Manifest manifest = AndroidFacetCompat.getManifest(facet);
       if (manifest != null) {
         String aPackage = manifest.getPackage().getValue();
         if (aPackage != null && !aPackage.isEmpty()) {
@@ -229,27 +208,6 @@ final class FolivoraAttrProcessing {
       return SdkConstants.ANDROID_URI;
     }
     return null;
-  }
-
-  private static Method sIsAppProjectMethod;
-
-  private static boolean isAppProject(AndroidFacet facet) {
-    if (sIsAppProjectMethod != null) {
-      try {
-        return (boolean) sIsAppProjectMethod.invoke(facet.getConfiguration(), (Object[]) null);
-      } catch (Exception ignore) {
-      }
-    }
-    try {
-      return facet.getConfiguration().isAppProject();
-    } catch (NoSuchMethodError nsme) {
-      try {
-        sIsAppProjectMethod = facet.getClass().getDeclaredMethod("isAppProject", (Class<?>[]) null);
-        return (boolean) sIsAppProjectMethod.invoke(facet, (Object[]) null);
-      } catch (Exception ignore) {
-      }
-    }
-    return false;
   }
 
   private static void registerStyleableAttributes(
