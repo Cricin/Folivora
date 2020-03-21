@@ -92,6 +92,7 @@ final class FolivoraAttrProcessing {
     if (!(element instanceof LayoutElement)) return;
     if (element instanceof DataBindingElement) return;
     XmlTag tag = element.getXmlTag();
+    if (tag == null) return;
     if (isInvalidTagName(tag.getName())) return;
     List<String> styleableNames = getStyleablesToRegister(tag.getAttributes());
     for (String styleableName : styleableNames) {
@@ -218,7 +219,7 @@ final class FolivoraAttrProcessing {
       if (!isAppProject(facet) || facet.requiresAndroidModel()) {
         return SdkConstants.AUTO_URI;
       }
-      Manifest manifest = facet.getManifest();
+      Manifest manifest = getManifest(facet);
       if (manifest != null) {
         String aPackage = manifest.getPackage().getValue();
         if (aPackage != null && !aPackage.isEmpty()) {
@@ -227,6 +228,27 @@ final class FolivoraAttrProcessing {
       }
     } else if (resPackage.equals(SdkConstants.ANDROID_NS_NAME)) {
       return SdkConstants.ANDROID_URI;
+    }
+    return null;
+  }
+
+  private static Method sGetManifestMethod;
+
+  private static Manifest getManifest(AndroidFacet facet) {
+    if (sGetManifestMethod != null) {
+      try {
+        return (Manifest) sGetManifestMethod.invoke(facet);
+      } catch (Exception ignore) {
+      }
+    }
+    try {
+      return Manifest.getMainManifest(facet);
+    } catch (NoSuchMethodError nsme) {
+      try {
+        sGetManifestMethod = facet.getClass().getDeclaredMethod("getManifest", (Class<?>[]) null);
+        return (Manifest) sGetManifestMethod.invoke(facet, (Object[]) null);
+      }catch (Exception ignore) {
+      }
     }
     return null;
   }
