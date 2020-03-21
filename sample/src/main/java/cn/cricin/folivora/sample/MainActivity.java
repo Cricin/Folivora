@@ -16,6 +16,7 @@
 
 package cn.cricin.folivora.sample;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -24,7 +25,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -32,7 +32,7 @@ import android.widget.TextView;
 import cn.cricin.folivora.Folivora;
 import cn.cricin.folivora.sample.drawable.UmbrellaDrawable;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
   @Override
   protected void attachBaseContext(Context newBase) {
