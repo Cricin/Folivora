@@ -1,12 +1,8 @@
 apply plugin: 'java'
 
-def ideInstallationDir = new File('/Applications/Android Studio.app/Contents/')
+def ideInstallationDir = new File('d:/android/studio')
 def androidPluginLibPath = 'plugins/android/lib'
 def lintVersion = '26.2.0-alpha06'
-
-configurations {
-  lintChecks
-}
 
 configurations.all {
   transitive = false
@@ -18,11 +14,10 @@ dependencies {
   compileOnly "com.android.tools.lint:lint:$lintVersion"
   compileOnly "com.android.tools.external.org-jetbrains:uast:$lintVersion"
   compileOnly "com.android.tools.external.com-intellij:intellij-core:$lintVersion"
-  compileOnly 'com.android.tools:common:26.3.1'
-  compileOnly 'com.android.tools.layoutlib:layoutlib-api:26.3.1'
+  compileOnly 'com.android.tools:common:26.6.1'
+  compileOnly 'com.android.tools.layoutlib:layoutlib-api:26.6.1'
   if (ideInstallationDir.exists() && ideInstallationDir.isDirectory()) {
-     ["${androidPluginLibPath}/layoutlib.jar",
-     "${androidPluginLibPath}/android.jar",
+     ["${androidPluginLibPath}/android.jar",
      'lib/openapi.jar',
      'lib/platform-api.jar',
      'lib/idea.jar'
@@ -31,10 +26,18 @@ dependencies {
        if(!file.exists()) throw new Exception("file $file does not exist")
       compileOnly files(file)
     }
+    def legacyLayoutLib = new File("${androidPluginLibPath}/layoutlib.jar")
+    def layoutLib = new File(ideInstallationDir, "plugins/android-layoutlib/lib/layoutlib.jar")
+    if (legacyLayoutLib.exists()) {
+      compileOnly files(legacyLayoutLib)
+    } else if(layoutLib.exists()) {
+      compileOnly files(layoutLib)
+    } else {
+      throw new Exception("layoutlib does not exist")
+    }
   } else {
     throw new GradleException('Invalid ide installation dir')
   }
-  lintChecks files(jar)
 }
 
 jar {

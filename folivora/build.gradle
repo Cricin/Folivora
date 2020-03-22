@@ -1,15 +1,12 @@
 apply plugin: 'com.android.library'
 
-def verName = '0.0.9'
+def verName = '0.1.0'
 
 android {
-  compileSdkVersion 27
+  compileSdkVersion 29
   defaultConfig {
     minSdkVersion 16
-    targetSdkVersion 27
-    versionCode 1
-    versionName verName
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    targetSdkVersion 29
   }
   buildTypes {
     release {
@@ -19,24 +16,9 @@ android {
   }
 }
 
-configurations {
-  lintChecks
-}
-
 dependencies {
-  lintChecks project(path: ':lint', configuration: 'lintChecks')
-}
-
-task copyLintJar(type: Copy) {
-  from(configurations.lintChecks) {
-    rename { 'lint.jar' }
-  }
-  into 'build/intermediates/lint/'
-}
-
-project.afterEvaluate {
-  def compileLintTask = project.tasks.find { it.name == 'compileLint' }
-  compileLintTask.dependsOn(copyLintJar)
+  lintChecks project(':lint')
+  lintPublish project(':lint')
 }
 
 ext {
@@ -44,4 +26,4 @@ ext {
   PUBLISH_ARTIFACT_ID = 'folivora'
   PUBLISH_VERSION = verName
 }
-apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
+apply from: rootProject.file('android_release_aar.gradle')
