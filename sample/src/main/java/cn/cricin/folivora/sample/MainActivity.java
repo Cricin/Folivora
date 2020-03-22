@@ -29,7 +29,11 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import cn.cricin.folivora.DrawableParser;
 import cn.cricin.folivora.Folivora;
+import cn.cricin.folivora.OnViewCreatedListener;
+import cn.cricin.folivora.ParseRequest;
+import cn.cricin.folivora.RippleFallback;
 import cn.cricin.folivora.sample.drawable.UmbrellaDrawable;
 
 public class MainActivity extends Activity {
@@ -45,7 +49,7 @@ public class MainActivity extends Activity {
     //Folivora.installViewFactory(this); //if you do not want folivora wraps the base context, using this
 
     //create a selector if ripple drawable is unavailable
-    Folivora.setRippleFallback(new Folivora.RippleFallback() {
+    Folivora.setRippleFallback(new RippleFallback() {
       @Override
       public Drawable onFallback(ColorStateList color, Drawable content, Drawable mask, Context ctx) {
         StateListDrawable sld = new StateListDrawable();
@@ -57,10 +61,10 @@ public class MainActivity extends Activity {
 
     //UmbrellaDrawable does not have a UmbrellaDrawable(Context ctx, AttributeSet attrs)
     //constructor, so we take over creation here
-    Folivora.addDrawableFactory(new Folivora.DrawableFactory() {
+    Folivora.registerDrawableParser(UmbrellaDrawable.class, new DrawableParser() {
       @Override
-      public Drawable newDrawable(Context context, AttributeSet attrs) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.UmbrellaDrawable);
+      public Drawable parse(ParseRequest request) {
+        TypedArray a = request.context().obtainStyledAttributes(request.attrs(), R.styleable.UmbrellaDrawable);
         UmbrellaDrawable d = new UmbrellaDrawable();
         d.setBackgroundColor(a.getColor(R.styleable.UmbrellaDrawable_udBackgroundColor, d.getBackgroundColor()));
         d.setColor1(a.getColor(R.styleable.UmbrellaDrawable_udColor1, d.getColor1()));
@@ -68,15 +72,10 @@ public class MainActivity extends Activity {
         a.recycle();
         return d;
       }
-
-      @Override
-      public Class<? extends Drawable> drawableClass() {
-        return UmbrellaDrawable.class;
-      }
     });
 
     // If you want to do some further customization, this will be helpful
-    Folivora.addOnViewCreatedListener(new Folivora.OnViewCreatedListener() {
+    Folivora.addOnViewCreatedListener(new OnViewCreatedListener() {
       @Override
       public void onViewCreated(View view, AttributeSet attrs) {
         //we change text color to green here
