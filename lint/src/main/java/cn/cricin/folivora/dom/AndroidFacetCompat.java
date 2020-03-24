@@ -57,7 +57,12 @@ final class AndroidFacetCompat {
    * Added for android studio 3.0
    */
   static boolean isAppProject(AndroidFacet facet) {
-    Boolean value = invoke(AndroidFacet.class, "isAppProject", facet, null, null, () -> facet.getConfiguration().isAppProject());
+    Boolean value = invoke(AndroidFacet.class, "isAppProject", facet, null, null, new Callable<Boolean>() {
+      @Override
+      public Boolean call() throws Exception {
+        return facet.getConfiguration().isAppProject();
+      }
+    });
     return value != null && value;
   }
 
@@ -65,7 +70,12 @@ final class AndroidFacetCompat {
    * Added for android studio 4.0 canary release
    */
   static boolean requiresAndroidModel(AndroidFacet facet) {
-    Boolean value = invoke(AndroidModel.class, "isRequired", null, new Class[]{AndroidFacet.class}, new Object[]{facet}, facet::requiresAndroidModel);
+    Boolean value = invoke(AndroidModel.class, "isRequired", null, new Class[]{AndroidFacet.class}, new Object[]{facet}, new Callable<Boolean>() {
+      @Override
+      public Boolean call() throws Exception {
+        return facet.requiresAndroidModel();
+      }
+    });
     return value != null && value;
   }
 
@@ -73,7 +83,12 @@ final class AndroidFacetCompat {
    * Added for android studio 4.0 canary release
    */
   static Manifest getManifest(AndroidFacet facet) {
-    return invoke(AndroidFacet.class, "getManifest", facet, null, null, () -> Manifest.getMainManifest(facet));
+    return invoke(AndroidFacet.class, "getManifest", facet, null, null, new Callable<Manifest>() {
+      @Override
+      public Manifest call() throws Exception {
+        return Manifest.getMainManifest(facet);
+      }
+    });
   }
 
   private static Map<Pair<Class<?>, String>, Method> sInvokableMethods = new HashMap<>();
