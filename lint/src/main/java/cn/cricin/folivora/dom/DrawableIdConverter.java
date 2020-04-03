@@ -16,6 +16,11 @@
 
 package cn.cricin.folivora.dom;
 
+import com.android.SdkConstants;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiRecursiveElementVisitor;
+import com.intellij.psi.xml.XmlFile;
+import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.xml.ConvertContext;
 import com.intellij.util.xml.ResolvingConverter;
 
@@ -24,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,12 +38,25 @@ import java.util.Set;
  * in project, and gives cached candidates when use drawableId
  */
 public class DrawableIdConverter extends ResolvingConverter<String> {
-  static final Set<String> drawableIds = new HashSet<>();
 
   @NotNull
   @Override
-
   public Collection<? extends String> getVariants(ConvertContext convertContext) {
+    if (convertContext == null) return Collections.emptyList();
+    XmlFile file = convertContext.getFile();
+    final Set<String> drawableIds = new HashSet<>();
+    file.accept(new PsiRecursiveElementVisitor() {
+      @Override
+      public void visitElement(PsiElement element) {
+        super.visitElement(element);
+        if (element instanceof XmlTag) {
+          String drawableId = ((XmlTag) element).getAttributeValue("drawableId", SdkConstants.AUTO_URI);
+          if(drawableId != null && !drawableId.isEmpty()) {
+            drawableIds.add(drawableId);
+          }
+        }
+      }
+    });
     return new ArrayList<>(drawableIds);
   }
 
