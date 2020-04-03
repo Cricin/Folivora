@@ -22,7 +22,7 @@ Folivora可以为你的View设置一个背景或者ImageView的src,当前支持�
 添加Gradle依赖，在项目的build.gradle中加入
 ```groovy
   dependencies {
-    implementation 'cn.cricin:folivora:0.0.9'
+    implementation 'cn.cricin:folivora:0.1.0'
   }
 ```
 
